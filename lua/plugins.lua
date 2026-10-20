@@ -200,6 +200,7 @@ local wanted_parsers = {
 	"comment",
 	"cpp",
 	"css",
+	"csv",
 	"diff",
 	"disassembly",
 	"dockerfile",
