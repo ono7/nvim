@@ -229,7 +229,7 @@ map("n", "<c-/>", function()
 end, silent)
 
 -- Filetype Execution Runner Hooks
-local HOOKS_PATH = vim.fn.expand("~/.dotfiles/hooks.json")
+local HOOKS_PATH = vim.fn.expand("~/.config/nvim/hooks.json")
 
 local function load_hooks()
 	local uv = vim.uv or vim.loop

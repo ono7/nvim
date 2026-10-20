@@ -41,7 +41,7 @@ require("quicker").setup({
 local has_snippy, snippy = pcall(require, "snippy")
 if has_snippy then
 	snippy.setup({
-		snippet_dirs = "~/.dotfiles/nvim/snippets",
+		snippet_dirs = "~/.config/nvim/snippets",
 		mappings = {
 			is = {
 				["<Tab>"] = "expand_or_advance",
@@ -117,7 +117,7 @@ if has_pick then
 
 	-- NOTE(jlima): Use pick.start directly to yield absolute paths without hitting mini.pick builtin tool validation errors
 	local function pick_dotfiles()
-		local dotfiles_dir = vim.fn.expand("~/.dotfiles")
+		local dotfiles_dir = vim.fn.expand("~/.config/nvim")
 		if vim.fn.isdirectory(dotfiles_dir) == 0 then
 			vim.notify("Directory does not exist: " .. dotfiles_dir, vim.log.levels.WARN)
 			return
@@ -139,7 +139,7 @@ if has_pick then
 		pick.start({
 			source = {
 				items = items,
-				name = "Dotfiles (~/.dotfiles)",
+				name = "Dotfiles (~/.config/nvim)",
 				choose = pick.default_choose,
 			},
 		})
