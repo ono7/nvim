@@ -116,42 +116,56 @@ if has_pick then
 		})
 	end
 
-	-- NOTE(jlima): Use pick.start directly to yield absolute paths without hitting mini.pick builtin tool validation errors
-	local function pick_dotfiles()
-		local dotfiles_dir = vim.fn.expand("~/.config/nvim")
-		if vim.fn.isdirectory(dotfiles_dir) == 0 then
-			vim.notify("Directory does not exist: " .. dotfiles_dir, vim.log.levels.WARN)
-			return
-		end
+	-- NOTE(jlima): Direct pick.start execution enforces absolute paths and bypasses tool validation mismatches
+	local function pick_dir(target_dir, display_name)
+		return function()
+			local resolved_dir = vim.fn.expand(target_dir)
+			if vim.fn.isdirectory(resolved_dir) == 0 then
+				vim.notify("Directory does not exist: " .. resolved_dir, vim.log.levels.WARN)
+				return
+			end
 
-		local items
-		if vim.fn.executable("fd") == 1 then
-			local cmd = string.format(
-				"fd --type f --hidden --exclude .git --absolute-path . %s",
-				vim.fn.shellescape(dotfiles_dir)
-			)
-			items = vim.fn.systemlist(cmd)
-		else
-			items = vim.fs.find(function()
-				return true
-			end, { path = dotfiles_dir, type = "file", limit = math.huge })
-		end
+			local items
+			if vim.fn.executable("fd") == 1 then
+				local cmd = string.format(
+					"fd --type f --hidden --exclude .git --absolute-path . %s",
+					vim.fn.shellescape(resolved_dir)
+				)
+				items = vim.fn.systemlist(cmd)
+			else
+				items = vim.fs.find(function()
+					return true
+				end, { path = resolved_dir, type = "file", limit = math.huge })
+			end
 
-		pick.start({
-			source = {
-				items = items,
-				name = "Dotfiles (~/.config/nvim)",
-				choose = pick.default_choose,
-			},
-		})
+			pick.start({
+				source = {
+					items = items,
+					name = display_name or resolved_dir,
+					choose = pick.default_choose,
+				},
+			})
+		end
 	end
 
 	pick.registry.oldfiles = pick_oldfiles
-	pick.registry.dotfiles = pick_dotfiles
 
 	local silent = { noremap = true, silent = true }
 	vim.keymap.set("n", "<M-f>", "<cmd>Pick files<CR>", silent)
 	vim.keymap.set("n", "<M-g>", "<cmd>Pick grep_live<CR>", silent)
 	vim.keymap.set("n", "<M-r>", pick_oldfiles, silent)
-	vim.keymap.set("n", "<leader>vs", pick_dotfiles, vim.tbl_extend("force", silent, { desc = "Find dotfiles" }))
+
+	local dir_pickers = {
+		{ key = "<M-v>", dir = "~/.config/nvim", desc = "Neovim Config" },
+		{ key = "<M-i>", dir = "~/.dotfiles", desc = "Dotfiles" },
+	}
+
+	for _, target in ipairs(dir_pickers) do
+		vim.keymap.set(
+			"n",
+			target.key,
+			pick_dir(target.dir, target.desc),
+			vim.tbl_extend("force", silent, { desc = target.desc })
+		)
+	end
 end
