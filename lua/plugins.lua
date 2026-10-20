@@ -185,6 +185,7 @@ vim.filetype.add({
 		csproj = "xml",
 		esproj = "xml",
 		keymap = "c",
+		["yaml.ansible"] = yaml,
 		mdx = "markdown",
 		uproject = "json",
 		wsdl = "xml",
@@ -193,22 +194,23 @@ vim.filetype.add({
 
 -- NOTE(jlima): Single declarative source of truth for both installation and buffer attachment
 local wanted_parsers = {
-	"go",
-	"gomod",
-	"python",
-	"yaml",
-	"lua",
-	"bash",
-	"javascript",
 	"asm",
+	"bash",
 	"c",
 	"cpp",
 	"diff",
 	"dockerfile",
 	"gitcommit",
+	"go",
+	"gomod",
+	"javascript",
 	"jinja",
+	"lua",
 	"markdown",
 	"markdown_inline",
+	"python",
+	"yaml",
+	"make",
 }
 
 -- NOTE(jlima): Build lookup set and missing parser list in a single pass
