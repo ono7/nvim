@@ -66,7 +66,8 @@ local hl_groups = {
 	Special = { fg = fg },
 
 	Type = { fg = type_col },
-	["@type"] = { fg = type_col },
+	["@type"] = { fg = fg },
+	["@module.go"] = { fg = fg },
 	["@type.builtin"] = { fg = type_col },
 	Function = { fg = fn_col, bold = true },
 	["@function"] = { fg = fn_col, bold = true },
