@@ -175,7 +175,6 @@ if has_pick then
 end
 
 -- treesitter
---
 -- NOTE(jlima): Force native C toolchains to bypass incompatible system tree-sitter CLI binaries
 local install = require("nvim-treesitter.install")
 install.prefer_git = false
@@ -193,8 +192,18 @@ vim.filetype.add({
 	},
 })
 
--- NOTE(jlima): Restrict inventory strictly to target grammars to eliminate startup compiler thrash
-require("nvim-treesitter").install({ "go", "python", "yaml", "lua" })
+-- NOTE(jlima): Compile missing parsers deterministically without re-triggering background jobs every boot
+local wanted_parsers = { "go", "python", "yaml", "lua" }
+local missing_parsers = {}
+for _, lang in ipairs(wanted_parsers) do
+	if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) == 0 then
+		table.insert(missing_parsers, lang)
+	end
+end
+
+if #missing_parsers > 0 then
+	require("nvim-treesitter").install(missing_parsers)
+end
 
 -- NOTE(jlima): Fast O(1) whitelist prevents table scans and redundant AST checks on generic buffers
 local target_fts = {
@@ -217,6 +226,17 @@ vim.api.nvim_create_autocmd("FileType", {
 			return
 		end
 
-		vim.treesitter.start(args.buf)
+		-- NOTE(jlima): Eliminate AST tree-walking on insert keystrokes by resetting legacy indent scripts
+		vim.bo[args.buf].indentexpr = ""
+
+		-- NOTE(jlima): Enforce manual fold evaluation to prevent CursorMoved syntax tree recalculation
+		vim.wo.foldmethod = "manual"
+		vim.wo.foldexpr = ""
+
+		-- NOTE(jlima): pcall isolates startup crashes if a parser .so is missing or currently compiling
+		local ok = pcall(vim.treesitter.start, args.buf)
+		if ok then
+			vim.bo[args.buf].syntax = ""
+		end
 	end,
 })
