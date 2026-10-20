@@ -193,7 +193,25 @@ vim.filetype.add({
 })
 
 -- NOTE(jlima): Compile missing parsers deterministically without re-triggering background jobs every boot
-local wanted_parsers = { "go", "python", "yaml", "lua" }
+local wanted_parsers = {
+	"go",
+	"gomod",
+	"python",
+	"yaml",
+	"lua",
+	"bash",
+	"javascript",
+	"asm",
+	"c",
+	"cpp",
+	"diff",
+	"dockerfile",
+	"gitcommit",
+	"jinja",
+	"markdown",
+	"markdown_inline",
+}
+
 local missing_parsers = {}
 for _, lang in ipairs(wanted_parsers) do
 	if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) == 0 then
