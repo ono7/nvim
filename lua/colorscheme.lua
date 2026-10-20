@@ -82,6 +82,7 @@ local hl_groups = {
 	PmenuThumb = { bg = line_nr },
 	DiagnosticError = { fg = "#B63E46" },
 	MiniPickMatchRanges = { fg = "#B63E46" },
+	MiniPickMatchCurrent = { bg = "#D8D3C9" },
 	DiagnosticWarn = { fg = "#8C6615" },
 	DiagnosticInfo = { fg = type_col },
 	DiagnosticHint = { fg = comment },
