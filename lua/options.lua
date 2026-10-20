@@ -84,7 +84,7 @@ vim.opt.expandtab = true
 vim.opt.textwidth = 80
 vim.opt.formatoptions = "qlj"
 vim.opt.joinspaces = false
-vim.opt.cinkeys:remove(":")
+-- vim.opt.cinkeys:remove(":")
 
 -- Search & Pattern Matching
 vim.opt.hlsearch = false

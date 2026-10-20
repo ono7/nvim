@@ -3,13 +3,13 @@ local quickfix_group = vim.api.nvim_create_augroup("quickfixGroup", { clear = tr
 local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { clear = true })
 
 -- prevents indenting when pressing : accross all files
-vim.api.nvim_create_autocmd("FileType", {
-	group = indent_group,
-	pattern = "*",
-	callback = function()
-		vim.opt_local.indentkeys:remove({ "<:>", ":" })
-	end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	group = indent_group,
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		vim.opt_local.indentkeys:remove({ "<:>", ":" })
+-- 	end,
+-- })
 
 -- NOTE(jlima): enforces formatoptions deterministically against runtime ftplugin overrides
 vim.api.nvim_create_autocmd("FileType", {
