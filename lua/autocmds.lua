@@ -11,6 +11,15 @@ local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { cle
 -- 	end,
 -- })
 
+local purge_banner_group = vim.api.nvim_create_augroup("purge_neovim_banner", { clear = true })
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	group = purge_banner_group,
+	callback = function()
+		pcall(vim.api.nvim_del_augroup_by_name, "NeovideIntroBanner")
+	end,
+})
+
 -- NOTE(jlima): enforces formatoptions deterministically against runtime ftplugin overrides
 vim.api.nvim_create_autocmd("FileType", {
 	group = core_group,
