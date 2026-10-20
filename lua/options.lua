@@ -33,6 +33,14 @@ local undo_dir = vim.fn.expand("~/.undo")
 if vim.fn.isdirectory(undo_dir) == 0 then
 	vim.fn.mkdir(undo_dir, "p")
 end
+
+-- NOTE(jlima): explicitly isolates shada file
+local shada_dir = vim.fn.expand("~/.shada")
+if vim.fn.isdirectory(shada_dir) == 0 then
+	vim.fn.mkdir(shada_dir, "p")
+end
+vim.opt.shadafile = shada_dir .. "/main.shada"
+
 vim.opt.undodir = undo_dir
 vim.opt.history = 1000
 vim.opt.shada = "'25,<20,s10,:100,/100,h,r/COMMIT_EDITMSG,r/git-rebase-todo,r/tmp/,r/var/tmp/,!"
