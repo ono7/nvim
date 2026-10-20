@@ -200,6 +200,8 @@ vim.cmd([[
   xnoremap & :<C-u>'<,'>s/\%V\v
 
   cnoreabbrev qq qa!
+  cnoreabbrev mktags Mktags
+  cnoreabbrev mt Mktags
   cabbrev <expr> w!! (getcmdtype() == ':' && getcmdline() == 'w!!') ? 'w !sudo tee > /dev/null %' : 'w!!'
   " cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
 ]])
