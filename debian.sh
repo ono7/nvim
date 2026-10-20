@@ -45,7 +45,7 @@ fi
 log_step "Installing system prerequisites via apt (ripgrep, fd-find, curl, tar, git)..."
 sudo apt-get update
 # NOTE(jlima): Ensure git is explicitly present for vim.pack cloning and lock reconciliation.
-sudo apt-get install -y ripgrep fd-find curl tar git
+sudo apt-get install -y ripgrep fd-find curl tar git build-essential tree-sitter-cli
 
 # NOTE(jlima): Ensure native Debian fd-find binary is linked as fd for telescope compatibility.
 if [ -f /usr/bin/fdfind ] && [ ! -e /usr/bin/fd ]; then
