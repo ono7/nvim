@@ -78,13 +78,7 @@ c-w + x -- swap splits in vim with next adjacent window
 c-/  show/close quickfix list
 c-q show diagnostic errors in quickfix list
 
-use c-s and c-r more often to move around
-
 <leader>nq - sets noqa for the particular diagnostics error
-
-
--- %< the current filename without the extension, % = the file name to compile
-Dispatch: :Dispatch g++ % -o %<
 
 read hidden chars in files like BOM or hidden UTF8
 enables binary mode
