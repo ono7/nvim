@@ -11,11 +11,24 @@ vim.pack.add({
 	{ src = gh("stevearc/conform.nvim") },
 	{ src = gh("dcampos/nvim-snippy") },
 	{ src = gh("stevearc/quicker.nvim") },
+	{ src = gh("stevearc/dressing.nvim") },
+	{ src = gh("brenoprata10/nvim-highlight-colors") },
 	{
 		src = gh("nvim-treesitter/nvim-treesitter"),
 		version = "main",
 	},
 }, { confirm = false })
+
+require("nvim-highlight-colors").setup({
+	render = "background",
+	enable_hex = true,
+	enable_short_hex = true,
+	enable_rgb = true,
+	enable_hsl = true,
+	enable_var_usage = true,
+	enable_named_colors = false,
+	virtual_symbol = "■",
+})
 
 -- quickfix editor
 require("quicker").setup({
