@@ -244,7 +244,8 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 
 		-- NOTE(jlima): Eliminate AST tree-walking on insert keystrokes by resetting legacy indent scripts
-		vim.bo[args.buf].indentexpr = ""
+		-- vim.bo[args.buf].indentexpr = ""
+		vim.bo[args.buf].indentexpr = "v:lua.vim.treesitter.indentexpr()"
 
 		-- NOTE(jlima): Enforce manual fold evaluation to prevent CursorMoved syntax tree recalculation
 		vim.wo.foldmethod = "manual"
