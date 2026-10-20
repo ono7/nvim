@@ -1,4 +1,12 @@
-## just some quick reminders
+## full deployment
+
+1. installs neovim
+2. configures neovim using this repo
+
+- dedian setup
+  curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh | bash
+
+## notes
 
 ```
 --- 🐇 Follow the white Rabbit...
