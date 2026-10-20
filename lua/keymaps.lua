@@ -173,7 +173,8 @@ map("n", "<M-m>", function()
 	local save = vim.fn.winsaveview()
 	vim.cmd("silent make!")
 	vim.fn.winrestview(save)
-	if #vim.fn.getqflist() > 0 then
+	-- NOTE(jlima): query size directly to bypass O(N) dictionary allocation
+	if vim.fn.getqflist({ size = 0 }).size > 0 then
 		vim.cmd("copen")
 		vim.cmd("wincmd p")
 	else

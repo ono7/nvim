@@ -174,12 +174,10 @@ if has_pick then
 	end
 end
 
--- NOTE(jlima): Initialize the native main branch runtime paths before checking installation
 require("nvim-treesitter").setup({
 	install_dir = vim.fn.stdpath("data") .. "/site",
 })
 
--- NOTE(jlima): Register explicit custom extension mappings at configuration time
 vim.filetype.add({
 	extension = {
 		csproj = "xml",
@@ -192,7 +190,6 @@ vim.filetype.add({
 	},
 })
 
--- NOTE(jlima): Single declarative source of truth for both installation and buffer attachment
 local wanted_parsers = {
 	"asm",
 	"bash",
@@ -236,13 +233,11 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("TreesitterNativeSetup", { clear = true }),
 	pattern = "*",
 	callback = function(args)
-		-- NOTE(jlima): Resolve filetype alias to grammar name (e.g. sh -> bash)
 		local lang = vim.treesitter.language.get_lang(args.match) or args.match
 		if not target_langs[lang] then
 			return
 		end
 
-		-- NOTE(jlima): Prevent main thread redraw stalls on minified or generated buffers exceeding 10k lines
 		if vim.b[args.buf].large_file or vim.api.nvim_buf_line_count(args.buf) > 10000 then
 			vim.bo[args.buf].syntax = ""
 			vim.bo[args.buf].indentexpr = ""
