@@ -201,5 +201,5 @@ vim.cmd([[
 
   cnoreabbrev qq qa!
   cabbrev <expr> w!! (getcmdtype() == ':' && getcmdline() == 'w!!') ? 'w !sudo tee > /dev/null %' : 'w!!'
-  cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
+  " cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
 ]])

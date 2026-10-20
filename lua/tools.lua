@@ -520,16 +520,68 @@ end, {
 })
 
 vim.api.nvim_create_user_command("D", "bdelete!", {})
+
+-- vim.api.nvim_create_user_command("Cd", function()
+-- 	local name = vim.api.nvim_buf_get_name(0)
+-- 	local start = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
+-- 	local git = vim.fs.find(".git", { path = start, upward = true })[1]
+-- 	if git then
+-- 		vim.cmd.lcd(vim.fs.dirname(git))
+-- 	else
+-- 		print("not a git repo")
+-- 	end
+-- end, {})
+
 vim.api.nvim_create_user_command("Cd", function()
-	local name = vim.api.nvim_buf_get_name(0)
-	local start = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
-	local git = vim.fs.find(".git", { path = start, upward = true })[1]
-	if git then
-		vim.cmd.lcd(vim.fs.dirname(git))
+	local root = vim.fs.root(0, ".git")
+	if root then
+		vim.cmd.lcd(root)
 	else
-		print("not a git repo")
+		vim.notify("Not a git repository", vim.log.levels.WARN)
 	end
-end, {})
+end, { desc = "Change local window directory to git root" })
+
+vim.api.nvim_create_user_command("Mktags", function()
+	local root = vim.fs.root(0, ".git")
+	if not root then
+		return vim.notify("Not a git repository: cannot generate tags", vim.log.levels.WARN)
+	end
+
+	local args = {
+		"ctags",
+		"-R",
+		"--sort=yes",
+		"--tag-relative=yes",
+		"--fields=+iaS",
+		"--extras=+q",
+		"--extras=+f",
+		"--exclude=.git",
+		"--exclude=.venv",
+		"--exclude=__pycache__",
+		"--exclude=build",
+		"--exclude=dist",
+		"--exclude=*.json",
+		"--exclude=*.lock",
+		"-f",
+		"tags.temp",
+		".",
+	}
+
+	vim.notify("Generating tags for " .. root .. "...", vim.log.levels.INFO)
+
+	-- NOTE(jlima): Spawns ctags directly without a subshell; swaps tags.temp atomically to avoid corrupt reads during rebuilds.
+	vim.system(args, { cwd = root }, function(obj)
+		vim.schedule(function()
+			if obj.code == 0 then
+				os.rename(root .. "/tags.temp", root .. "/tags")
+				vim.notify("Tags updated: " .. root .. "/tags", vim.log.levels.INFO)
+			else
+				os.remove(root .. "/tags.temp")
+				vim.notify("Ctags failed (exit code " .. obj.code .. "): " .. (obj.stderr or ""), vim.log.levels.ERROR)
+			end
+		end)
+	end)
+end, { desc = "Generate tags with full disambiguation atomically in git root" })
 
 vim.api.nvim_create_user_command("Take", function(opts)
 	local path = vim.fn.fnamemodify(opts.args:gsub("%s+", "-"), ":p")
