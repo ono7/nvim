@@ -178,7 +178,7 @@ end
 --
 -- NOTE(jlima): Force native C toolchains to bypass incompatible system tree-sitter CLI binaries
 local install = require("nvim-treesitter.install")
-install.prefer_git = true
+install.prefer_git = false
 install.compilers = { "gcc", "clang", "cc" }
 
 -- NOTE(jlima): Register explicit custom extension mappings at configuration time
