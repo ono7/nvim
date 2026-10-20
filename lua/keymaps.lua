@@ -62,6 +62,7 @@ map("v", "<", "<gv", silent)
 map("x", "p", '"_dP', silent)
 map("x", "y", "ygv<Esc>", silent)
 map({ "x", "n" }, "<leader>p", '"+p', silent)
+map({ "x", "n" }, "<leader>y", '"+y', silent)
 map("v", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
 
 -- Backspace Auto-Pair Deletion
