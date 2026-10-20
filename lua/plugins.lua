@@ -28,6 +28,12 @@ require("nvim-highlight-colors").setup({
 	enable_var_usage = true,
 	enable_named_colors = false,
 	virtual_symbol = "■",
+	filetypes = {
+		"lua",
+		"css",
+		"scss",
+		"html",
+	},
 })
 
 -- quickfix editor
