@@ -13,6 +13,7 @@ vim.pack.add({
 	{ src = gh("stevearc/quicker.nvim") },
 }, { confirm = false })
 
+-- quickfix editor
 require("quicker").setup({
 	keys = {
 		{
