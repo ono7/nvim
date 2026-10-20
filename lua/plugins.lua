@@ -110,7 +110,7 @@ if has_pick then
 		pick.start({
 			source = {
 				items = items,
-				name = "Oldfiles",
+				name = "Recent",
 				choose = pick.default_choose,
 			},
 		})
