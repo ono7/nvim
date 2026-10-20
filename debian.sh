@@ -78,7 +78,7 @@ if [ "$TARGET_USER" != "root" ]; then
     log_step "Cloning Neovim configuration repository for '${TARGET_USER}'..."
     # NOTE(jlima): Clone directly under user execution context to preserve non-root file ownership across git refs.
     sudo -u "$TARGET_USER" git clone "$CONFIG_REPO" "${TARGET_HOME}/.config/nvim"
-    log_step "strip git from repo ${TARGET_HOME}/.config/nvim"
+    log_step "$TARGET_USER - strip git from repo ${TARGET_HOME}/.config/nvim"
     sudo -u "$TARGET_USER" rm -rf "${TARGET_HOME}/.config/nvim/.git"
 
 fi
