@@ -175,7 +175,6 @@ if has_pick then
 end
 
 -- treesitter
--- NOTE(jlima): Force native C toolchains to bypass incompatible system tree-sitter CLI binaries
 local install = require("nvim-treesitter.install")
 install.prefer_git = false
 install.compilers = { "gcc", "clang", "cc" }
@@ -192,7 +191,7 @@ vim.filetype.add({
 	},
 })
 
--- NOTE(jlima): Compile missing parsers deterministically without re-triggering background jobs every boot
+-- NOTE(jlima): Single declarative source of truth for both installation and buffer attachment
 local wanted_parsers = {
 	"go",
 	"gomod",
@@ -212,30 +211,28 @@ local wanted_parsers = {
 	"markdown_inline",
 }
 
+-- NOTE(jlima): Build lookup set and missing parser list in a single pass
+local target_langs = {}
 local missing_parsers = {}
+
 for _, lang in ipairs(wanted_parsers) do
+	target_langs[lang] = true
 	if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) == 0 then
 		table.insert(missing_parsers, lang)
 	end
 end
 
-if #missing_parsers > 0 then
+if #missing_parsers > 0 and vim.fn.executable("tree-sitter") == 1 then
 	require("nvim-treesitter").install(missing_parsers)
 end
-
--- NOTE(jlima): Fast O(1) whitelist prevents table scans and redundant AST checks on generic buffers
-local target_fts = {
-	go = true,
-	python = true,
-	yaml = true,
-	lua = true,
-}
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("TreesitterNativeSetup", { clear = true }),
 	pattern = "*",
 	callback = function(args)
-		if not target_fts[args.match] then
+		-- NOTE(jlima): Resolve filetype alias to grammar name (e.g. sh -> bash)
+		local lang = vim.treesitter.language.get_lang(args.match) or args.match
+		if not target_langs[lang] then
 			return
 		end
 
@@ -252,7 +249,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.wo.foldexpr = ""
 
 		-- NOTE(jlima): pcall isolates startup crashes if a parser .so is missing or currently compiling
-		local ok = pcall(vim.treesitter.start, args.buf)
+		local ok = pcall(vim.treesitter.start, args.buf, lang)
 		if ok then
 			vim.bo[args.buf].syntax = ""
 		end
