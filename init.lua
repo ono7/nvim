@@ -1,6 +1,3 @@
--- ==============================================================================
--- Entrypoint: Min-Config Neovim
--- ==============================================================================
 vim.loader.enable()
 
 vim.g.mapleader = " "
@@ -17,6 +14,7 @@ require("keymaps")
 require("autocmds")
 require("tools")
 require("plugins")
+require("colorscheme")
 
 local neovide_path = vim.fn.expand("~/.config/nvim/lua/neovide.lua")
 if vim.g.neovide and vim.fn.filereadable(neovide_path) == 1 then
