@@ -185,7 +185,7 @@ vim.filetype.add({
 		csproj = "xml",
 		esproj = "xml",
 		keymap = "c",
-		-- ["yaml.ansible"] = "yaml",
+		["yaml.ansible"] = "yaml",
 		mdx = "markdown",
 		uproject = "json",
 		wsdl = "xml",
@@ -206,26 +206,22 @@ local wanted_parsers = {
 	"javascript",
 	"jinja",
 	"lua",
+	"make",
 	"markdown",
 	"markdown_inline",
 	"python",
 	"yaml",
-	"make",
 }
 
--- NOTE(jlima): Build lookup set and missing parser list in a single pass
+-- NOTE(jlima): Lookup set for O(1) buffer attachment validation in FileType events
 local target_langs = {}
-local missing_parsers = {}
-
 for _, lang in ipairs(wanted_parsers) do
 	target_langs[lang] = true
-	if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) == 0 then
-		table.insert(missing_parsers, lang)
-	end
 end
 
-if #missing_parsers > 0 and vim.fn.executable("tree-sitter") == 1 then
-	require("nvim-treesitter").install(missing_parsers)
+-- NOTE(jlima): Idempotent parser installer on main branch; no-ops if already compiled
+if vim.fn.executable("tree-sitter") == 1 then
+	require("nvim-treesitter").install(wanted_parsers)
 end
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -247,9 +243,6 @@ vim.api.nvim_create_autocmd("FileType", {
 			return
 		end
 
-		-- NOTE(jlima): Eliminate AST tree-walking on insert keystrokes by resetting legacy indent scripts
-		vim.bo[args.buf].indentexpr = ""
-
 		-- NOTE(jlima): Enforce manual fold evaluation to prevent CursorMoved syntax tree recalculation
 		vim.wo.foldmethod = "manual"
 		vim.wo.foldexpr = ""
@@ -258,6 +251,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		local ok = pcall(vim.treesitter.start, args.buf, lang)
 		if ok then
 			vim.bo[args.buf].syntax = ""
+			-- NOTE(jlima): Delegate indentation to treesitter only upon verified parser attachment
 			vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end,
