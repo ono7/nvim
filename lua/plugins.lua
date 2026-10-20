@@ -5,12 +5,12 @@ local gh = function(x)
 end
 
 vim.pack.add({
-	gh("tpope/vim-fugitive"),
-	gh("stevearc/oil.nvim"),
-	gh("echasnovski/mini.pick"),
-	gh("stevearc/conform.nvim"),
-	gh("dcampos/nvim-snippy"),
-	gh("stevearc/quicker.nvim"),
+	{ src = gh("tpope/vim-fugitive") },
+	{ src = gh("stevearc/oil.nvim") },
+	{ src = gh("echasnovski/mini.pick") },
+	{ src = gh("stevearc/conform.nvim") },
+	{ src = gh("dcampos/nvim-snippy") },
+	{ src = gh("stevearc/quicker.nvim") },
 }, { confirm = false })
 
 require("quicker").setup({

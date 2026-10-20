@@ -8,7 +8,6 @@ worktrees/
 
 # we need this for RipGrep/fzf to filter properly (telescope)
 .git/
-nvim-pack-lock.json
 
 .pytest_cache/
 .DS_Store
