@@ -12,6 +12,11 @@
       "rev": "1f5a5c82cb4902522806a58cf25479f6f8fe16ac",
       "src": "https://github.com/dcampos/nvim-snippy"
     },
+    "nvim-treesitter": {
+      "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
     "oil.nvim": {
       "rev": "d3733d933833a0e59b813ecec99341527adf0c28",
       "src": "https://github.com/stevearc/oil.nvim"
