@@ -70,7 +70,7 @@ CONFIG_REPO="https://github.com/ono7/nvim.git"
 # 5. Deploy fresh configurations for root
 log_step "Cloning Neovim configuration repository for root..."
 sudo git clone "$CONFIG_REPO" /root/.config/nvim
-log_step "strip git from repo /root/.config/nvim"
+log_step "(root) strip git from repo /root/.config/nvim"
 sudo rm -rf /root/.config/nvim/.git
 
 # 6. Deploy fresh configurations for invoking sudo user (if not already root)
