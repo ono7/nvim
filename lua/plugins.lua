@@ -174,10 +174,10 @@ if has_pick then
 	end
 end
 
--- treesitter
-local install = require("nvim-treesitter.install")
-install.prefer_git = false
-install.compilers = { "gcc", "clang", "cc" }
+-- NOTE(jlima): Initialize the native main branch runtime paths before checking installation
+require("nvim-treesitter").setup({
+	install_dir = vim.fn.stdpath("data") .. "/site",
+})
 
 -- NOTE(jlima): Register explicit custom extension mappings at configuration time
 vim.filetype.add({
@@ -197,12 +197,19 @@ local wanted_parsers = {
 	"asm",
 	"bash",
 	"c",
+	"comment",
 	"cpp",
+	"css",
 	"diff",
+	"disassembly",
 	"dockerfile",
 	"gitcommit",
+	"git_config",
+	"git_rebase",
 	"go",
 	"gomod",
+	"gosum",
+	"gotmpl",
 	"javascript",
 	"jinja",
 	"lua",
@@ -219,7 +226,7 @@ for _, lang in ipairs(wanted_parsers) do
 	target_langs[lang] = true
 end
 
--- NOTE(jlima): Idempotent parser installer on main branch; no-ops if already compiled
+-- NOTE(jlima): Idempotent parser installer native to the main branch API
 if vim.fn.executable("tree-sitter") == 1 then
 	require("nvim-treesitter").install(wanted_parsers)
 end
