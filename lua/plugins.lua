@@ -11,6 +11,10 @@ vim.pack.add({
 	{ src = gh("stevearc/conform.nvim") },
 	{ src = gh("dcampos/nvim-snippy") },
 	{ src = gh("stevearc/quicker.nvim") },
+	{
+		src = gh("nvim-treesitter/nvim-treesitter"),
+		version = "main",
+	},
 }, { confirm = false })
 
 -- quickfix editor
@@ -169,3 +173,50 @@ if has_pick then
 		)
 	end
 end
+
+-- treesitter
+--
+-- NOTE(jlima): Force native C toolchains to bypass incompatible system tree-sitter CLI binaries
+local install = require("nvim-treesitter.install")
+install.prefer_git = true
+install.compilers = { "gcc", "clang", "cc" }
+
+-- NOTE(jlima): Register explicit custom extension mappings at configuration time
+vim.filetype.add({
+	extension = {
+		csproj = "xml",
+		esproj = "xml",
+		keymap = "c",
+		mdx = "markdown",
+		uproject = "json",
+		wsdl = "xml",
+	},
+})
+
+-- NOTE(jlima): Restrict inventory strictly to target grammars to eliminate startup compiler thrash
+require("nvim-treesitter").install({ "go", "python", "yaml", "lua" })
+
+-- NOTE(jlima): Fast O(1) whitelist prevents table scans and redundant AST checks on generic buffers
+local target_fts = {
+	go = true,
+	python = true,
+	yaml = true,
+	lua = true,
+}
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("TreesitterNativeSetup", { clear = true }),
+	pattern = "*",
+	callback = function(args)
+		if not target_fts[args.match] then
+			return
+		end
+
+		-- NOTE(jlima): Prevent main thread redraw stalls on minified or generated buffers exceeding 10k lines
+		if vim.b[args.buf].large_file or vim.api.nvim_buf_line_count(args.buf) > 10000 then
+			return
+		end
+
+		vim.treesitter.start(args.buf)
+	end,
+})
