@@ -2,6 +2,8 @@ local map = vim.keymap.set
 local nore = { noremap = true }
 local silent = { noremap = true, silent = true }
 
+vim.g.mapleader = " "
+
 map({ "n", "x" }, ";", ":", nore)
 map("n", "Y", "y$", nore)
 map("n", "&", ":&&<CR>", nore)
