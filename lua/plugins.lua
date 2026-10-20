@@ -185,7 +185,7 @@ vim.filetype.add({
 		csproj = "xml",
 		esproj = "xml",
 		keymap = "c",
-		["yaml.ansible"] = "yaml",
+		-- ["yaml.ansible"] = "yaml",
 		mdx = "markdown",
 		uproject = "json",
 		wsdl = "xml",
