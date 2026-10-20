@@ -240,12 +240,15 @@ vim.api.nvim_create_autocmd("FileType", {
 
 		-- NOTE(jlima): Prevent main thread redraw stalls on minified or generated buffers exceeding 10k lines
 		if vim.b[args.buf].large_file or vim.api.nvim_buf_line_count(args.buf) > 10000 then
+			vim.bo[args.buf].syntax = ""
+			vim.bo[args.buf].indentexpr = ""
+			vim.wo.foldmethod = "manual"
+			vim.wo.foldexpr = ""
 			return
 		end
 
 		-- NOTE(jlima): Eliminate AST tree-walking on insert keystrokes by resetting legacy indent scripts
-		-- vim.bo[args.buf].indentexpr = ""
-		vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		vim.bo[args.buf].indentexpr = ""
 
 		-- NOTE(jlima): Enforce manual fold evaluation to prevent CursorMoved syntax tree recalculation
 		vim.wo.foldmethod = "manual"
@@ -255,6 +258,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		local ok = pcall(vim.treesitter.start, args.buf, lang)
 		if ok then
 			vim.bo[args.buf].syntax = ""
+			vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end,
 })
