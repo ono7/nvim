@@ -1,11 +1,41 @@
 -- Native Package Management
+
+local gh = function(x)
+	return "https://github.com/" .. x
+end
+
 vim.pack.add({
-	{ src = "https://github.com/tpope/vim-fugitive" },
-	{ src = "https://github.com/stevearc/oil.nvim" },
-	{ src = "https://github.com/echasnovski/mini.pick" },
-	{ src = "https://github.com/stevearc/conform.nvim" },
-	{ src = "https://github.com/dcampos/nvim-snippy" },
+	gh("tpope/vim-fugitive"),
+	gh("stevearc/oil.nvim"),
+	gh("echasnovski/mini.pick"),
+	gh("stevearc/conform.nvim"),
+	gh("dcampos/nvim-snippy"),
+	gh("stevearc/quicker.nvim"),
 }, { confirm = false })
+
+require("quicker").setup({
+	keys = {
+		{
+			">",
+			function()
+				require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+			end,
+			desc = "Expand quickfix context",
+		},
+		{
+			"<",
+			function()
+				require("quicker").collapse()
+			end,
+			desc = "Collapse quickfix context",
+		},
+		{
+			"<c-/>",
+			"<cmd>cclose<CR>",
+			desc = "Close quickfix window",
+		},
+	},
+})
 
 -- Snippets Engine
 local has_snippy, snippy = pcall(require, "snippy")
