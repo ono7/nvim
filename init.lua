@@ -1,5 +1,8 @@
 vim.loader.enable()
 
+-- disable deprication warnings
+vim.deprecate = function() end
+
 require("options")
 require("keymaps")
 require("autocmds")
