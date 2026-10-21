@@ -8,14 +8,13 @@ log_step() {
 
 log_step "Authenticating administrative privileges..."
 
-# commented out, let sudo prompt for password if needed
-# if [ "$EUID" -ne 0 ]; then
-#     if [ -e /dev/tty ]; then
-#         sudo -v < /dev/tty || { echo "Sudo authentication failed."; exit 1; }
-#     else
-#         sudo -v || { echo "Sudo authentication failed."; exit 1; }
-#     fi
-# fi
+if [ "$EUID" -ne 0 ]; then
+    if [ -e /dev/tty ]; then
+        sudo -v < /dev/tty || { echo "Sudo authentication failed."; exit 1; }
+    else
+        sudo -v || { echo "Sudo authentication failed."; exit 1; }
+    fi
+fi
 
 export DEBIAN_FRONTEND=noninteractive
 
