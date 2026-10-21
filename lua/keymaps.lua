@@ -7,7 +7,7 @@ vim.g.mapleader = " "
 -- ctags completion
 
 -- NOTE(jlima): fallback to native tag completion only when buffer omnifunc is empty
-vim.keymap.set("i", "<C-x><C-o>", function()
+vim.keymap.set("i", "<C-l>", function()
 	if vim.bo.omnifunc == "" then
 		return "<C-x><C-]>"
 	end
@@ -29,6 +29,7 @@ map("n", "<C-w><C-d>", "<C-w>d", nore)
 -- Directional Search Swap
 map("i", "<C-r>", "<C-o>?", silent)
 map("i", "<C-s>", "<C-o>/", silent)
+map("i", "<C-w>", "<C-o>:write<cr>", silent)
 map("n", "<C-r>", "?", nore)
 map("n", "<C-s>", "/", nore)
 
