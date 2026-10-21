@@ -24,7 +24,7 @@ sudo rm -rf /opt/tree-sitter-*
 
 # NOTE(jlima): Extract upstream binary directly into /usr/local/bin and enforce executable permissions.
 TMP_ZIP="$(mktemp /tmp/tree-sitter.XXXXXX.zip)"
-curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/latest/tree-sitter-cli-linux-x64.zip" -o "${TMP_ZIP}"
+curl -fsSL https://github.com/tree-sitter/tree-sitter/releases/download/latest/tree-sitter-cli-linux-x64.zip -o "${TMP_ZIP}"
 sudo unzip -q -o "${TMP_ZIP}" -d /usr/local/bin
 sudo rm -f "${TMP_ZIP}"
 
