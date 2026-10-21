@@ -17,7 +17,6 @@ vim.opt.tagcase = "smart"
 -- NOTE(jlima): configure insert-mode completion options
 vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
 vim.opt.complete = ".,w,b,u,t"
-vim.opt.shortmess:append("cC")
 
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
@@ -75,7 +74,7 @@ vim.opt.showtabline = 1
 vim.opt.showcmd = false
 vim.opt.showmode = true
 vim.opt.ruler = false -- NOTE(jlima): ruler redraws on every cursor column movement; disable when using custom statusline
-vim.opt.shortmess = "aoOstTWICcF"
+vim.opt.shortmess = "aoOstTWIFcC"
 vim.opt.guicursor = "a:block-blinkon0"
 vim.opt.backspace = { "indent", "eol", "start" }
 
