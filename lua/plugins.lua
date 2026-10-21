@@ -4,6 +4,7 @@ local gh = function(x)
 	return "https://github.com/" .. x
 end
 
+-- installs pluins in parallel
 vim.pack.add({
 	{ src = gh("tpope/vim-fugitive") },
 	{ src = gh("stevearc/oil.nvim") },
