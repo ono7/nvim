@@ -1,18 +1,21 @@
-" NOTE(jlima): Prevent duplicate loading if compiler is already active in buffer.
+" NOTE(jlima): Check buffer-local compiler state so new buffers can still load this compiler.
 if exists("current_compiler")
   finish
 endif
-let current_compiler = "ansible_lint"
+let current_compiler = "ansible"
 
-" NOTE(jlima): Fallback for older Vim patch levels lacking :CompilerSet.
 if exists(":CompilerSet") != 2
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-" NOTE(jlima): Force pep8 output and strip ANSI codes for deterministic parsing.
-" -q suppresses summary statistics that would otherwise pollute the quickfix list.
-CompilerSet makeprg=ansible-lint\ -f\ pep8\ --nocolor\ -q\ %:S
+let s:cpo_save = &cpo
+set cpo&vim
 
-" NOTE(jlima): Parse standard pep8 format (filename:lnum:col: code: message)
-" and fallback to column-less matches if a rule only reports line numbers.
+" NOTE(jlima): Run offline to skip Galaxy checks and discard stderr summary noise.
+CompilerSet makeprg=eval\ 'ansible-lint\ -f\ pep8\ --nocolor\ --show-relpath\ --offline\ %:S\ 2>/dev/null'
+
+" NOTE(jlima): Explicitly parse pep8 file:line:col: message and file:line: message.
 CompilerSet errorformat=%f:%l:%c:\ %m,%f:%l:\ %m,%-G%.%#
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
