@@ -8,12 +8,30 @@ log_step() {
 
 log_step "Authenticating administrative privileges..."
 
+# if [ "$EUID" -ne 0 ]; then
+#     if [ -e /dev/tty ]; then
+#         sudo -v < /dev/tty || { echo "Sudo authentication failed."; exit 1; }
+#     else
+#         sudo -v || { echo "Sudo authentication failed."; exit 1; }
+#     fi
+# fi
+
 if [ "$EUID" -ne 0 ]; then
-    if [ -e /dev/tty ]; then
-        sudo -v < /dev/tty || { echo "Sudo authentication failed."; exit 1; }
+    # Determine the preferred downloader tool present on the system
+    if command -v curl >/dev/null 2>&1; then
+        DOWNLOAD_CMD="curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh"
+    elif command -v wget >/dev/null 2>&1; then
+        DOWNLOAD_CMD="wget -qO- https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh"
     else
-        sudo -v || { echo "Sudo authentication failed."; exit 1; }
+        DOWNLOAD_CMD="curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh"
     fi
+
+    echo "Error: This script requires administrative privileges." >&2
+    echo "Please run the command with sudo bash:" >&2
+    echo "" >&2
+    echo "  $DOWNLOAD_CMD | sudo bash" >&2
+    echo "" >&2
+    exit 1
 fi
 
 export DEBIAN_FRONTEND=noninteractive
