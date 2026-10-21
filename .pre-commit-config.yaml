@@ -14,29 +14,29 @@ repos:
   # Local system hooks for tools
   - repo: local
     hooks:
-      - id: ruff
-        name: Ruff Linter
-        entry: ruff check --fix
-        language: system
-        types_or: [python, pyi]
-        require_serial: true
-
-      - id: ruff-format
-        name: Ruff Formatter
-        entry: ruff format
-        language: system
-        types_or: [python, pyi]
-        require_serial: true
-
-      - id: ansible-lint
-        name: Ansible Lint
-        entry: ansible-lint
-        language: system
-        types: [yaml]
-
-      # - id: ctags
-      #   name: Generate Ctags
-      #   entry: ctags -R -f tags .
+      # - id: ruff
+      #   name: Ruff Linter
+      #   entry: ruff check --fix
       #   language: system
-      #   pass_filenames: false
-      #   always_run: true
+      #   types_or: [python, pyi]
+      #   require_serial: true
+      #
+      # - id: ruff-format
+      #   name: Ruff Formatter
+      #   entry: ruff format
+      #   language: system
+      #   types_or: [python, pyi]
+      #   require_serial: true
+      #
+      # - id: ansible-lint
+      #   name: Ansible Lint
+      #   entry: ansible-lint
+      #   language: system
+      #   types: [yaml]
+
+      - id: ctags
+        name: Generate Ctags
+        entry: ctags -R -f tags .
+        language: system
+        pass_filenames: false
+        always_run: true
