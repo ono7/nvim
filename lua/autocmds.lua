@@ -11,6 +11,17 @@ local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { cle
 -- 	end,
 -- })
 
+local terminal_config = vim.api.nvim_create_augroup("TerminalScrollback", { clear = true })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	group = terminal_config,
+	pattern = "*",
+	callback = function()
+		-- NOTE(jlima): Apply strict 50k scrollback limit for native Neovim terminals (replaces Vim termwinscroll)
+		vim.bo.scrollback = 50000
+	end,
+})
+
 local purge_banner_group = vim.api.nvim_create_augroup("purge_neovim_banner", { clear = true })
 
 vim.api.nvim_create_autocmd("VimEnter", {
