@@ -12,6 +12,7 @@ vim.g.loaded_zipPlugin = 1
 
 -- vim.opt.tags = { "./tags;", "tags" }
 vim.opt.tags = "./tags;,tags"
+vim.opt.tagcare = "smart"
 
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
