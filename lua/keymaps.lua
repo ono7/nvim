@@ -4,6 +4,16 @@ local silent = { noremap = true, silent = true }
 
 vim.g.mapleader = " "
 
+-- ctags completion
+
+-- NOTE(jlima): fallback to native tag completion only when buffer omnifunc is empty
+vim.keymap.set("i", "<C-x><C-o>", function()
+	if vim.bo.omnifunc == "" then
+		return "<C-x><C-]>"
+	end
+	return "<C-x><C-o>"
+end, { expr = true, noremap = true })
+
 map({ "n", "x" }, ";", ":", nore)
 map("n", "Y", "y$", nore)
 map("n", "&", ":&&<CR>", nore)
