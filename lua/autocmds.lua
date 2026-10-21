@@ -217,3 +217,13 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 		end
 	end,
 })
+
+local format_group = vim.api.nvim_create_augroup("DisableAutoComment", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = format_group,
+	pattern = "*",
+	callback = function()
+		vim.opt_local.formatoptions:remove({ "r", "o" })
+	end,
+})
