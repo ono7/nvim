@@ -87,7 +87,7 @@ CONFIG_REPO="https://github.com/ono7/nvim.git"
 log_step "Cloning Neovim configuration repository for root..."
 sudo git clone "$CONFIG_REPO" /root/.config/nvim
 log_step "(root) strip git from repo /root/.config/nvim"
-sudo rm -rf /root/.config/nvim/.git
+# sudo rm -rf /root/.config/nvim/.git
 # NOTE(jlima): Use explicit absolute paths to avoid shell tilde expansion mismatches under sudo execution.
 sudo rm -rf /root/.ctags.d && sudo ln -sfnv /root/.config/nvim/ctags.d /root/.ctags.d
 
@@ -97,7 +97,7 @@ if [ "$TARGET_USER" != "root" ]; then
     # NOTE(jlima): Clone directly under user execution context to preserve non-root file ownership across git refs.
     sudo -u "$TARGET_USER" git clone "$CONFIG_REPO" "${TARGET_HOME}/.config/nvim"
     log_step "$TARGET_USER - strip git from repo ${TARGET_HOME}/.config/nvim"
-    sudo -u "$TARGET_USER" rm -rf "${TARGET_HOME}/.config/nvim/.git"
+    # sudo -u "$TARGET_USER" rm -rf "${TARGET_HOME}/.config/nvim/.git"
     log_step "Symlinking ctags.d configuration for '${TARGET_USER}'..."
     # NOTE(jlima): Run under target user context so symlink ownership defaults to TARGET_USER without a secondary chown.
     sudo -u "$TARGET_USER" rm -rf "${TARGET_HOME}/.ctags.d"
