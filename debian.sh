@@ -20,7 +20,6 @@ export DEBIAN_FRONTEND=noninteractive
 # NOTE(jlima): Purge Debian package and legacy /opt directories to eliminate PATH collisions.
 sudo apt-get update -qq
 sudo apt-get purge -y -qq tree-sitter-cli || true
-sudo apt-get install -y -qq curl unzip ca-certificates
 sudo rm -rf /opt/tree-sitter-*
 
 # NOTE(jlima): Extract upstream binary directly into /usr/local/bin and enforce executable permissions.
