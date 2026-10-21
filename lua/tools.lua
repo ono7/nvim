@@ -197,9 +197,9 @@ end, { nargs = "*" })
 local map = vim.keymap.set
 local silent = { noremap = true, silent = true }
 
-map("n", "<C-t>", "<cmd>T<CR>", silent)
+map("n", "<M-t>", "<cmd>T<CR>", silent)
 map("t", "<c-x>", [[<c-\><c-n>]], silent)
-map("t", "<c-t>", [[<c-\><c-n><cmd>T<CR>]], silent)
+map("t", "<M-t>", [[<c-\><c-n><cmd>T<CR>]], silent)
 
 map("n", "<C-/>", hide_transients, silent)
 map("n", "<C-_>", hide_transients, silent)

@@ -77,6 +77,7 @@ local hl_groups = {
 	["@keyword.repeat"] = { fg = fn_col },
 	["@function.builtin"] = { fg = fn_col },
 	["@property.yaml"] = { fg = "#B63E46" },
+	Title = { fg = "#B63E46" },
 
 	Pmenu = { fg = fg, bg = bg },
 	PmenuSel = { fg = bg, bg = type_col },

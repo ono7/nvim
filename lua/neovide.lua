@@ -13,6 +13,7 @@ vim.g.neovide_cursor_trail_size = 0.75 -- Organic trailing tail
 vim.g.neovide_cursor_smooth_blink = true -- Gentle pulse/fade when cursor blinks
 vim.g.neovide_cursor_blink = true
 vim.g.neovide_cursor_blink_interval = 600
+vim.g.neovide_title_text_color = "#000000"
 
 vim.g.neovide_cursor_animate_in_insert_mode = true
 vim.g.neovide_cursor_animate_command_line = true
@@ -81,7 +82,7 @@ vim.g.neovide_fullscreen = false
 vim.g.neovide_idle = true
 vim.g.neovide_hide_mouse_when_typing = true
 vim.g.neovide_confirm_quit = true
-vim.g.neovide_theme = "dark"
+vim.g.neovide_theme = "light"
 
 vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
