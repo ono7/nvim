@@ -296,17 +296,15 @@ local wanted_parsers = {
 	"asm",
 	"bash",
 	"c",
-	"c_sharp",
-	"containerfile",
-	"editorconfig",
-	"http",
 	"comment",
 	"cpp",
+	"c_sharp",
 	"css",
 	"csv",
 	"diff",
 	"disassembly",
 	"dockerfile",
+	"editorconfig",
 	"gitcommit",
 	"git_config",
 	"git_rebase",
@@ -314,6 +312,8 @@ local wanted_parsers = {
 	"gomod",
 	"gosum",
 	"gotmpl",
+	"http",
+	"ini",
 	"javascript",
 	"jinja",
 	"jq",
@@ -323,8 +323,16 @@ local wanted_parsers = {
 	"markdown",
 	"markdown_inline",
 	"mermaid",
+	"passwd",
+	"pem",
+	"powershell",
+	"printf",
 	"python",
+	"regex",
+	"ssh_config",
+	"typescript",
 	"yaml",
+	"zsh",
 }
 
 -- NOTE(jlima): Lookup set for O(1) buffer attachment validation in FileType events
@@ -340,7 +348,7 @@ vim.api.nvim_create_user_command("TSInstallMyParsers", function()
 		return
 	end
 	vim.notify("Calling nvim-treesitter for setup...", vim.log.levels.ERROR)
-	require("nvim-treesitter").install(wanted_parsers)
+	require("nvim-treesitter").install(wanted_parsers):wait(300000)
 	vim.notify("Done..", vim.log.levels.ERROR)
 end, { desc = "Install wanted treesitter parsers" })
 
