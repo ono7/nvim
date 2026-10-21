@@ -18,24 +18,19 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 # NOTE(jlima): Purge Debian package and legacy /opt directories to eliminate PATH collisions.
-apt-get update -qq
-apt-get purge -y -qq tree-sitter-cli || true
-apt-get install -y -qq curl unzip ca-certificates
-rm -rf /opt/tree-sitter-*
+sudo apt-get update -qq
+sudo apt-get purge -y -qq tree-sitter-cli || true
+sudo apt-get install -y -qq curl unzip ca-certificates
+sudo rm -rf /opt/tree-sitter-*
 
 # NOTE(jlima): Extract upstream binary directly into /usr/local/bin and enforce executable permissions.
 TMP_ZIP="$(mktemp /tmp/tree-sitter.XXXXXX.zip)"
 curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/latest/tree-sitter-cli-linux-x64.zip" -o "${TMP_ZIP}"
-unzip -q -o "${TMP_ZIP}" -d /usr/local/bin
-rm -f "${TMP_ZIP}"
+sudo unzip -q -o "${TMP_ZIP}" -d /usr/local/bin
+sudo rm -f "${TMP_ZIP}"
 
-chown root:root /usr/local/bin/tree-sitter
-chmod 0755 /usr/local/bin/tree-sitter
-
-# NOTE(jlima): Flush shell command cache and verify binary execution.
-hash -r
-/usr/local/bin/tree-sitter --version
-
+sudo chown root:root /usr/local/bin/tree-sitter
+sudo chmod 0755 /usr/local/bin/tree-sitter
 
 # NOTE(jlima): Capture invoking user and target home directories accurately.
 INVOKING_USER="${SUDO_USER:-$(whoami)}"
