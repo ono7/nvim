@@ -106,3 +106,6 @@ fi
 
 log_step "Bootstrap complete. Verifying /usr/bin/nvim version..."
 /usr/bin/nvim --version
+
+nvim --headless "+lua vim.pack.update()" +qa
+nvim --headless "+TSInstallMyParsers" +qa
