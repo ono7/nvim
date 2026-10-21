@@ -100,7 +100,9 @@ require("conform").setup({
 -- Buffer-based File Explorer
 local has_oil, oil = pcall(require, "oil")
 if has_oil then
-	oil.setup()
+	oil.setup({
+		skip_confirm_for_simple_edits = true,
+	})
 	vim.keymap.set("n", "<c-\\>", "<CMD>Oil<CR>")
 end
 
