@@ -8,14 +8,6 @@ log_step() {
 
 log_step "Authenticating administrative privileges..."
 
-# if [ "$EUID" -ne 0 ]; then
-#     if [ -e /dev/tty ]; then
-#         sudo -v < /dev/tty || { echo "Sudo authentication failed."; exit 1; }
-#     else
-#         sudo -v || { echo "Sudo authentication failed."; exit 1; }
-#     fi
-# fi
-
 if [ "$EUID" -ne 0 ]; then
     # Determine the preferred downloader tool present on the system
     if command -v curl >/dev/null 2>&1; then
@@ -121,10 +113,20 @@ if [ "$TARGET_USER" != "root" ]; then
     # NOTE(jlima): Run under target user context so symlink ownership defaults to TARGET_USER without a secondary chown.
     sudo -u "$TARGET_USER" rm -rf "${TARGET_HOME}/.ctags.d"
     sudo -u "$TARGET_USER" ln -sfnv "${TARGET_HOME}/.config/nvim/ctags.d" "${TARGET_HOME}/.ctags.d"
+
+    log_step "bootstrap neovim for target user: '${TARGET_USER}'..."
+    sudo -u "$TARGET_USER" nvim --headless "+lua vim.pack.update()" +qa
+    sudo -u "$TARGET_USER" nvim --headless "+TSInstallMyParsers" +qa
+    log_step "bootstrap neovim for target user: '${TARGET_USER}'...Done!"
 fi
 
 log_step "Bootstrap complete. Verifying /usr/bin/nvim version..."
-/usr/bin/nvim --version
 
+log_step "bootstrap neovim for target user: 'root'..."
 nvim --headless "+lua vim.pack.update()" +qa
 nvim --headless "+TSInstallMyParsers" +qa
+log_step "bootstrap neovim for target user: 'root'...Done!"
+
+/usr/bin/nvim --version
+
+log_step "Done!"
