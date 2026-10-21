@@ -14,6 +14,11 @@ vim.g.loaded_zipPlugin = 1
 vim.opt.tags = "./tags;,tags"
 vim.opt.tagcase = "smart"
 
+-- NOTE(jlima): configure insert-mode completion options
+vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
+vim.opt.complete = ".,w,b,u,t"
+vim.opt.shortmess:append("cC")
+
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
 vim.opt.swapfile = false
