@@ -17,6 +17,7 @@ vim.opt.tagcase = "smart"
 -- NOTE(jlima): configure insert-mode completion options
 vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
 vim.opt.complete = ".,w,t"
+vim.opt.statusline = " "
 
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
