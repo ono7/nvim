@@ -1,7 +1,4 @@
-## full deployment
-
-1. installs neovim
-2. configures neovim using this repo
+## bootstrap new workstation
 
 - short urls
   curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/mac.sh | bash
