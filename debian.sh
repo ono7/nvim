@@ -22,6 +22,8 @@ if [ "$EUID" -ne 0 ]; then
     echo "Please run the command with sudo bash:" >&2
     echo "" >&2
     echo "  $DOWNLOAD_CMD | sudo bash" >&2
+    echo "    or "
+    echo "  curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/debian.sh | sudo bash"
     echo "" >&2
     exit 1
 fi
