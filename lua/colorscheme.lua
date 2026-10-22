@@ -70,7 +70,6 @@ local hl_groups = {
 
 	Type = { fg = type_col },
 	["@type"] = { fg = fg },
-	["@variable"] = { fg = fg },
 	["@module.go"] = { fg = fg },
 	["@type.builtin"] = { fg = type_col },
 	Function = { fg = fn_col, bold = true },
