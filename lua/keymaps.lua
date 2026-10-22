@@ -229,3 +229,34 @@ vim.cmd([[
   cabbrev <expr> w!! (getcmdtype() == ':' && getcmdline() == 'w!!') ? 'w !sudo tee > /dev/null %' : 'w!!'
   " cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
 ]])
+
+-- Function to search Google using the active visual selection
+local function google_search_visual()
+	-- Save the current registry state to avoid overwriting your main clipboard
+	local old_reg = vim.fn.getreg('"')
+	local old_regtype = vim.fn.getregtype('"')
+
+	-- Copy the visual selection into the default register
+	vim.cmd('normal! "vy')
+	local text = vim.fn.getreg("v")
+
+	-- Restore the original registry state
+	vim.fn.setreg('"', old_reg, old_regtype)
+
+	-- Clean up the text (trim whitespace and escape special characters for URL)
+	text = text:gsub("^%s*(.-)%s*$", "%1")
+	local url = "https://google.com" .. vim.uri_encode(text)
+
+	-- Open the URL based on the operating system
+	local os_name = vim.loop.os_uname().sysname
+	if os_name == "Darwin" then -- macOS
+		vim.fn.jobstart({ "open", url }, { detach = true })
+	elseif os_name == "Linux" then -- Linux
+		vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+	elseif string.find(os_name, "Windows") then -- Windows
+		vim.fn.jobstart({ "cmd.exe", "/c", "start", url }, { detach = true })
+	end
+end
+
+-- Map 'gh' in Visual Mode to trigger the search
+vim.keymap.set("v", "gh", google_search_visual, { desc = "Search selected text on Google", silent = true })
