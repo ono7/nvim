@@ -75,7 +75,7 @@ local hl_groups = {
 	Function = { fg = fn_col, bold = true },
 	["@function"] = { fg = fn_col, bold = true },
 	["@function.call"] = { fg = fn_col },
-	["@function.method"] = { fg = fn_col },
+	["@function.method"] = { fg = fg },
 	["@keyword.conditional"] = { fg = fn_col },
 	["@keyword.repeat"] = { fg = fn_col },
 	["@function.builtin"] = { fg = fn_col },
