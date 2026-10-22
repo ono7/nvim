@@ -10,6 +10,14 @@ vim.g.loaded_tarPlugin = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_zipPlugin = 1
 
+vim.opt.listchars = {
+	tab = "→ ",
+	trail = "•",
+	nbsp = "␣",
+	extends = "›",
+	precedes = "‹",
+}
+
 -- vim.opt.tags = { "./tags;", "tags" }
 vim.opt.tags = "./tags;,tags"
 vim.opt.tagcase = "smart"
@@ -58,6 +66,7 @@ vim.opt.shada = "'25,<20,s10,:100,/100,h,r/COMMIT_EDITMSG,r/git-rebase-todo,r/tm
 vim.opt.updatecount = 0
 vim.opt.updatetime = 250
 vim.opt.bufhidden = "hide"
+vim.bo.syntax = ""
 vim.opt.hidden = true
 vim.opt.mouse = "" -- NOTE(jlima): disables terminal mouse tracking entirely to strip event loop overhead
 vim.opt.mousemoveevent = false
