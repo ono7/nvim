@@ -3,8 +3,13 @@
 1. installs neovim
 2. configures neovim using this repo
 
-- dedian setup
-  curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh | bash
+- short urls
+  curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/mac.sh | bash
+  curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/debian.sh | sudo bash
+
+- long urls
+  curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh | sudo bash
+  curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/mac.sh | bash
 
 ## notes
 
