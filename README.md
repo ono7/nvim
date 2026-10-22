@@ -98,4 +98,16 @@ reopen last active file in the tab
 :tab sb #
 
 :tab sball
+
+select word under cursor
+c-r + w
+
+whole.wor<cursor>d
+
+:s/<c-r>w/ -> s/word/
+
+select WORD under cursor
+c-r + a
+
+:s/<c-r>a/ -> s/whole.word/
 ```
