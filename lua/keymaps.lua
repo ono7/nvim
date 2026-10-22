@@ -22,6 +22,9 @@ vim.keymap.set("n", "vp", "vip", nore)
 vim.keymap.set("n", "vW", "viW", nore)
 vim.keymap.set("n", "dW", "diW", nore)
 
+-- copy paragraph
+vim.keymap.set("n", "cp", "yap<S-}>p", nore)
+
 vim.keymap.set({ "n", "x" }, ";", ":", nore)
 vim.keymap.set("n", "Y", "y$", nore)
 vim.keymap.set("n", "&", ":&&<CR>", nore)
