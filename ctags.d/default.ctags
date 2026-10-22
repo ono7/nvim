@@ -33,7 +33,7 @@
 --exclude=*.test.*
 
 # NOTE(jlima): Custom extension for Ansible playbook task navigation in YAML files
---regex-yaml=/^[ \t]*-[ \t]*name:[ \t]*(.+)/\1/t,task,tasks/
+--regex-yaml=/^[ \t]*-[ \t]*name:[ \t]*["\x27]?([^"\x27\n]+)["\x27]?/\1/t,task,tasks/
 
 # NOTE(jlima): Jinja2 template definitions for Universal Ctags.
 --langdef=jinja2
