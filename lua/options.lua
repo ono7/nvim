@@ -17,7 +17,7 @@ vim.opt.tagcase = "smart"
 -- NOTE(jlima): configure insert-mode completion options
 vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
 vim.opt.complete = ".,w,t"
-vim.opt.statusline = " "
+vim.o.statusline = "%{''}"
 
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
@@ -56,7 +56,7 @@ vim.opt.history = 1000
 vim.opt.shada = "'25,<20,s10,:100,/100,h,r/COMMIT_EDITMSG,r/git-rebase-todo,r/tmp/,r/var/tmp/,!"
 
 vim.opt.updatecount = 0
-vim.opt.updatetime = 300
+vim.opt.updatetime = 250
 vim.opt.bufhidden = "hide"
 vim.opt.hidden = true
 vim.opt.mouse = "" -- NOTE(jlima): disables terminal mouse tracking entirely to strip event loop overhead
