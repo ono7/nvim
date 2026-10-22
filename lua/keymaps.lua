@@ -1,4 +1,3 @@
-local map = vim.keymap.set
 local nore = { noremap = true }
 local silent = { noremap = true, silent = true }
 
@@ -14,44 +13,47 @@ vim.keymap.set("i", "<C-l>", function()
 	return "<C-x><C-o>"
 end, { expr = true, noremap = true })
 
+vim.keymap.set("i", "<C-n>", "<C-x><C-n>", {})
+vim.keymap.set("i", "<C-p>", "<C-x><C-p>", {})
+
 -- ctags search
-map({ "n", "v" }, "<C-]>", "g<C-]>", nore)
+vim.keymap.set({ "n", "v" }, "<C-]>", "g<C-]>", nore)
 
 -- shortcuts
-map("n", "vw", "viw", nore)
-map("n", "vp", "vip", nore)
-map("n", "vW", "viW", nore)
-map("n", "dW", "diW", nore)
+vim.keymap.set("n", "vw", "viw", nore)
+vim.keymap.set("n", "vp", "vip", nore)
+vim.keymap.set("n", "vW", "viW", nore)
+vim.keymap.set("n", "dW", "diW", nore)
 
-map({ "n", "x" }, ";", ":", nore)
-map("n", "Y", "y$", nore)
-map("n", "&", ":&&<CR>", nore)
-map("n", "j", "gj", nore)
-map("n", "k", "gk", nore)
-map("n", "<leader><leader>", "<cmd>set hlsearch!<CR>", silent)
-map("n", "<leader>a", "ggVG", silent)
-map("n", "<leader>n", "<cmd>e ~/notes.md<CR>", silent)
-map("n", "<C-w>q", "<C-w>c", nore)
-map("n", "<C-w><C-q>", "<C-w>c", nore)
-map("n", "<C-w><C-d>", "<C-w>d", nore)
+vim.keymap.set({ "n", "x" }, ";", ":", nore)
+vim.keymap.set("n", "Y", "y$", nore)
+vim.keymap.set("n", "&", ":&&<CR>", nore)
+vim.keymap.set("n", "j", "gj", nore)
+vim.keymap.set("n", "k", "gk", nore)
+vim.keymap.set("n", "<leader><leader>", "<cmd>set hlsearch!<CR>", silent)
+vim.keymap.set("n", "<leader>a", "ggVG", silent)
+vim.keymap.set("n", "<leader>n", "<cmd>e ~/notes.md<CR>", silent)
+vim.keymap.set("n", "<C-w>q", "<C-w>c", nore)
+vim.keymap.set("n", "<C-w><C-q>", "<C-w>c", nore)
+vim.keymap.set("n", "<C-w><C-d>", "<C-w>d", nore)
 
 -- Directional Search Swap
-map("i", "<C-r>", "<C-o>?", silent)
-map("i", "<C-s>", "<C-o>/", silent)
-map("i", "<C-w>", "<C-o>:write<cr>", silent)
-map("n", "<C-r>", "?", nore)
-map("n", "<C-s>", "/", nore)
+vim.keymap.set("i", "<C-r>", "<C-o>?", silent)
+vim.keymap.set("i", "<C-s>", "<C-o>/", silent)
+vim.keymap.set("i", "<C-w>", "<C-o>:write<cr>", silent)
+vim.keymap.set("n", "<C-r>", "?", nore)
+vim.keymap.set("n", "<C-s>", "/", nore)
 
 -- Window Switching
-map("n", "<C-h>", "<C-w>h", silent)
-map("n", "<C-j>", "<C-w>j", silent)
-map("n", "<C-k>", "<C-w>k", silent)
-map("n", "<C-l>", "<C-w>l", silent)
+vim.keymap.set("n", "<C-h>", "<C-w>h", silent)
+vim.keymap.set("n", "<C-j>", "<C-w>j", silent)
+vim.keymap.set("n", "<C-k>", "<C-w>k", silent)
+vim.keymap.set("n", "<C-l>", "<C-w>l", silent)
 
 -- Tab Switching
 local modes = { "n", "x" }
 for i = 1, 8 do
-	map(modes, "<C-" .. i .. ">", i .. "gt")
+	vim.keymap.set(modes, "<C-" .. i .. ">", i .. "gt")
 end
 
 -- Path lcd helper
@@ -59,7 +61,7 @@ local function trim_path(s)
 	return #s < 50 and s or s:sub(-(#s / 2))
 end
 
-map("n", "<M-c>", function()
+vim.keymap.set("n", "<M-c>", function()
 	vim.cmd.lcd("%:p:h")
 	print("new lcd: " .. trim_path(vim.fn.getcwd()))
 end, silent)
@@ -73,19 +75,19 @@ local function safe_write()
 	end
 	vim.cmd("write ++p")
 end
-map("n", "<leader>w", safe_write, silent)
-map("n", "<M-w>", safe_write, silent)
+vim.keymap.set("n", "<leader>w", safe_write, silent)
+vim.keymap.set("n", "<M-w>", safe_write, silent)
 
 -- Visual Editing & Clipboard
-map("v", "J", ":m '>+1<CR>gv=gv", silent)
-map("v", "K", ":m '<-2<CR>gv=gv", silent)
-map("v", ">", ">gv", silent)
-map("v", "<", "<gv", silent)
-map("x", "p", '"_dP', silent)
-map("x", "y", "ygv<Esc>", silent)
-map({ "x", "n" }, "<leader>p", '"+p', silent)
-map({ "x", "n" }, "<leader>y", '"+y', silent)
-map("v", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", silent)
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", silent)
+vim.keymap.set("v", ">", ">gv", silent)
+vim.keymap.set("v", "<", "<gv", silent)
+vim.keymap.set("x", "p", '"_dP', silent)
+vim.keymap.set("x", "y", "ygv<Esc>", silent)
+vim.keymap.set({ "x", "n" }, "<leader>p", '"+p', silent)
+vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', silent)
+vim.keymap.set("v", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
 
 -- Backspace Auto-Pair Deletion
 -- NOTE(jlima): Pre-encode keycodes at load time so replace_keycodes can be disabled on the hot path.
@@ -103,7 +105,7 @@ local pair_bytes = {
 	[96] = 96, -- ` -> `
 }
 
-map("i", "<BS>", function()
+vim.keymap.set("i", "<BS>", function()
 	local col = vim.api.nvim_win_get_cursor(0)[2]
 	if col == 0 then
 		return bs_raw
@@ -121,7 +123,7 @@ end, { expr = true, replace_keycodes = false, noremap = true })
 
 -- Bracket Expansion with Auto-Close & Whitespace Precondition
 local bracket_pair_map = { ["{"] = "}", ["("] = ")", ["["] = "]" }
-map("i", "<CR>", function()
+vim.keymap.set("i", "<CR>", function()
 	local col = vim.api.nvim_win_get_cursor(0)[2]
 	if col > 0 then
 		local line = vim.api.nvim_get_current_line()
@@ -144,53 +146,53 @@ map("i", "<CR>", function()
 end, { expr = true })
 
 -- Emacs Insert Mode Navigation
-map("i", "<C-a>", "<C-o>^", silent)
-map("i", "<C-e>", "<End>", silent)
-map("i", "<C-b>", "<Left>", silent)
-map("i", "<C-f>", "<Right>", silent)
-map("i", "<C-p>", "<Up>", silent)
-map("i", "<C-n>", "<Down>", silent)
-map("i", "<M-b>", "<C-o>b", silent)
-map("i", "<M-f>", "<C-o>e<Right>", silent)
-map("i", "<M-a>", "<C-o>{", silent)
-map("i", "<M-e>", "<C-o>}", silent)
-map("i", "<C-d>", "<C-g>u<Del>", silent)
-map("i", "<C-h>", "<C-g>u<BS>", silent)
-map("i", "<C-k>", function()
+vim.keymap.set("i", "<C-a>", "<C-o>^", silent)
+vim.keymap.set("i", "<C-e>", "<End>", silent)
+vim.keymap.set("i", "<C-b>", "<Left>", silent)
+vim.keymap.set("i", "<C-f>", "<Right>", silent)
+vim.keymap.set("i", "<C-p>", "<Up>", silent)
+vim.keymap.set("i", "<C-n>", "<Down>", silent)
+vim.keymap.set("i", "<M-b>", "<C-o>b", silent)
+vim.keymap.set("i", "<M-f>", "<C-o>e<Right>", silent)
+vim.keymap.set("i", "<M-a>", "<C-o>{", silent)
+vim.keymap.set("i", "<M-e>", "<C-o>}", silent)
+vim.keymap.set("i", "<C-d>", "<C-g>u<Del>", silent)
+vim.keymap.set("i", "<C-h>", "<C-g>u<BS>", silent)
+vim.keymap.set("i", "<C-k>", function()
 	local _, col = unpack(vim.api.nvim_win_get_cursor(0))
 	local line_len = #vim.api.nvim_get_current_line()
 	return col >= line_len and "<C-g>u<Del>" or "<C-g>u<C-o>D"
 end, { expr = true, replace_keycodes = true })
-map("i", "<C-u>", "<C-g>u<C-u>", silent)
-map("i", "<C-w>", "<C-g>u<C-w>", silent)
-map("i", "<M-d>", "<C-g>u<C-\\><C-o>dw", silent)
-map("i", "<M-BS>", "<C-g>u<C-w>", silent)
-map("i", "<C-BS>", "<C-g>u<C-w>", silent)
-map("i", "<C-y>", '<C-r>"', silent)
-map("i", "<C-S-e>", "<Esc>Go", silent)
+vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>", silent)
+vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>", silent)
+vim.keymap.set("i", "<M-d>", "<C-g>u<C-\\><C-o>dw", silent)
+vim.keymap.set("i", "<M-BS>", "<C-g>u<C-w>", silent)
+vim.keymap.set("i", "<C-BS>", "<C-g>u<C-w>", silent)
+vim.keymap.set("i", "<C-y>", '<C-r>"', silent)
+vim.keymap.set("i", "<C-S-e>", "<Esc>Go", silent)
 
 -- Emacs Command-Line Mode
-map("c", "<C-a>", "<Home>", nore)
-map("c", "<C-e>", "<End>", nore)
-map("c", "<C-b>", "<Left>", nore)
+vim.keymap.set("c", "<C-a>", "<Home>", nore)
+vim.keymap.set("c", "<C-e>", "<End>", nore)
+vim.keymap.set("c", "<C-b>", "<Left>", nore)
 -- disable this so that we can use completion in command mode
 -- map("c", "<C-d>", "<Del>", nore)
-map("c", "<C-BS>", "<C-w>", nore)
-map("c", "<M-b>", "<S-Left>", nore)
-map("c", "<M-f>", "<S-Right>", nore)
-map("c", "<M-d>", "<S-Right><C-w>", nore)
-map("c", "<C-f>", function()
+vim.keymap.set("c", "<C-BS>", "<C-w>", nore)
+vim.keymap.set("c", "<M-b>", "<S-Left>", nore)
+vim.keymap.set("c", "<M-f>", "<S-Right>", nore)
+vim.keymap.set("c", "<M-d>", "<S-Right><C-w>", nore)
+vim.keymap.set("c", "<C-f>", function()
 	return vim.fn.getcmdpos() > #vim.fn.getcmdline() and vim.o.cedit or "<Right>"
 end, { expr = true, replace_keycodes = true })
-map("c", "<C-k>", function()
+vim.keymap.set("c", "<C-k>", function()
 	return string.rep("<Del>", #vim.fn.getcmdline() - vim.fn.getcmdpos() + 1)
 end, { expr = true, replace_keycodes = true })
-map("c", "<C-u>", function()
+vim.keymap.set("c", "<C-u>", function()
 	return string.rep("<BS>", vim.fn.getcmdpos() - 1)
 end, { expr = true, replace_keycodes = true })
 
 -- Quickfix & Execution Maps
-map("n", "<M-m>", function()
+vim.keymap.set("n", "<M-m>", function()
 	local save = vim.fn.winsaveview()
 	vim.cmd("silent make!")
 	vim.fn.winrestview(save)
@@ -204,11 +206,11 @@ map("n", "<M-m>", function()
 	end
 end, silent)
 
-map("x", "@", function()
+vim.keymap.set("x", "@", function()
 	return vim.fn.mode() == "V" and (":normal! @" .. vim.fn.getcharstr() .. "<CR>") or "@"
 end, { expr = true })
 
-map("n", "<leader>te", function()
+vim.keymap.set("n", "<leader>te", function()
 	local dir = vim.fn.expand("%:p:h")
 	vim.fn.jobstart({ "alacritty", "--working-directory", dir }, { detach = true })
 end, { desc = "Open Alacritty in current directory" })
