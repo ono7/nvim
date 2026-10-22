@@ -230,33 +230,32 @@ vim.cmd([[
   " cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
 ]])
 
--- Function to search Google using the active visual selection
-local function google_search_visual()
-	-- Save the current registry state to avoid overwriting your main clipboard
-	local old_reg = vim.fn.getreg('"')
-	local old_regtype = vim.fn.getregtype('"')
+vim.keymap.set("v", "gh", function()
+	-- NOTE(jlima): Temporarily use the 's' register to grab the visual selection without destroying the unnamed register
+	local saved_reg = vim.fn.getreg("s")
+	vim.cmd('normal! "sy')
+	local text = vim.fn.getreg("s")
+	vim.fn.setreg("s", saved_reg)
 
-	-- Copy the visual selection into the default register
-	vim.cmd('normal! "vy')
-	local text = vim.fn.getreg("v")
+	-- NOTE(jlima): Prepend the current buffer's filetype to the query for better search context
+	local filetype = vim.bo.filetype
+	local query = filetype .. " " .. text
 
-	-- Restore the original registry state
-	vim.fn.setreg('"', old_reg, old_regtype)
-
-	-- Clean up the text (trim whitespace and escape special characters for URL)
-	text = text:gsub("^%s*(.-)%s*$", "%1")
-	local url = "https://google.com" .. vim.uri_encode(text)
-
-	-- Open the URL based on the operating system
-	local os_name = vim.loop.os_uname().sysname
-	if os_name == "Darwin" then -- macOS
-		vim.fn.jobstart({ "open", url }, { detach = true })
-	elseif os_name == "Linux" then -- Linux
-		vim.fn.jobstart({ "xdg-open", url }, { detach = true })
-	elseif string.find(os_name, "Windows") then -- Windows
-		vim.fn.jobstart({ "cmd.exe", "/c", "start", url }, { detach = true })
+	-- NOTE(jlima): Replace newlines with spaces and URL-encode special characters for the web request
+	local function urlencode(str)
+		if str then
+			str = str:gsub("\n", " ")
+			str = str:gsub("([^%w _%%%-%.~])", function(c)
+				return string.format("%%%02X", string.byte(c))
+			end)
+			str = str:gsub(" ", "+")
+		end
+		return str
 	end
-end
 
--- Map 'gh' in Visual Mode to trigger the search
-vim.keymap.set("v", "gh", google_search_visual, { desc = "Search selected text on Google", silent = true })
+	local encoded_query = urlencode(query)
+	local url = "https://www.google.com/search?q=" .. encoded_query
+
+	-- NOTE(jlima): Utilize Neovim 0.10+ native URL opener (uses xdg-open on your Linux setups)
+	vim.ui.open(url)
+end, { desc = "Search Google for visual selection + filetype" })
