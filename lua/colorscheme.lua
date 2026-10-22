@@ -7,9 +7,9 @@ vim.o.termguicolors = true
 vim.o.background = "dark"
 vim.g.colors_name = "custom-paper-minimal"
 
--- NOTE(jlima): Use neutral-cool graphite (#1E2229) and platinum-white (#DCE1E8) to stop iris muscle burn without brown undertones.
+-- NOTE(jlima): Use neutral-cool graphite (#1E2229) and ash-gray (#C8CCD4) to balance contrast without halation.
 local bg = "#1E2229"
-local fg = "#DCE1E8"
+local fg = "#C8CCD4"
 local fn_col = "#E56B73"
 local type_col = "#61AFEF"
 local comment = "#7F8996"
@@ -30,7 +30,7 @@ vim.g.terminal_color_3 = "#E5C07B"
 vim.g.terminal_color_4 = "#61AFEF"
 vim.g.terminal_color_5 = "#C678DD"
 vim.g.terminal_color_6 = "#56B6C2"
-vim.g.terminal_color_7 = "#DCE1E8"
+vim.g.terminal_color_7 = "#C8CCD4"
 vim.g.terminal_color_8 = "#7F8996"
 vim.g.terminal_color_9 = "#F08088"
 vim.g.terminal_color_10 = "#98D4AF"
@@ -38,7 +38,7 @@ vim.g.terminal_color_11 = "#EDD096"
 vim.g.terminal_color_12 = "#7CC0F5"
 vim.g.terminal_color_13 = "#D494E6"
 vim.g.terminal_color_14 = "#73C6D1"
-vim.g.terminal_color_15 = "#ECEFF4"
+vim.g.terminal_color_15 = "#DFE4EA"
 
 -- NOTE(jlima): Align floating window backgrounds to the main canvas and rely exclusively on borders for separation.
 local hl_groups = {
@@ -70,6 +70,7 @@ local hl_groups = {
 
 	Type = { fg = type_col },
 	["@type"] = { fg = fg },
+	["@variable"] = { fg = fg },
 	["@module.go"] = { fg = fg },
 	["@type.builtin"] = { fg = type_col },
 	Function = { fg = fn_col, bold = true },
