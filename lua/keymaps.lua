@@ -13,9 +13,6 @@ vim.keymap.set("i", "<C-l>", function()
 	return "<C-x><C-o>"
 end, { expr = true, noremap = true })
 
-vim.keymap.set("i", "<C-n>", "<C-x><C-n>", {})
-vim.keymap.set("i", "<C-p>", "<C-x><C-p>", {})
-
 -- ctags search
 vim.keymap.set({ "n", "v" }, "<C-]>", "g<C-]>", nore)
 
