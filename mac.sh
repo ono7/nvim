@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# https://cdn.jsdelivr.net/gh/ono7/nvim/mac.sh
+
 # NOTE(jlima): Distinctive ANSI-highlighted banner helper for macOS bootstrap output.
 log_step() {
     printf "\n\033[1;36m==>\033[0m \033[1m%s\033[0m\n" "$1"
