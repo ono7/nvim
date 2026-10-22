@@ -54,7 +54,9 @@ local hl_groups = {
 	Statement = { fg = "#E56B73" },
 	Keyword = { fg = "#E56B73" },
 	Operator = { fg = "#C8CCD4" },
-	Delimiter = { fg = "#9AA3B0" },
+	Delimiter = { fg = "#C8CCD4" },
+	-- Delimiter = { fg = "#9AA3B0" },
+	-- Delimiter = { fg = "#EDD096" },
 	Special = { fg = "#C8CCD4" },
 
 	Type = { fg = "#61AFEF" },
@@ -65,6 +67,7 @@ local hl_groups = {
 	["@function"] = { fg = "#E56B73", bold = true },
 	["@function.call"] = { fg = "#E56B73" },
 	["@function.method"] = { fg = "#C8CCD4" },
+	["@function.call"] = { fg = "#C8CCD4" },
 	["@keyword.conditional"] = { fg = "#E56B73" },
 	["@keyword.repeat"] = { fg = "#E56B73" },
 	["@function.builtin"] = { fg = "#E56B73" },
