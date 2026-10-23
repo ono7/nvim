@@ -49,7 +49,7 @@ vim.g.neovide_progress_bar_hide_delay = 0.2
 
 -- NOTE(jlima): Configure platform-specific typography and keybindings.
 if os_name == "Windows" or is_wsl then
-	vim.o.guifont = "Iosevka Custom:h19:#e-subpixelantialias:#h-full"
+	vim.o.guifont = "Menlo:h16"
 	vim.g.neovide_input_use_logo = false
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
@@ -60,7 +60,8 @@ elseif is_mac then
 	vim.g.neovide_padding_right = 0
 	vim.g.neovide_padding_left = 0
 else
-	vim.o.guifont = "Iosevka Custom:h17:#e-subpixelantialias:#h-full"
+	-- vim.o.guifont = "Iosevka Custom:h17:#e-subpixelantialias:#h-full"
+	vim.o.guifont = "Menlo:h17"
 end
 
 -- NOTE(jlima): Replicate Alacritty font rendering and contrast.
