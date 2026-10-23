@@ -42,7 +42,7 @@ vim.g.terminal_color_11 = yellow
 vim.g.terminal_color_12 = blue_bright
 vim.g.terminal_color_13 = "#9e95c7"
 vim.g.terminal_color_14 = "#95a99f"
-vim.g.terminal_color_15 = "#ffffff"
+vim.g.terminal_color_15 = "#d4d4d4"
 
 -- NOTE(jlima): Apply strict monochrome mapping based on reference image. Types, functions, and preprocessors are neutralized to foreground.
 local hl_groups = {
