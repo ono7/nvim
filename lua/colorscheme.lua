@@ -9,12 +9,18 @@ vim.g.colors_name = "gruber-darker-minimal"
 
 -- NOTE(jlima): Adjusted Gruber Darker hex values mapping to the desaturated amber accent and updated olive green.
 local bg = "#181818"
-local fg = "#d4d4d4" -- Softer, cool off-white for regular text
-local green = "#95B04F" -- Earthy, muted olive green for strings
-local yellow = "#ffea85" -- Desaturated amber accent for keywords
-local cmt = "#C89863" -- Gruber brown for comments
-local gray = "#949bb0" -- Muted grey for line numbers and structural elements
+local fg = "#d4d4d4"
+local green = "#95B04F"
+local yellow = "#f6e281"
+local cmt = "#C89863"
+local gray = "#949bb0"
 local gray_dim = "#A3AEAC"
+
+-- NOTE(jlima): Earthy red and muted steel blue harmonies replacing raw ANSI digital values.
+local red = "#D46A60"
+local red_bright = "#E07A70"
+local blue = "#6C99BB"
+local blue_bright = "#82ADCF"
 
 if vim.g.neovide then
 	vim.g.neovide_background_color = bg
@@ -22,18 +28,18 @@ end
 
 -- NOTE(jlima): Map ANSI terminal colors to the authentic palette.
 vim.g.terminal_color_0 = bg
-vim.g.terminal_color_1 = "#f43841"
+vim.g.terminal_color_1 = red
 vim.g.terminal_color_2 = green
 vim.g.terminal_color_3 = yellow
-vim.g.terminal_color_4 = "#96a6c8"
+vim.g.terminal_color_4 = blue
 vim.g.terminal_color_5 = "#9e95c7"
 vim.g.terminal_color_6 = "#95a99f"
 vim.g.terminal_color_7 = fg
 vim.g.terminal_color_8 = gray
-vim.g.terminal_color_9 = "#ff4f58"
+vim.g.terminal_color_9 = red_bright
 vim.g.terminal_color_10 = green
 vim.g.terminal_color_11 = yellow
-vim.g.terminal_color_12 = "#96a6c8"
+vim.g.terminal_color_12 = blue_bright
 vim.g.terminal_color_13 = "#9e95c7"
 vim.g.terminal_color_14 = "#95a99f"
 vim.g.terminal_color_15 = "#ffffff"
@@ -60,8 +66,8 @@ local hl_groups = {
 	ModeMsg = { fg = fg },
 	String = { fg = green },
 	Identifier = { fg = fg },
-	Statement = { fg = yellow },
-	Keyword = { fg = yellow },
+	Statement = { fg = yellow, bold = true },
+	Keyword = { fg = yellow, bold = true },
 	Operator = { fg = fg },
 	Delimiter = { fg = fg },
 	Special = { fg = fg },
@@ -88,13 +94,13 @@ local hl_groups = {
 
 	-- NOTE(jlima): Explicitly target struct, typedef, sizeof, and string includes to match the yellow and green accents.
 	["@keyword"] = { fg = gray_dim },
-	["@keyword.type"] = { fg = yellow },
-	["@keyword.operator"] = { fg = yellow },
-	["@keyword.modifier"] = { fg = yellow },
-	["@keyword.function"] = { fg = yellow },
-	["@keyword.return"] = { fg = yellow },
-	["@keyword.conditional"] = { fg = yellow },
-	["@keyword.repeat"] = { fg = yellow },
+	["@keyword.type"] = { fg = yellow, bold = true },
+	["@keyword.operator"] = { fg = yellow, bold = true },
+	["@keyword.modifier"] = { fg = yellow, bold = true },
+	["@keyword.function"] = { fg = yellow, bold = true },
+	["@keyword.return"] = { fg = yellow, bold = true },
+	["@keyword.conditional"] = { fg = yellow, bold = true },
+	["@keyword.repeat"] = { fg = yellow, bold = true },
 	["@string"] = { fg = green },
 	["@string.special"] = { fg = green },
 
@@ -102,7 +108,7 @@ local hl_groups = {
 	PmenuSel = { fg = bg, bg = yellow, bold = true },
 	PmenuThumb = { bg = gray },
 
-	DiagnosticError = { fg = "#f43841" },
+	DiagnosticError = { fg = red },
 	DiagnosticWarn = { fg = yellow },
 	DiagnosticInfo = { fg = fg },
 	DiagnosticHint = { fg = fg },
@@ -114,7 +120,7 @@ local hl_groups = {
 
 	DiffAdd = { fg = green, bg = "none" },
 	DiffText = { fg = bg, bg = yellow },
-	DiffDelete = { fg = "#f43841", bg = "none" },
+	DiffDelete = { fg = red, bg = "none" },
 	DiffChange = { bg = "#282828" },
 	Folded = { fg = gray, bg = bg },
 	FoldColumn = { fg = gray, bg = "none" },

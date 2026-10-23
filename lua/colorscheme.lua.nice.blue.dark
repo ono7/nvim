@@ -71,7 +71,7 @@ local hl_groups = {
 	["@function.call"] = { fg = fg },
 	["@function.method"] = { fg = fg },
 	["@keyword.conditional"] = { fg = "#D89F5C" },
-	["@keyword.repeat"] = { fg = "#D89F5C" },
+	["@keyword.repeat"] = { fg = "#D89F5C", bold = true },
 	["@function.builtin"] = { fg = "#AABFD9" },
 	["@property.yaml"] = { fg = "#7AA7D8" },
 	Title = { fg = "#AABFD9", bold = true },
