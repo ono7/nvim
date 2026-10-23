@@ -1,0 +1,100 @@
+-- NOTE(jlima): Reset highlights and syntax state before applying explicit hex colorscheme.
+vim.cmd("hi clear")
+if vim.fn.exists("syntax_on") == 1 then
+	vim.cmd("syntax reset")
+end
+vim.o.termguicolors = true
+vim.o.background = "dark"
+vim.g.colors_name = "custom-paper-minimal"
+
+if vim.g.neovide then
+	vim.g.neovide_background_color = "#1E2229"
+end
+
+-- NOTE(jlima): Map ANSI terminal colors using explicit hex values for colorizer previewing.
+vim.g.terminal_color_0 = "#1E2229"
+vim.g.terminal_color_1 = "#E56B73"
+vim.g.terminal_color_2 = "#7EC699"
+vim.g.terminal_color_3 = "#E5C07B"
+vim.g.terminal_color_4 = "#61AFEF"
+vim.g.terminal_color_5 = "#C678DD"
+vim.g.terminal_color_6 = "#56B6C2"
+vim.g.terminal_color_7 = "#C8CCD4"
+vim.g.terminal_color_8 = "#7F8996"
+vim.g.terminal_color_9 = "#F08088"
+vim.g.terminal_color_10 = "#98D4AF"
+vim.g.terminal_color_11 = "#EDD096"
+vim.g.terminal_color_12 = "#7CC0F5"
+vim.g.terminal_color_13 = "#D494E6"
+vim.g.terminal_color_14 = "#73C6D1"
+vim.g.terminal_color_15 = "#DFE4EA"
+
+-- NOTE(jlima): Apply explicit inline hex values directly to highlight groups to remove structural abstraction.
+local hl_groups = {
+	Normal = { fg = "#C8CCD4", bg = "#1E2229" },
+	NormalFloat = { fg = "#C8CCD4", bg = "#1E2229" },
+	FloatBorder = { fg = "#4B5362", bg = "#1E2229" },
+	Visual = { bg = "#323844" },
+	CursorLine = { bg = "#262B34" },
+	LineNr = { fg = "#5C6573", bg = "#1E2229" },
+	CursorLineNr = { fg = "#61AFEF", bg = "#262B34", bold = true },
+	SignColumn = { bg = "none" },
+	WinSeparator = { fg = "#4B5362", bg = "none" },
+	StatusLine = { fg = "#C8CCD4", bg = "#2A303B" },
+	StatusLineNC = { fg = "#7F8996", bg = "#232831" },
+	Search = { fg = "#1E2229", bg = "#E5C07B" },
+	CurSearch = { fg = "#1E2229", bg = "#E56B73", bold = true },
+	MatchParen = { fg = "#1E2229", bg = "#56B6C2", bold = true },
+
+	Comment = { fg = "#7F8996", italic = true },
+	Constant = { fg = "#C8CCD4" },
+	ModeMsg = { fg = "#C8CCD4" },
+	String = { fg = "#C8CCD4" },
+	Identifier = { fg = "#C8CCD4" },
+	Statement = { fg = "#E56B73" },
+	Keyword = { fg = "#E56B73" },
+	Operator = { fg = "#C8CCD4" },
+	Delimiter = { fg = "#C8CCD4" },
+	-- Delimiter = { fg = "#9AA3B0" },
+	-- Delimiter = { fg = "#EDD096" },
+	Special = { fg = "#C8CCD4" },
+
+	Type = { fg = "#61AFEF" },
+	["@type"] = { fg = "#C8CCD4" },
+	["@module.go"] = { fg = "#C8CCD4" },
+	["@type.builtin"] = { fg = "#61AFEF" },
+	Function = { fg = "#E56B73", bold = true },
+	["@function"] = { fg = "#E56B73", bold = true },
+	["@function.call"] = { fg = "#E56B73" },
+	["@function.method"] = { fg = "#C8CCD4" },
+	["@function.call"] = { fg = "#C8CCD4" },
+	["@keyword.conditional"] = { fg = "#E5C07B" },
+	["@keyword.repeat"] = { fg = "#E5C07B" },
+	["@function.builtin"] = { fg = "#E56B73" },
+	["@property.yaml"] = { fg = "#E56B73" },
+	Title = { fg = "#E56B73", bold = true },
+
+	Pmenu = { fg = "#C8CCD4", bg = "#1E2229" },
+	PmenuSel = { fg = "#1E2229", bg = "#61AFEF", bold = true },
+	PmenuThumb = { bg = "#4B5362" },
+	DiagnosticError = { fg = "#E56B73" },
+	DiagnosticWarn = { fg = "#E5C07B" },
+	DiagnosticInfo = { fg = "#61AFEF" },
+	DiagnosticHint = { fg = "#7F8996" },
+
+	MiniPickNormal = { fg = "#C8CCD4", bg = "#1E2229" },
+	MiniPickBorder = { fg = "#4B5362", bg = "#1E2229" },
+	MiniPickMatchRanges = { fg = "#E56B73", bold = true },
+	MiniPickMatchCurrent = { bg = "#323844" },
+
+	DiffAdd = { fg = "#7EC699", bg = "none" },
+	DiffText = { fg = "#1E2229", bg = "#E56B73" },
+	DiffDelete = { fg = "#E56B73", bg = "none" },
+	DiffChange = { bg = "#2A303B" },
+	Folded = { fg = "#7F8996", bg = "#1E2229" },
+	FoldColumn = { fg = "#5C6573", bg = "none" },
+}
+
+for group, spec in pairs(hl_groups) do
+	vim.api.nvim_set_hl(0, group, spec)
+end

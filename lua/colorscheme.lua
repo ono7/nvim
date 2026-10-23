@@ -5,97 +5,119 @@ if vim.fn.exists("syntax_on") == 1 then
 end
 vim.o.termguicolors = true
 vim.o.background = "dark"
-vim.g.colors_name = "ayu-carbon"
+vim.g.colors_name = "gruber-darker-minimal"
 
-local bg = "#151F2D"
-local fg = "#BEBEBC"
-local str = "#8CA64A"
-local cmt = "#5F6C77"
+-- NOTE(jlima): Adjusted Gruber Darker hex values mapping to the desaturated amber accent and updated olive green.
+local bg = "#181818"
+local fg = "#d4d4d4" -- Softer, cool off-white for regular text
+local green = "#95B04F" -- Earthy, muted olive green for strings
+local yellow = "#ffea85" -- Desaturated amber accent for keywords
+local cmt = "#C89863" -- Gruber brown for comments
+local gray = "#949bb0" -- Muted grey for line numbers and structural elements
+local gray_dim = "#A3AEAC"
 
 if vim.g.neovide then
 	vim.g.neovide_background_color = bg
 end
 
--- NOTE(jlima): Map ANSI terminal colors using ayu-carbon explicit hex values and base variables.
+-- NOTE(jlima): Map ANSI terminal colors to the authentic palette.
 vim.g.terminal_color_0 = bg
-vim.g.terminal_color_1 = "#D35A63"
-vim.g.terminal_color_2 = str
-vim.g.terminal_color_3 = "#D89F5C"
-vim.g.terminal_color_4 = "#3A6FB0"
-vim.g.terminal_color_5 = "#AABFD9"
-vim.g.terminal_color_6 = "#7AA7D8"
+vim.g.terminal_color_1 = "#f43841"
+vim.g.terminal_color_2 = green
+vim.g.terminal_color_3 = yellow
+vim.g.terminal_color_4 = "#96a6c8"
+vim.g.terminal_color_5 = "#9e95c7"
+vim.g.terminal_color_6 = "#95a99f"
 vim.g.terminal_color_7 = fg
-vim.g.terminal_color_8 = "#3A4555"
-vim.g.terminal_color_9 = "#D35A63"
-vim.g.terminal_color_10 = str
-vim.g.terminal_color_11 = "#D89F5C"
-vim.g.terminal_color_12 = "#3A6FB0"
-vim.g.terminal_color_13 = "#AABFD9"
-vim.g.terminal_color_14 = "#7AA7D8"
-vim.g.terminal_color_15 = "#FFFFFF"
+vim.g.terminal_color_8 = gray
+vim.g.terminal_color_9 = "#ff4f58"
+vim.g.terminal_color_10 = green
+vim.g.terminal_color_11 = yellow
+vim.g.terminal_color_12 = "#96a6c8"
+vim.g.terminal_color_13 = "#9e95c7"
+vim.g.terminal_color_14 = "#95a99f"
+vim.g.terminal_color_15 = "#ffffff"
 
--- NOTE(jlima): Apply explicit inline hex values directly to highlight groups mapping to ayu-carbon palette.
+-- NOTE(jlima): Apply strict monochrome mapping based on reference image. Types, functions, and preprocessors are neutralized to foreground.
 local hl_groups = {
 	Normal = { fg = fg, bg = bg },
 	NormalFloat = { fg = fg, bg = bg },
-	FloatBorder = { fg = "#3A4555", bg = bg },
-	Visual = { bg = "#223E65" },
-	CursorLine = { bg = "#1E2E45" },
-	LineNr = { fg = "#3A4555", bg = bg },
-	CursorLineNr = { fg = "#ffb454", bg = "#1E2E45", bold = true },
+	FloatBorder = { fg = gray, bg = bg },
+	Visual = { bg = "#453d41" },
+	CursorLine = { bg = "#282828" },
+	LineNr = { fg = gray, bg = bg },
+	CursorLineNr = { fg = yellow, bg = "#282828", bold = true },
 	SignColumn = { bg = "none" },
-	WinSeparator = { fg = "#3A4555", bg = "none" },
-	StatusLine = { fg = fg, bg = "#1E2E45" },
-	StatusLineNC = { fg = cmt, bg = bg },
-	Search = { fg = "#FFFFFF", bg = "#3A6FB0" },
-	CurSearch = { fg = bg, bg = "#ffb454", bold = true },
-	MatchParen = { fg = "#FFFFFF", bg = "#5A6B85", bold = true },
+	WinSeparator = { fg = gray, bg = "none" },
+	StatusLine = { fg = fg, bg = "#282828" },
+	StatusLineNC = { fg = gray, bg = bg },
+	Search = { fg = bg, bg = yellow },
+	CurSearch = { fg = bg, bg = yellow, bold = true },
+	MatchParen = { fg = bg, bg = yellow, bold = true },
 
 	Comment = { fg = cmt, italic = true },
 	Constant = { fg = fg },
 	ModeMsg = { fg = fg },
-	String = { fg = str },
+	String = { fg = green },
 	Identifier = { fg = fg },
-	Statement = { fg = "#7AA7D8" },
-	Keyword = { fg = "#D89F5C" },
+	Statement = { fg = yellow },
+	Keyword = { fg = yellow },
 	Operator = { fg = fg },
 	Delimiter = { fg = fg },
-	Special = { fg = "#D89F5C" },
+	Special = { fg = fg },
+	PreProc = { fg = fg },
 
-	Type = { fg = "#7AA7D8" },
-	["@type"] = { fg = "#7AA7D8" },
-	["@module.go"] = { fg = fg },
-	["@type.builtin"] = { fg = "#7AA7D8" },
-	Function = { fg = "#AABFD9", bold = true },
-	["@function"] = { fg = "#AABFD9", bold = true },
-	["@function.call"] = { fg = "#AABFD9" },
-	["@function.method"] = { fg = fg },
-	["@keyword.conditional"] = { fg = "#D89F5C" },
-	["@keyword.repeat"] = { fg = "#D89F5C" },
-	["@function.builtin"] = { fg = "#AABFD9" },
-	["@property.yaml"] = { fg = "#7AA7D8" },
-	Title = { fg = "#AABFD9", bold = true },
+	-- NOTE(jlima): Strip colors from standard groups to match screenshot minimalism.
+	Type = { fg = fg },
+	Function = { fg = fg },
 
-	Pmenu = { fg = fg, bg = "#1E2E45" },
-	PmenuSel = { fg = "#FFFFFF", bg = "#223E65", bold = true },
-	PmenuThumb = { bg = "#3A4555" },
+	-- NOTE(jlima): Tree-sitter specific overrides to enforce monochrome behavior on AST nodes.
+	["@type"] = { fg = fg },
+	["@type.builtin"] = { fg = gray_dim },
+	["@function"] = { fg = fg },
+	["@function.call"] = { fg = fg },
+	["@function.builtin"] = { fg = fg },
+	["@variable"] = { fg = fg },
+	["@variable.parameter"] = { fg = fg },
+	["@variable.builtin"] = { fg = fg },
+	["@property"] = { fg = fg },
+	["@punctuation"] = { fg = fg },
+	["@operator"] = { fg = fg },
+	["@preproc"] = { fg = fg },
+	["@module"] = { fg = fg },
 
-	DiagnosticError = { fg = "#D35A63" },
-	DiagnosticWarn = { fg = "#D89F5C" },
-	DiagnosticInfo = { fg = "#7AA7D8" },
-	DiagnosticHint = { fg = "#5A6B85" },
+	-- NOTE(jlima): Explicitly target struct, typedef, sizeof, and string includes to match the yellow and green accents.
+	["@keyword"] = { fg = gray_dim },
+	["@keyword.type"] = { fg = yellow },
+	["@keyword.operator"] = { fg = yellow },
+	["@keyword.modifier"] = { fg = yellow },
+	["@keyword.function"] = { fg = yellow },
+	["@keyword.return"] = { fg = yellow },
+	["@keyword.conditional"] = { fg = yellow },
+	["@keyword.repeat"] = { fg = yellow },
+	["@string"] = { fg = green },
+	["@string.special"] = { fg = green },
+
+	Pmenu = { fg = fg, bg = "#282828" },
+	PmenuSel = { fg = bg, bg = yellow, bold = true },
+	PmenuThumb = { bg = gray },
+
+	DiagnosticError = { fg = "#f43841" },
+	DiagnosticWarn = { fg = yellow },
+	DiagnosticInfo = { fg = fg },
+	DiagnosticHint = { fg = fg },
 
 	MiniPickNormal = { fg = fg, bg = bg },
-	MiniPickBorder = { fg = "#3A4555", bg = bg },
-	MiniPickMatchRanges = { fg = "#D89F5C", bold = true },
-	MiniPickMatchCurrent = { bg = "#223E65" },
+	MiniPickBorder = { fg = gray, bg = bg },
+	MiniPickMatchRanges = { fg = yellow, bold = true },
+	MiniPickMatchCurrent = { bg = "#453d41" },
 
-	DiffAdd = { fg = str, bg = "none" },
-	DiffText = { fg = bg, bg = "#D89F5C" },
-	DiffDelete = { fg = "#D35A63", bg = "none" },
-	DiffChange = { bg = "#1E2E45" },
-	Folded = { fg = cmt, bg = bg },
-	FoldColumn = { fg = "#3A4555", bg = "none" },
+	DiffAdd = { fg = green, bg = "none" },
+	DiffText = { fg = bg, bg = yellow },
+	DiffDelete = { fg = "#f43841", bg = "none" },
+	DiffChange = { bg = "#282828" },
+	Folded = { fg = gray, bg = bg },
+	FoldColumn = { fg = gray, bg = "none" },
 }
 
 for group, spec in pairs(hl_groups) do

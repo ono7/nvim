@@ -1,0 +1,103 @@
+-- NOTE(jlima): Reset highlights and syntax state before applying explicit hex colorscheme.
+vim.cmd("hi clear")
+if vim.fn.exists("syntax_on") == 1 then
+	vim.cmd("syntax reset")
+end
+vim.o.termguicolors = true
+vim.o.background = "dark"
+vim.g.colors_name = "ayu-carbon"
+
+local bg = "#151F2D"
+local fg = "#BEBEBC"
+local str = "#8CA64A"
+local cmt = "#5F6C77"
+
+if vim.g.neovide then
+	vim.g.neovide_background_color = bg
+end
+
+-- NOTE(jlima): Map ANSI terminal colors using ayu-carbon explicit hex values and base variables.
+vim.g.terminal_color_0 = bg
+vim.g.terminal_color_1 = "#D35A63"
+vim.g.terminal_color_2 = str
+vim.g.terminal_color_3 = "#D89F5C"
+vim.g.terminal_color_4 = "#3A6FB0"
+vim.g.terminal_color_5 = "#AABFD9"
+vim.g.terminal_color_6 = "#7AA7D8"
+vim.g.terminal_color_7 = fg
+vim.g.terminal_color_8 = "#3A4555"
+vim.g.terminal_color_9 = "#D35A63"
+vim.g.terminal_color_10 = str
+vim.g.terminal_color_11 = "#D89F5C"
+vim.g.terminal_color_12 = "#3A6FB0"
+vim.g.terminal_color_13 = "#AABFD9"
+vim.g.terminal_color_14 = "#7AA7D8"
+vim.g.terminal_color_15 = "#FFFFFF"
+
+-- NOTE(jlima): Apply explicit inline hex values directly to highlight groups mapping to ayu-carbon palette.
+local hl_groups = {
+	Normal = { fg = fg, bg = bg },
+	NormalFloat = { fg = fg, bg = bg },
+	FloatBorder = { fg = "#3A4555", bg = bg },
+	Visual = { bg = "#223E65" },
+	CursorLine = { bg = "#1E2E45" },
+	LineNr = { fg = "#3A4555", bg = bg },
+	CursorLineNr = { fg = "#ffb454", bg = "#1E2E45", bold = true },
+	SignColumn = { bg = "none" },
+	WinSeparator = { fg = "#3A4555", bg = "none" },
+	StatusLine = { fg = fg, bg = "#1E2E45" },
+	StatusLineNC = { fg = cmt, bg = bg },
+	Search = { fg = "#FFFFFF", bg = "#3A6FB0" },
+	CurSearch = { fg = bg, bg = "#ffb454", bold = true },
+	MatchParen = { fg = "#FFFFFF", bg = "#5A6B85", bold = true },
+
+	Comment = { fg = cmt, italic = true },
+	Constant = { fg = fg },
+	ModeMsg = { fg = fg },
+	String = { fg = str },
+	Identifier = { fg = fg },
+	Statement = { fg = "#7AA7D8" },
+	Keyword = { fg = "#D89F5C" },
+	Operator = { fg = fg },
+	Delimiter = { fg = fg },
+	Special = { fg = "#D89F5C" },
+
+	Type = { fg = "#7AA7D8" },
+	["@type"] = { fg = "#7AA7D8" },
+	["@module.go"] = { fg = fg },
+	["@type.builtin"] = { fg = "#7AA7D8" },
+	Function = { fg = "#AABFD9", bold = true },
+	["@function"] = { fg = fg, bold = true },
+	["@function.call"] = { fg = fg },
+	["@function.method"] = { fg = fg },
+	["@keyword.conditional"] = { fg = "#D89F5C" },
+	["@keyword.repeat"] = { fg = "#D89F5C" },
+	["@function.builtin"] = { fg = "#AABFD9" },
+	["@property.yaml"] = { fg = "#7AA7D8" },
+	Title = { fg = "#AABFD9", bold = true },
+
+	Pmenu = { fg = fg, bg = "#1E2E45" },
+	PmenuSel = { fg = "#FFFFFF", bg = "#223E65", bold = true },
+	PmenuThumb = { bg = "#3A4555" },
+
+	DiagnosticError = { fg = "#D35A63" },
+	DiagnosticWarn = { fg = "#D89F5C" },
+	DiagnosticInfo = { fg = "#7AA7D8" },
+	DiagnosticHint = { fg = "#5A6B85" },
+
+	MiniPickNormal = { fg = fg, bg = bg },
+	MiniPickBorder = { fg = "#3A4555", bg = bg },
+	MiniPickMatchRanges = { fg = "#D89F5C", bold = true },
+	MiniPickMatchCurrent = { bg = "#223E65" },
+
+	DiffAdd = { fg = str, bg = "none" },
+	DiffText = { fg = bg, bg = "#D89F5C" },
+	DiffDelete = { fg = "#D35A63", bg = "none" },
+	DiffChange = { bg = "#1E2E45" },
+	Folded = { fg = cmt, bg = bg },
+	FoldColumn = { fg = "#3A4555", bg = "none" },
+}
+
+for group, spec in pairs(hl_groups) do
+	vim.api.nvim_set_hl(0, group, spec)
+end
