@@ -55,8 +55,11 @@ if os_name == "Windows" or is_wsl then
 elseif is_mac then
 	vim.g.neovide_pixel_geometry = "Unknown"
 	-- vim.o.guifont = "SF Mono,SFMono Nerd Font:h22"
-	vim.o.guifont = "MesloLGL Nerd Font Mono:h22"
+	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
 	-- vim.o.guifont = "SF Mono Terminal,IosevkaTerm Nerd Font:h22"
+
+	-- NOTE(jlima): Set line height for astigmatism readability.
+	vim.opt.linespace = 21
 	vim.g.neovide_padding_top = 0
 	vim.g.neovide_padding_bottom = 0
 	vim.g.neovide_padding_right = 0
@@ -69,9 +72,6 @@ end
 -- NOTE(jlima): Replicate Alacritty font rendering and contrast.
 -- vim.g.neovide_text_gamma = 0.8
 -- vim.g.neovide_text_contrast = 0.1
-
--- NOTE(jlima): Set line height for astigmatism readability.
-vim.opt.linespace = 7
 
 -- NOTE(jlima): Configure Option key as Meta, disable frame, and set UI behavior.
 vim.g.neovide_input_macos_option_key_is_meta = "both"
