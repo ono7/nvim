@@ -49,7 +49,7 @@ vim.g.neovide_progress_bar_hide_delay = 0.2
 
 -- NOTE(jlima): Configure platform-specific typography and keybindings.
 if os_name == "Windows" or is_wsl then
-	vim.o.guifont = "Menlo Regular:h16"
+	vim.o.guifont = "Menlo"
 	vim.g.neovide_input_use_logo = false
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
