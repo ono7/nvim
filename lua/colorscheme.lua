@@ -12,7 +12,6 @@ vim.g.colors_name = "google-dark-minimal"
 local bg = "#1E2229"
 -- local fg = "#C8CCD4"
 local fg = "#D8DBE1"
--- local fg = "#EEF0FF" -- original.. too bright
 -- local green = "#81C995"
 -- local green = "#99b456"
 -- local green = "#a4bb68"
