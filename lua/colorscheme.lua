@@ -9,19 +9,19 @@ vim.g.colors_name = "google-dark-minimal"
 
 -- NOTE(jlima): Core palette mapped to specific RGB requirements.
 -- local bg = "#2C2E35"
-local bg = "#1E2229"
 -- local fg = "#C8CCD4"
-local fg = "#D8DBE1"
 -- local green = "#81C995"
 -- local green = "#99b456"
 -- local green = "#a4bb68"
-local green = "#aec379"
 -- local green = "#97b252"
+local bg = "#1E2229"
+local fg = "#D8DBE1"
+local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
+local orange = "#CD916A"
+local green = "#aec379"
 local orange = "#FA903E"
 local purple = "#C58AF9"
 local cmt = "#7F8996"
-
--- NOTE(jlima): Complementary UI and terminal shades harmonized with the background.
 local bg_light = "#363840"
 local bg_visual = "#42444D"
 local gray = "#A7A9B2"
@@ -62,12 +62,12 @@ local hl_groups = {
 	Visual = { bg = bg_visual },
 	CursorLine = { bg = bg_light },
 	LineNr = { fg = gray, bg = bg },
-	CursorLineNr = { fg = purple, bg = bg_light, bold = false },
+	CursorLineNr = { fg = yellow, bg = bg_light, bold = false },
 	SignColumn = { bg = "none" },
 	WinSeparator = { fg = gray, bg = "none" },
 	StatusLine = { fg = fg, bg = bg_light },
 	StatusLineNC = { fg = gray, bg = bg },
-	Search = { fg = bg, bg = purple },
+	Search = { fg = bg, bg = yellow },
 	CurSearch = { fg = bg, bg = purple, bold = false },
 	MatchParen = { fg = bg, bg = purple, bold = false },
 
@@ -75,11 +75,11 @@ local hl_groups = {
 	Constant = { fg = fg },
 	ModeMsg = { fg = fg },
 	String = { fg = green },
-	Number = { fg = orange },
+	Number = { fg = purple },
 	Float = { fg = orange },
 	Identifier = { fg = fg },
-	Statement = { fg = purple, bold = false },
-	Keyword = { fg = purple, bold = false },
+	Statement = { fg = yellow, bold = false },
+	Keyword = { fg = yellow, bold = false },
 	Operator = { fg = fg },
 	Delimiter = { fg = fg },
 	Special = { fg = fg },
@@ -89,7 +89,7 @@ local hl_groups = {
 	Function = { fg = fg },
 
 	["@type"] = { fg = fg },
-	["@type.builtin"] = { fg = purple },
+	["@type.builtin"] = { fg = yellow },
 	["@function"] = { fg = fg },
 	["@function.call"] = { fg = fg },
 	["@function.builtin"] = { fg = fg },
@@ -107,17 +107,17 @@ local hl_groups = {
 	["@string"] = { fg = green },
 	["@string.special"] = { fg = green },
 
-	["@keyword"] = { fg = purple },
-	["@keyword.type"] = { fg = purple, bold = false },
-	["@keyword.operator"] = { fg = purple, bold = false },
-	["@keyword.modifier"] = { fg = purple, bold = false },
-	["@keyword.function"] = { fg = purple, bold = false },
-	["@keyword.return"] = { fg = purple, bold = false },
-	["@keyword.conditional"] = { fg = purple, bold = false },
-	["@keyword.repeat"] = { fg = purple, bold = false },
+	["@keyword"] = { fg = yellow },
+	["@keyword.type"] = { fg = yellow, bold = false },
+	["@keyword.operator"] = { fg = yellow, bold = false },
+	["@keyword.modifier"] = { fg = yellow, bold = false },
+	["@keyword.function"] = { fg = yellow, bold = false },
+	["@keyword.return"] = { fg = yellow, bold = false },
+	["@keyword.conditional"] = { fg = yellow, bold = false },
+	["@keyword.repeat"] = { fg = yellow, bold = false },
 
 	Pmenu = { fg = fg, bg = bg_light },
-	PmenuSel = { fg = bg, bg = purple, bold = false },
+	PmenuSel = { fg = bg, bg = yellow, bold = false },
 	PmenuThumb = { bg = gray },
 
 	DiagnosticError = { fg = red },
@@ -127,11 +127,11 @@ local hl_groups = {
 
 	MiniPickNormal = { fg = fg, bg = bg },
 	MiniPickBorder = { fg = gray, bg = bg },
-	MiniPickMatchRanges = { fg = purple, bold = false },
+	MiniPickMatchRanges = { fg = yellow, bold = false },
 	MiniPickMatchCurrent = { bg = bg_visual },
 
 	DiffAdd = { fg = green, bg = "none" },
-	DiffText = { fg = bg, bg = purple },
+	DiffText = { fg = bg, bg = yellow },
 	DiffDelete = { fg = red, bg = "none" },
 	DiffChange = { bg = bg_light },
 	Folded = { fg = gray, bg = bg_light },
