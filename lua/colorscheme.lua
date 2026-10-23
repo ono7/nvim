@@ -10,11 +10,17 @@ vim.g.colors_name = "google-dark-minimal"
 -- NOTE(jlima): Core palette mapped to specific RGB requirements.
 -- local bg = "#2C2E35"
 local bg = "#1E2229"
-local fg = "#EEF0FF"
-local green = "#81C995"
+-- local fg = "#C8CCD4"
+local fg = "#D8DBE1"
+-- local fg = "#EEF0FF" -- original.. too bright
+-- local green = "#81C995"
+-- local green = "#99b456"
+-- local green = "#a4bb68"
+local green = "#aec379"
+-- local green = "#97b252"
 local orange = "#FA903E"
 local purple = "#C58AF9"
-local cmt = "#9AA0A6"
+local cmt = "#7F8996"
 
 -- NOTE(jlima): Complementary UI and terminal shades harmonized with the background.
 local bg_light = "#363840"
