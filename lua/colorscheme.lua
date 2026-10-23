@@ -5,81 +5,85 @@ if vim.fn.exists("syntax_on") == 1 then
 end
 vim.o.termguicolors = true
 vim.o.background = "dark"
-vim.g.colors_name = "gruber-darker-minimal"
+vim.g.colors_name = "google-dark-minimal"
 
--- NOTE(jlima): Adjusted Gruber Darker hex values mapping to the desaturated amber accent and updated olive green.
-local bg = "#181818"
-local fg = "#d4d4d4"
-local green = "#95B04F"
-local yellow = "#f6e281"
-local cmt = "#C89863"
-local gray = "#949bb0"
-local gray_dim = "#A3AEAC"
+-- NOTE(jlima): Core palette mapped to specific RGB requirements.
+local bg = "#2C2E35"
+local fg = "#EEF0FF"
+local green = "#81C995"
+local orange = "#FA903E"
+local purple = "#C58AF9"
+local cmt = "#9AA0A6"
 
--- NOTE(jlima): Earthy red and muted steel blue harmonies replacing raw ANSI digital values.
-local red = "#D46A60"
-local red_bright = "#E07A70"
-local blue = "#6C99BB"
-local blue_bright = "#82ADCF"
+-- NOTE(jlima): Complementary UI and terminal shades harmonized with the background.
+local bg_light = "#363840"
+local bg_visual = "#42444D"
+local gray = "#A7A9B2"
+local gray_dim = "#515A7B"
+local red = "#F28B82"
+local blue = "#8AB4F8"
 
 if vim.g.neovide then
-	vim.g.neovide_background_color = bg
+	-- NOTE(jlima): Enforce absolute opacity (FF) to block the OS compositor from
+	-- gamma-shifting the background.
+	-- this results in accurate colors being renderede by neovide
+	vim.g.neovide_background_color = bg .. "FF"
 end
 
--- NOTE(jlima): Map ANSI terminal colors to the authentic palette.
+-- NOTE(jlima): Map ANSI terminal colors to complementary palette for integrated shells.
 vim.g.terminal_color_0 = bg
 vim.g.terminal_color_1 = red
 vim.g.terminal_color_2 = green
-vim.g.terminal_color_3 = yellow
+vim.g.terminal_color_3 = orange
 vim.g.terminal_color_4 = blue
-vim.g.terminal_color_5 = "#9e95c7"
-vim.g.terminal_color_6 = "#95a99f"
+vim.g.terminal_color_5 = purple
+vim.g.terminal_color_6 = "#78D9EC"
 vim.g.terminal_color_7 = fg
 vim.g.terminal_color_8 = gray
-vim.g.terminal_color_9 = red_bright
+vim.g.terminal_color_9 = red
 vim.g.terminal_color_10 = green
-vim.g.terminal_color_11 = yellow
-vim.g.terminal_color_12 = blue_bright
-vim.g.terminal_color_13 = "#9e95c7"
-vim.g.terminal_color_14 = "#95a99f"
-vim.g.terminal_color_15 = "#d4d4d4"
+vim.g.terminal_color_11 = orange
+vim.g.terminal_color_12 = blue
+vim.g.terminal_color_13 = purple
+vim.g.terminal_color_14 = "#78D9EC"
+vim.g.terminal_color_15 = fg
 
--- NOTE(jlima): Apply strict monochrome mapping based on reference image. Types, functions, and preprocessors are neutralized to foreground.
+-- NOTE(jlima): Apply strict monochrome mapping with explicit callouts for strings, numbers, and core keywords.
 local hl_groups = {
 	Normal = { fg = fg, bg = bg },
-	NormalFloat = { fg = fg, bg = bg },
-	FloatBorder = { fg = gray, bg = bg },
-	Visual = { bg = "#453d41" },
-	CursorLine = { bg = "#282828" },
+	NormalFloat = { fg = fg, bg = bg_light },
+	FloatBorder = { fg = gray, bg = bg_light },
+	Visual = { bg = bg_visual },
+	CursorLine = { bg = bg_light },
 	LineNr = { fg = gray, bg = bg },
-	CursorLineNr = { fg = yellow, bg = "#282828", bold = true },
+	CursorLineNr = { fg = purple, bg = bg_light, bold = false },
 	SignColumn = { bg = "none" },
 	WinSeparator = { fg = gray, bg = "none" },
-	StatusLine = { fg = fg, bg = "#282828" },
+	StatusLine = { fg = fg, bg = bg_light },
 	StatusLineNC = { fg = gray, bg = bg },
-	Search = { fg = bg, bg = yellow },
-	CurSearch = { fg = bg, bg = yellow, bold = true },
-	MatchParen = { fg = bg, bg = yellow, bold = true },
+	Search = { fg = bg, bg = purple },
+	CurSearch = { fg = bg, bg = purple, bold = false },
+	MatchParen = { fg = bg, bg = purple, bold = false },
 
 	Comment = { fg = cmt, italic = true },
 	Constant = { fg = fg },
 	ModeMsg = { fg = fg },
 	String = { fg = green },
+	Number = { fg = orange },
+	Float = { fg = orange },
 	Identifier = { fg = fg },
-	Statement = { fg = yellow, bold = true },
-	Keyword = { fg = yellow, bold = true },
+	Statement = { fg = purple, bold = false },
+	Keyword = { fg = purple, bold = false },
 	Operator = { fg = fg },
 	Delimiter = { fg = fg },
 	Special = { fg = fg },
 	PreProc = { fg = fg },
 
-	-- NOTE(jlima): Strip colors from standard groups to match screenshot minimalism.
 	Type = { fg = fg },
 	Function = { fg = fg },
 
-	-- NOTE(jlima): Tree-sitter specific overrides to enforce monochrome behavior on AST nodes.
 	["@type"] = { fg = fg },
-	["@type.builtin"] = { fg = gray_dim },
+	["@type.builtin"] = { fg = purple },
 	["@function"] = { fg = fg },
 	["@function.call"] = { fg = fg },
 	["@function.builtin"] = { fg = fg },
@@ -92,37 +96,39 @@ local hl_groups = {
 	["@preproc"] = { fg = fg },
 	["@module"] = { fg = fg },
 
-	-- NOTE(jlima): Explicitly target struct, typedef, sizeof, and string includes to match the yellow and green accents.
-	["@keyword"] = { fg = gray_dim },
-	["@keyword.type"] = { fg = yellow, bold = true },
-	["@keyword.operator"] = { fg = yellow, bold = true },
-	["@keyword.modifier"] = { fg = yellow, bold = true },
-	["@keyword.function"] = { fg = yellow, bold = true },
-	["@keyword.return"] = { fg = yellow, bold = true },
-	["@keyword.conditional"] = { fg = yellow, bold = true },
-	["@keyword.repeat"] = { fg = yellow, bold = true },
+	["@number"] = { fg = orange },
+	["@float"] = { fg = orange },
 	["@string"] = { fg = green },
 	["@string.special"] = { fg = green },
 
-	Pmenu = { fg = fg, bg = "#282828" },
-	PmenuSel = { fg = bg, bg = yellow, bold = true },
+	["@keyword"] = { fg = purple },
+	["@keyword.type"] = { fg = purple, bold = false },
+	["@keyword.operator"] = { fg = purple, bold = false },
+	["@keyword.modifier"] = { fg = purple, bold = false },
+	["@keyword.function"] = { fg = purple, bold = false },
+	["@keyword.return"] = { fg = purple, bold = false },
+	["@keyword.conditional"] = { fg = purple, bold = false },
+	["@keyword.repeat"] = { fg = purple, bold = false },
+
+	Pmenu = { fg = fg, bg = bg_light },
+	PmenuSel = { fg = bg, bg = purple, bold = false },
 	PmenuThumb = { bg = gray },
 
 	DiagnosticError = { fg = red },
-	DiagnosticWarn = { fg = yellow },
-	DiagnosticInfo = { fg = fg },
+	DiagnosticWarn = { fg = orange },
+	DiagnosticInfo = { fg = blue },
 	DiagnosticHint = { fg = fg },
 
 	MiniPickNormal = { fg = fg, bg = bg },
 	MiniPickBorder = { fg = gray, bg = bg },
-	MiniPickMatchRanges = { fg = yellow, bold = true },
-	MiniPickMatchCurrent = { bg = "#453d41" },
+	MiniPickMatchRanges = { fg = purple, bold = false },
+	MiniPickMatchCurrent = { bg = bg_visual },
 
 	DiffAdd = { fg = green, bg = "none" },
-	DiffText = { fg = bg, bg = yellow },
+	DiffText = { fg = bg, bg = purple },
 	DiffDelete = { fg = red, bg = "none" },
-	DiffChange = { bg = "#282828" },
-	Folded = { fg = gray, bg = bg },
+	DiffChange = { bg = bg_light },
+	Folded = { fg = gray, bg = bg_light },
 	FoldColumn = { fg = gray, bg = "none" },
 }
 
