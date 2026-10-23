@@ -82,6 +82,7 @@ vim.api.nvim_create_autocmd("TabClosed", {
 -- Terminal Drawer (:T)
 vim.api.nvim_create_user_command("T", function(opts_args)
 	local cmd = opts_args.args
+	local focus_insert = opts_args.bang
 	local state = get_tab_state()
 
 	close_quickfix()
@@ -97,6 +98,13 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 			if state.last_cursor then
 				pcall(vim.api.nvim_win_set_cursor, state.last_win, state.last_cursor)
 			end
+		end
+	end
+
+	local function focus_terminal()
+		if state.win and vim.api.nvim_win_is_valid(state.win) then
+			vim.api.nvim_set_current_win(state.win)
+			vim.cmd("startinsert")
 		end
 	end
 
@@ -144,8 +152,12 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		vim.fn.chansend(state.job, "cd " .. vim.fn.shellescape(current_dir) .. "\n")
 		if cmd ~= "" then
 			vim.fn.chansend(state.job, cmd .. "\n")
-			-- NOTE(jlima): Retain editor focus when executed via automated runner hook
-			restore_editor_pos()
+			if focus_insert then
+				vim.cmd("startinsert")
+			else
+				-- NOTE(jlima): Retain editor focus when executed via automated runner hook
+				restore_editor_pos()
+			end
 		else
 			vim.cmd("startinsert")
 		end
@@ -161,6 +173,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	end
 
 	if visible_win then
+		state.win = visible_win
 		state.height = vim.api.nvim_win_get_height(visible_win)
 		-- NOTE(jlima): Toggle closed ONLY when :T is called without an execution argument.
 		if cmd == "" then
@@ -174,6 +187,9 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		end
 
 		send_terminal_cmd(state.job, cmd)
+		if focus_insert then
+			focus_terminal()
+		end
 		return
 	end
 
@@ -187,11 +203,15 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 
 	if cmd ~= "" then
 		send_terminal_cmd(state.job, cmd)
-		restore_editor_pos()
+		if focus_insert then
+			focus_terminal()
+		else
+			restore_editor_pos()
+		end
 	else
 		vim.cmd("startinsert")
 	end
-end, { nargs = "*" })
+end, { nargs = "*", bang = true })
 
 -- Transient keymaps
 local map = vim.keymap.set
@@ -294,7 +314,7 @@ local function execute_hook_command(bufnr)
 
 	if expanded_cmd and expanded_cmd ~= "" then
 		local escaped_dir = vim.fn.fnameescape(buf_dir)
-		vim.cmd(string.format("T cd %s && %s", escaped_dir, expanded_cmd))
+		vim.cmd(string.format("T! cd %s && %s", escaped_dir, expanded_cmd))
 	end
 end
 
