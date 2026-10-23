@@ -7,6 +7,7 @@ require("autocmds")
 require("tools")
 require("plugins")
 require("colorscheme")
+require("compilers")
 
 local neovide_path = vim.fn.expand("~/.config/nvim/lua/neovide.lua")
 if vim.g.neovide and vim.fn.filereadable(neovide_path) == 1 then
