@@ -82,7 +82,7 @@ vim.g.neovide_fullscreen = false
 vim.g.neovide_idle = true
 vim.g.neovide_hide_mouse_when_typing = true
 vim.g.neovide_confirm_quit = true
-vim.g.neovide_theme = "light"
+-- vim.g.neovide_theme = "light"
 
 vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
