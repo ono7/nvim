@@ -49,19 +49,21 @@ vim.g.neovide_progress_bar_hide_delay = 0.2
 
 -- NOTE(jlima): Configure platform-specific typography and keybindings.
 if os_name == "Windows" or is_wsl then
-	vim.o.guifont = "Menlo"
+	vim.o.guifont = "MesloLGL Nerd Font Mono:h22"
 	vim.g.neovide_input_use_logo = false
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
 	vim.g.neovide_pixel_geometry = "Unknown"
-	vim.o.guifont = "SF Mono,IosevkaTerm Nerd Font:h22:#e-subpixelantialias:#h-full"
+	-- vim.o.guifont = "SF Mono,SFMono Nerd Font:h22"
+	vim.o.guifont = "MesloLGL Nerd Font Mono:h22"
+	-- vim.o.guifont = "SF Mono Terminal,IosevkaTerm Nerd Font:h22"
 	vim.g.neovide_padding_top = 0
 	vim.g.neovide_padding_bottom = 0
 	vim.g.neovide_padding_right = 0
 	vim.g.neovide_padding_left = 0
 else
 	-- vim.o.guifont = "Iosevka Custom:h17:#e-subpixelantialias:#h-full"
-	vim.o.guifont = "Menlo:h17"
+	vim.o.guifont = "MesloLGL Nerd Font Mono:h22"
 end
 
 -- NOTE(jlima): Replicate Alacritty font rendering and contrast.
@@ -69,7 +71,7 @@ end
 -- vim.g.neovide_text_contrast = 0.1
 
 -- NOTE(jlima): Set line height for astigmatism readability.
-vim.opt.linespace = 14
+vim.opt.linespace = 7
 
 -- NOTE(jlima): Configure Option key as Meta, disable frame, and set UI behavior.
 vim.g.neovide_input_macos_option_key_is_meta = "both"
