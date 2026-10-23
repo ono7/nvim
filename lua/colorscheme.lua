@@ -8,7 +8,8 @@ vim.o.background = "dark"
 vim.g.colors_name = "google-dark-minimal"
 
 -- NOTE(jlima): Core palette mapped to specific RGB requirements.
-local bg = "#2C2E35"
+-- local bg = "#2C2E35"
+local bg = "#1E2229"
 local fg = "#EEF0FF"
 local green = "#81C995"
 local orange = "#FA903E"

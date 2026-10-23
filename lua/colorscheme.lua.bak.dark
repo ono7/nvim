@@ -8,7 +8,7 @@ vim.o.background = "dark"
 vim.g.colors_name = "custom-paper-minimal"
 
 if vim.g.neovide then
-	vim.g.neovide_background_color = "#1E2229"
+	vim.g.neovide_background_color = "#1E2229" .. "FF"
 end
 
 -- NOTE(jlima): Map ANSI terminal colors using explicit hex values for colorizer previewing.
