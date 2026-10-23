@@ -21,13 +21,14 @@ vim.api.nvim_set_hl(0, "Cursor", { bg = "#000000", fg = "#ffffff" })
 -- NOTE(jlima): Configure fluid cursor animation parameters.
 vim.g.neovide_cursor_animation_length = 0.09
 vim.g.neovide_cursor_trail_size = 0.75
-vim.g.neovide_cursor_smooth_blink = true
-vim.g.neovide_cursor_blink = true
+vim.g.neovide_cursor_smooth_blink = false
+vim.g.neovide_cursor_blink = false
 vim.g.neovide_cursor_blink_interval = 600
+vim.g.neovide_cursor_animate_in_insert_mode = false
+vim.g.neovide_cursor_animate_command_line = false
+vim.g.neovide_cursor_antialiasing = false
+
 vim.g.neovide_title_text_color = "#000000"
-vim.g.neovide_cursor_animate_in_insert_mode = true
-vim.g.neovide_cursor_animate_command_line = true
-vim.g.neovide_cursor_antialiasing = true
 
 -- NOTE(jlima): Configure fluid viewport scrolling.
 vim.g.neovide_scroll_animation_length = 0.12
@@ -43,9 +44,6 @@ vim.g.neovide_light_radius = 5
 
 -- NOTE(jlima): Hide progress bar.
 vim.g.neovide_progress_bar_enabled = false
-vim.g.neovide_progress_bar_height = 5.0
-vim.g.neovide_progress_bar_animation_speed = 200.0
-vim.g.neovide_progress_bar_hide_delay = 0.2
 
 vim.opt.linespace = 21
 
