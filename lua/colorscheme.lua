@@ -5,94 +5,97 @@ if vim.fn.exists("syntax_on") == 1 then
 end
 vim.o.termguicolors = true
 vim.o.background = "dark"
-vim.g.colors_name = "custom-paper-minimal"
+vim.g.colors_name = "ayu-carbon"
+
+local bg = "#151F2D"
+local fg = "#BEBEBC"
+local str = "#8CA64A"
+local cmt = "#5F6C77"
 
 if vim.g.neovide then
-	vim.g.neovide_background_color = "#1E2229"
+	vim.g.neovide_background_color = bg
 end
 
--- NOTE(jlima): Map ANSI terminal colors using explicit hex values for colorizer previewing.
-vim.g.terminal_color_0 = "#1E2229"
-vim.g.terminal_color_1 = "#E56B73"
-vim.g.terminal_color_2 = "#7EC699"
-vim.g.terminal_color_3 = "#E5C07B"
-vim.g.terminal_color_4 = "#61AFEF"
-vim.g.terminal_color_5 = "#C678DD"
-vim.g.terminal_color_6 = "#56B6C2"
-vim.g.terminal_color_7 = "#C8CCD4"
-vim.g.terminal_color_8 = "#7F8996"
-vim.g.terminal_color_9 = "#F08088"
-vim.g.terminal_color_10 = "#98D4AF"
-vim.g.terminal_color_11 = "#EDD096"
-vim.g.terminal_color_12 = "#7CC0F5"
-vim.g.terminal_color_13 = "#D494E6"
-vim.g.terminal_color_14 = "#73C6D1"
-vim.g.terminal_color_15 = "#DFE4EA"
+-- NOTE(jlima): Map ANSI terminal colors using ayu-carbon explicit hex values and base variables.
+vim.g.terminal_color_0 = bg
+vim.g.terminal_color_1 = "#D35A63"
+vim.g.terminal_color_2 = str
+vim.g.terminal_color_3 = "#D89F5C"
+vim.g.terminal_color_4 = "#3A6FB0"
+vim.g.terminal_color_5 = "#AABFD9"
+vim.g.terminal_color_6 = "#7AA7D8"
+vim.g.terminal_color_7 = fg
+vim.g.terminal_color_8 = "#3A4555"
+vim.g.terminal_color_9 = "#D35A63"
+vim.g.terminal_color_10 = str
+vim.g.terminal_color_11 = "#D89F5C"
+vim.g.terminal_color_12 = "#3A6FB0"
+vim.g.terminal_color_13 = "#AABFD9"
+vim.g.terminal_color_14 = "#7AA7D8"
+vim.g.terminal_color_15 = "#FFFFFF"
 
--- NOTE(jlima): Apply explicit inline hex values directly to highlight groups to remove structural abstraction.
+-- NOTE(jlima): Apply explicit inline hex values directly to highlight groups mapping to ayu-carbon palette.
 local hl_groups = {
-	Normal = { fg = "#C8CCD4", bg = "#1E2229" },
-	NormalFloat = { fg = "#C8CCD4", bg = "#1E2229" },
-	FloatBorder = { fg = "#4B5362", bg = "#1E2229" },
-	Visual = { bg = "#323844" },
-	CursorLine = { bg = "#262B34" },
-	LineNr = { fg = "#5C6573", bg = "#1E2229" },
-	CursorLineNr = { fg = "#61AFEF", bg = "#262B34", bold = true },
+	Normal = { fg = fg, bg = bg },
+	NormalFloat = { fg = fg, bg = bg },
+	FloatBorder = { fg = "#3A4555", bg = bg },
+	Visual = { bg = "#223E65" },
+	CursorLine = { bg = "#1E2E45" },
+	LineNr = { fg = "#3A4555", bg = bg },
+	CursorLineNr = { fg = "#ffb454", bg = "#1E2E45", bold = true },
 	SignColumn = { bg = "none" },
-	WinSeparator = { fg = "#4B5362", bg = "none" },
-	StatusLine = { fg = "#C8CCD4", bg = "#2A303B" },
-	StatusLineNC = { fg = "#7F8996", bg = "#232831" },
-	Search = { fg = "#1E2229", bg = "#E5C07B" },
-	CurSearch = { fg = "#1E2229", bg = "#E56B73", bold = true },
-	MatchParen = { fg = "#1E2229", bg = "#56B6C2", bold = true },
+	WinSeparator = { fg = "#3A4555", bg = "none" },
+	StatusLine = { fg = fg, bg = "#1E2E45" },
+	StatusLineNC = { fg = cmt, bg = bg },
+	Search = { fg = "#FFFFFF", bg = "#3A6FB0" },
+	CurSearch = { fg = bg, bg = "#ffb454", bold = true },
+	MatchParen = { fg = "#FFFFFF", bg = "#5A6B85", bold = true },
 
-	Comment = { fg = "#7F8996", italic = true },
-	Constant = { fg = "#C8CCD4" },
-	ModeMsg = { fg = "#C8CCD4" },
-	String = { fg = "#C8CCD4" },
-	Identifier = { fg = "#C8CCD4" },
-	Statement = { fg = "#E56B73" },
-	Keyword = { fg = "#E56B73" },
-	Operator = { fg = "#C8CCD4" },
-	Delimiter = { fg = "#C8CCD4" },
-	-- Delimiter = { fg = "#9AA3B0" },
-	-- Delimiter = { fg = "#EDD096" },
-	Special = { fg = "#C8CCD4" },
+	Comment = { fg = cmt, italic = true },
+	Constant = { fg = fg },
+	ModeMsg = { fg = fg },
+	String = { fg = str },
+	Identifier = { fg = fg },
+	Statement = { fg = "#7AA7D8" },
+	Keyword = { fg = "#D89F5C" },
+	Operator = { fg = fg },
+	Delimiter = { fg = fg },
+	Special = { fg = "#D89F5C" },
 
-	Type = { fg = "#61AFEF" },
-	["@type"] = { fg = "#C8CCD4" },
-	["@module.go"] = { fg = "#C8CCD4" },
-	["@type.builtin"] = { fg = "#61AFEF" },
-	Function = { fg = "#E56B73", bold = true },
-	["@function"] = { fg = "#E56B73", bold = true },
-	["@function.call"] = { fg = "#E56B73" },
-	["@function.method"] = { fg = "#C8CCD4" },
-	["@function.call"] = { fg = "#C8CCD4" },
-	["@keyword.conditional"] = { fg = "#E5C07B" },
-	["@keyword.repeat"] = { fg = "#E5C07B" },
-	["@function.builtin"] = { fg = "#E56B73" },
-	["@property.yaml"] = { fg = "#E56B73" },
-	Title = { fg = "#E56B73", bold = true },
+	Type = { fg = "#7AA7D8" },
+	["@type"] = { fg = "#7AA7D8" },
+	["@module.go"] = { fg = fg },
+	["@type.builtin"] = { fg = "#7AA7D8" },
+	Function = { fg = "#AABFD9", bold = true },
+	["@function"] = { fg = "#AABFD9", bold = true },
+	["@function.call"] = { fg = "#AABFD9" },
+	["@function.method"] = { fg = fg },
+	["@keyword.conditional"] = { fg = "#D89F5C" },
+	["@keyword.repeat"] = { fg = "#D89F5C" },
+	["@function.builtin"] = { fg = "#AABFD9" },
+	["@property.yaml"] = { fg = "#7AA7D8" },
+	Title = { fg = "#AABFD9", bold = true },
 
-	Pmenu = { fg = "#C8CCD4", bg = "#1E2229" },
-	PmenuSel = { fg = "#1E2229", bg = "#61AFEF", bold = true },
-	PmenuThumb = { bg = "#4B5362" },
-	DiagnosticError = { fg = "#E56B73" },
-	DiagnosticWarn = { fg = "#E5C07B" },
-	DiagnosticInfo = { fg = "#61AFEF" },
-	DiagnosticHint = { fg = "#7F8996" },
+	Pmenu = { fg = fg, bg = "#1E2E45" },
+	PmenuSel = { fg = "#FFFFFF", bg = "#223E65", bold = true },
+	PmenuThumb = { bg = "#3A4555" },
 
-	MiniPickNormal = { fg = "#C8CCD4", bg = "#1E2229" },
-	MiniPickBorder = { fg = "#4B5362", bg = "#1E2229" },
-	MiniPickMatchRanges = { fg = "#E56B73", bold = true },
-	MiniPickMatchCurrent = { bg = "#323844" },
+	DiagnosticError = { fg = "#D35A63" },
+	DiagnosticWarn = { fg = "#D89F5C" },
+	DiagnosticInfo = { fg = "#7AA7D8" },
+	DiagnosticHint = { fg = "#5A6B85" },
 
-	DiffAdd = { fg = "#7EC699", bg = "none" },
-	DiffText = { fg = "#1E2229", bg = "#E56B73" },
-	DiffDelete = { fg = "#E56B73", bg = "none" },
-	DiffChange = { bg = "#2A303B" },
-	Folded = { fg = "#7F8996", bg = "#1E2229" },
-	FoldColumn = { fg = "#5C6573", bg = "none" },
+	MiniPickNormal = { fg = fg, bg = bg },
+	MiniPickBorder = { fg = "#3A4555", bg = bg },
+	MiniPickMatchRanges = { fg = "#D89F5C", bold = true },
+	MiniPickMatchCurrent = { bg = "#223E65" },
+
+	DiffAdd = { fg = str, bg = "none" },
+	DiffText = { fg = bg, bg = "#D89F5C" },
+	DiffDelete = { fg = "#D35A63", bg = "none" },
+	DiffChange = { bg = "#1E2E45" },
+	Folded = { fg = cmt, bg = bg },
+	FoldColumn = { fg = "#3A4555", bg = "none" },
 }
 
 for group, spec in pairs(hl_groups) do
