@@ -51,7 +51,7 @@ vim.opt.linespace = 21
 
 -- NOTE(jlima): Configure platform-specific typography and keybindings.
 if os_name == "Windows" or is_wsl then
-	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
+	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h16"
 	vim.g.neovide_input_use_logo = false
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
