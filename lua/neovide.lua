@@ -54,7 +54,7 @@ if os_name == "Windows" or is_wsl then
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
 	vim.g.neovide_pixel_geometry = "Unknown"
-	vim.o.guifont = "Menlo,IosevkaTerm Nerd Font:h22:#e-subpixelantialias:#h-full"
+	vim.o.guifont = "SF Mono,IosevkaTerm Nerd Font:h22:#e-subpixelantialias:#h-full"
 	vim.g.neovide_padding_top = 0
 	vim.g.neovide_padding_bottom = 0
 	vim.g.neovide_padding_right = 0
