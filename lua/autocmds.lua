@@ -224,7 +224,7 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 			pcall(vim.cmd, "cc 1")
 		else
 			vim.cmd("cclose")
-			print("Build complete..")
+			print("Build complete...")
 		end
 	end,
 })
