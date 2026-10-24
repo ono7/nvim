@@ -19,15 +19,33 @@ vim.o.scrollback = 50000
 vim.api.nvim_set_hl(0, "Cursor", { bg = "#000000", fg = "#ffffff" })
 
 -- NOTE(jlima): Configure fluid cursor animation parameters.
-vim.g.neovide_cursor_animation_length = 0.09
-vim.g.neovide_cursor_trail_size = 0.75
-vim.g.neovide_cursor_smooth_blink = false
-vim.g.neovide_cursor_blink = false
-vim.g.neovide_cursor_blink_interval = 600
-vim.g.neovide_cursor_animate_in_insert_mode = false
-vim.g.neovide_cursor_animate_command_line = false
-vim.g.neovide_cursor_antialiasing = false
+-- vim.g.neovide_cursor_animation_length = 0.09
+-- vim.g.neovide_cursor_trail_size = 0.75
+-- vim.g.neovide_cursor_smooth_blink = true
+-- vim.g.neovide_cursor_blink = false
+-- vim.g.neovide_cursor_blink_interval = 600
+-- vim.g.neovide_cursor_animate_in_insert_mode = true
+-- vim.g.neovide_cursor_animate_command_line = true
+-- vim.g.neovide_cursor_antialiasing = false
 
+-- NOTE(jlima): Disable cursor trailing blur while maintaining fluid translation.
+vim.g.neovide_cursor_trail_size = 0.0
+
+-- NOTE(jlima): Target slide duration for floating cursor feel without perceptible input lag.
+vim.g.neovide_cursor_animation_length = 0.08
+
+-- NOTE(jlima): Enable cursor interpolation during insert mode character insertion.
+vim.g.neovide_cursor_animate_in_insert_mode = true
+vim.g.neovide_cursor_animate_command_line = true
+
+-- NOTE(jlima): Enable anti-aliasing to prevent sub-pixel edge snapping during movement.
+vim.g.neovide_cursor_antialiasing = true
+
+-- NOTE(jlima): Smooth alpha transitions for cursor visibility.
+vim.g.neovide_cursor_smooth_blink = true
+
+-- NOTE(jlima): Align frame presentation to monitor refresh rate to eliminate render choppiness.
+vim.g.neovide_refresh_rate = 120
 vim.g.neovide_title_text_color = "#000000"
 
 -- NOTE(jlima): Configure fluid viewport scrolling.
