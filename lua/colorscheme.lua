@@ -90,7 +90,7 @@ local hl_groups = {
 	Function = { fg = fg },
 
 	["@type"] = { fg = fg },
-	["@type.builtin"] = { fg = yellow },
+	["@type.builtin"] = { fg = red },
 	["@number"] = { fg = red },
 	["@function"] = { fg = fg },
 	["@function.call"] = { fg = fg },
