@@ -149,6 +149,7 @@ end, { expr = true })
 
 -- Emacs Insert Mode Navigation
 vim.keymap.set("i", "<C-a>", "<C-o>^", silent)
+vim.keymap.set("i", "<C-w>", "<Cmd>write<CR>", { desc = "Save file", silent = true })
 vim.keymap.set("i", "<C-e>", "<End>", silent)
 vim.keymap.set("i", "<C-b>", "<Left>", silent)
 vim.keymap.set("i", "<C-f>", "<Right>", silent)
