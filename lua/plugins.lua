@@ -112,7 +112,7 @@ if not has_pick then
 	return
 end
 
--- NOTE(jlima): keep default bottom-docked window positioning; preserve single border
+-- NOTE(jlima): preserve standard bottom dock layout and single border
 pick.setup({
 	window = {
 		config = {
@@ -121,26 +121,35 @@ pick.setup({
 	},
 })
 
--- NOTE(jlima): transform raw filepaths into table items with basename first for clear visibility
-local function format_file_items(lines)
-	local items = {}
-	for _, path in ipairs(lines) do
-		if path ~= "" then
-			local name = vim.fs.basename(path)
-			local parent = vim.fs.dirname(path)
-			local display
-			if parent and parent ~= "." and parent ~= "" then
-				display = string.format("%s  (%s)", name, parent)
+-- NOTE(jlima): truncate overflowing paths from the left so the filename remains fully visible
+local function show_truncate_left(buf_id, items_to_show, query)
+	local win_id = vim.fn.bufwinid(buf_id)
+	local max_w = (win_id ~= -1) and vim.api.nvim_win_get_width(win_id) or 80
+	-- NOTE(jlima): account for gutter padding and right-side margin
+	local limit = math.max(max_w - 6, 20)
+
+	local truncated_items = {}
+	for _, item in ipairs(items_to_show) do
+		local str = type(item) == "table" and item.text or item
+		if vim.fn.strdisplaywidth(str) > limit then
+			-- NOTE(jlima): retain the trailing segment and prefix with ellipsis
+			local tail = "..." .. string.sub(str, -(limit - 3))
+			if type(item) == "table" then
+				local clone = vim.deepcopy(item)
+				clone.text = tail
+				table.insert(truncated_items, clone)
 			else
-				display = name
+				table.insert(truncated_items, tail)
 			end
-			table.insert(items, { text = display, path = path })
+		else
+			table.insert(truncated_items, item)
 		end
 	end
-	return items
+
+	pick.default_show(buf_id, truncated_items, query)
 end
 
--- NOTE(jlima): invoke builtin.cli directly with postprocess instead of nesting inside pick.start
+-- NOTE(jlima): fast fd files picker; excludes build artifacts to restore rg-level throughput
 pick.registry.files = function(local_opts)
 	local_opts = local_opts or {}
 	local cli_opts = {
@@ -151,20 +160,23 @@ pick.registry.files = function(local_opts)
 			"--hidden",
 			"--exclude",
 			".git",
+			"--exclude",
+			"pkg/mod",
+			"--exclude",
+			".cache",
 			"--strip-cwd-prefix",
 		},
-		postprocess = format_file_items,
 	}
-	local start_opts = {
+	local default_opts = {
 		source = {
 			name = "Files (fd)",
-			choose = pick.default_choose,
+			show = show_truncate_left,
 		},
 	}
-	return pick.builtin.cli(cli_opts, vim.tbl_deep_extend("force", start_opts, local_opts))
+	return pick.builtin.cli(cli_opts, vim.tbl_deep_extend("force", default_opts, local_opts))
 end
 
--- NOTE(jlima): override live grep to guarantee deterministic rg invocation with line/col markers
+-- NOTE(jlima): deterministic rg live-grep
 pick.registry.grep_live = function(local_opts)
 	local_opts = local_opts or {}
 	local default_opts = {
@@ -193,21 +205,22 @@ local function pick_oldfiles()
 		return path ~= "" and vim.uv.fs_stat(path) ~= nil
 	end, vim.v.oldfiles)
 
-	local raw = {}
-	for i = 1, math.min(#old, 25) do
-		table.insert(raw, old[i])
+	local items = {}
+	for i = 1, math.min(#old, 50) do
+		table.insert(items, old[i])
 	end
 
 	pick.start({
 		source = {
-			items = format_file_items(raw),
+			items = items,
 			name = "Recent",
+			show = show_truncate_left,
 			choose = pick.default_choose,
 		},
 	})
 end
 
--- NOTE(jlima): use non-blocking cli process with fd for directory pickers; emit absolute paths
+-- NOTE(jlima): scoped directory picker using fd streaming with left truncation
 local function pick_dir(target_dir, display_name)
 	return function()
 		local resolved_dir = vim.fn.expand(target_dir)
@@ -229,24 +242,25 @@ local function pick_dir(target_dir, display_name)
 					".",
 					resolved_dir,
 				},
-				postprocess = format_file_items,
 			}
 			local start_opts = {
 				source = {
 					name = display_name or resolved_dir,
+					show = show_truncate_left,
 					choose = pick.default_choose,
 				},
 			}
 			pick.builtin.cli(cli_opts, start_opts)
 		else
-			local raw_items = vim.fs.find(function()
+			local items = vim.fs.find(function()
 				return true
 			end, { path = resolved_dir, type = "file", limit = math.huge })
 
 			pick.start({
 				source = {
-					items = format_file_items(raw_items),
+					items = items,
 					name = display_name or resolved_dir,
+					show = show_truncate_left,
 					choose = pick.default_choose,
 				},
 			})
