@@ -61,7 +61,7 @@ vim.opt.shadafile = shada_dir .. "/main.shada"
 
 vim.opt.undodir = undo_dir
 vim.opt.history = 1000
-vim.opt.shada = "'25,<20,s10,:100,/100,h,r/COMMIT_EDITMSG,r/git-rebase-todo,r/tmp/,r/var/tmp/,!"
+vim.opt.shada = "'50,<20,s10,:100,/100,h,r/COMMIT_EDITMSG,r/git-rebase-todo,r/tmp/,r/var/tmp/,!"
 
 vim.opt.updatecount = 0
 vim.opt.updatetime = 250
