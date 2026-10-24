@@ -11,6 +11,15 @@ local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { cle
 -- 	end,
 -- })
 
+local yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	group = yank_group,
+	desc = "Highlight yanked text",
+	callback = function()
+		vim.hl.on_yank({ higroup = "Visual", timeout = 125 })
+	end,
+})
+
 local terminal_config = vim.api.nvim_create_augroup("TerminalScrollback", { clear = true })
 
 vim.api.nvim_create_autocmd("TermOpen", {
