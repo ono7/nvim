@@ -14,6 +14,7 @@ vim.g.colors_name = "google-dark-minimal"
 -- local green = "#99b456"
 -- local green = "#a4bb68"
 -- local green = "#97b252"
+local bg_subtle = "#252932"
 local bg = "#1E2229"
 local fg = "#D8DBE1"
 local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
@@ -67,7 +68,7 @@ local hl_groups = {
 	SignColumn = { bg = "none" },
 	WinSeparator = { fg = gray, bg = "none" },
 	StatusLine = { fg = fg, bg = bg_light },
-	StatusLineNC = { fg = gray, bg = bg },
+	StatusLineNC = { fg = gray, bg = bg_subtle },
 	Search = { fg = bg, bg = yellow },
 	CurSearch = { fg = bg, bg = purple, bold = false },
 	MatchParen = { fg = bg, bg = purple, bold = false },
