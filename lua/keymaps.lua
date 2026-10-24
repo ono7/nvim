@@ -85,8 +85,10 @@ vim.keymap.set("v", ">", ">gv", silent)
 vim.keymap.set("v", "<", "<gv", silent)
 vim.keymap.set("x", "p", '"_dP', silent)
 vim.keymap.set("x", "y", "ygv<Esc>", silent)
-vim.keymap.set({ "x", "n" }, "<leader>p", '"+p', silent)
-vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', silent)
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true })
+vim.keymap.set("n", "<leader>Y", '"+Y', { noremap = true })
+vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { noremap = true })
+vim.keymap.set({ "n", "v" }, "<leader>P", '"+P', { noremap = true })
 vim.keymap.set("v", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
 
 -- Backspace Auto-Pair Deletion
