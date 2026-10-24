@@ -41,7 +41,7 @@ end
 vim.g.terminal_color_0 = bg
 vim.g.terminal_color_1 = red
 vim.g.terminal_color_2 = green
-vim.g.terminal_color_3 = orange
+vim.g.terminal_color_3 = yellow
 vim.g.terminal_color_4 = blue
 vim.g.terminal_color_5 = purple
 vim.g.terminal_color_6 = "#78D9EC"
@@ -49,7 +49,7 @@ vim.g.terminal_color_7 = fg
 vim.g.terminal_color_8 = gray
 vim.g.terminal_color_9 = red
 vim.g.terminal_color_10 = green
-vim.g.terminal_color_11 = orange
+vim.g.terminal_color_11 = yellow
 vim.g.terminal_color_12 = blue
 vim.g.terminal_color_13 = purple
 vim.g.terminal_color_14 = "#78D9EC"
