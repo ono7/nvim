@@ -108,88 +108,174 @@ end
 
 -- Fuzzy Picker
 local has_pick, pick = pcall(require, "mini.pick")
-if has_pick then
-	pick.setup({
-		window = {
-			config = {
-				border = "single",
-			},
+if not has_pick then
+	return
+end
+
+-- NOTE(jlima): keep default bottom-docked window positioning; preserve single border
+pick.setup({
+	window = {
+		config = {
+			border = "single",
 		},
-	})
+	},
+})
 
-	local function pick_oldfiles()
-		local old = vim.tbl_filter(function(path)
-			return path ~= "" and vim.uv.fs_stat(path) ~= nil
-		end, vim.v.oldfiles)
-
-		local items = {}
-		for i = 1, math.min(#old, 25) do
-			table.insert(items, old[i])
+-- NOTE(jlima): transform raw filepaths into table items with basename first for clear visibility
+local function format_file_items(lines)
+	local items = {}
+	for _, path in ipairs(lines) do
+		if path ~= "" then
+			local name = vim.fs.basename(path)
+			local parent = vim.fs.dirname(path)
+			local display
+			if parent and parent ~= "." and parent ~= "" then
+				display = string.format("%s  (%s)", name, parent)
+			else
+				display = name
+			end
+			table.insert(items, { text = display, path = path })
 		end
+	end
+	return items
+end
 
-		pick.start({
-			source = {
-				items = items,
-				name = "Recent",
-				choose = pick.default_choose,
-			},
-		})
+-- NOTE(jlima): invoke builtin.cli directly with postprocess instead of nesting inside pick.start
+pick.registry.files = function(local_opts)
+	local_opts = local_opts or {}
+	local cli_opts = {
+		command = {
+			"fd",
+			"--type",
+			"f",
+			"--hidden",
+			"--exclude",
+			".git",
+			"--strip-cwd-prefix",
+		},
+		postprocess = format_file_items,
+	}
+	local start_opts = {
+		source = {
+			name = "Files (fd)",
+			choose = pick.default_choose,
+		},
+	}
+	return pick.builtin.cli(cli_opts, vim.tbl_deep_extend("force", start_opts, local_opts))
+end
+
+-- NOTE(jlima): override live grep to guarantee deterministic rg invocation with line/col markers
+pick.registry.grep_live = function(local_opts)
+	local_opts = local_opts or {}
+	local default_opts = {
+		source = {
+			name = "Grep Live (rg)",
+		},
+	}
+	local rg_opts = {
+		command = {
+			"rg",
+			"--column",
+			"--line-number",
+			"--no-heading",
+			"--color=never",
+			"--smart-case",
+			"--hidden",
+			"-g",
+			"!.git",
+		},
+	}
+	return pick.builtin.grep_live(rg_opts, vim.tbl_deep_extend("force", default_opts, local_opts))
+end
+
+local function pick_oldfiles()
+	local old = vim.tbl_filter(function(path)
+		return path ~= "" and vim.uv.fs_stat(path) ~= nil
+	end, vim.v.oldfiles)
+
+	local raw = {}
+	for i = 1, math.min(#old, 25) do
+		table.insert(raw, old[i])
 	end
 
-	-- NOTE(jlima): Direct pick.start execution enforces absolute paths and bypasses tool validation mismatches
-	local function pick_dir(target_dir, display_name)
-		return function()
-			local resolved_dir = vim.fn.expand(target_dir)
-			if vim.fn.isdirectory(resolved_dir) == 0 then
-				vim.notify("Directory does not exist: " .. resolved_dir, vim.log.levels.WARN)
-				return
-			end
+	pick.start({
+		source = {
+			items = format_file_items(raw),
+			name = "Recent",
+			choose = pick.default_choose,
+		},
+	})
+end
 
-			local items
-			if vim.fn.executable("fd") == 1 then
-				local cmd = string.format(
-					"fd --type f --hidden --exclude .git --absolute-path . %s",
-					vim.fn.shellescape(resolved_dir)
-				)
-				items = vim.fn.systemlist(cmd)
-			else
-				items = vim.fs.find(function()
-					return true
-				end, { path = resolved_dir, type = "file", limit = math.huge })
-			end
+-- NOTE(jlima): use non-blocking cli process with fd for directory pickers; emit absolute paths
+local function pick_dir(target_dir, display_name)
+	return function()
+		local resolved_dir = vim.fn.expand(target_dir)
+		if vim.fn.isdirectory(resolved_dir) == 0 then
+			vim.notify("Directory does not exist: " .. resolved_dir, vim.log.levels.WARN)
+			return
+		end
+
+		if vim.fn.executable("fd") == 1 then
+			local cli_opts = {
+				command = {
+					"fd",
+					"--type",
+					"f",
+					"--hidden",
+					"--exclude",
+					".git",
+					"--absolute-path",
+					".",
+					resolved_dir,
+				},
+				postprocess = format_file_items,
+			}
+			local start_opts = {
+				source = {
+					name = display_name or resolved_dir,
+					choose = pick.default_choose,
+				},
+			}
+			pick.builtin.cli(cli_opts, start_opts)
+		else
+			local raw_items = vim.fs.find(function()
+				return true
+			end, { path = resolved_dir, type = "file", limit = math.huge })
 
 			pick.start({
 				source = {
-					items = items,
+					items = format_file_items(raw_items),
 					name = display_name or resolved_dir,
 					choose = pick.default_choose,
 				},
 			})
 		end
 	end
-
-	pick.registry.oldfiles = pick_oldfiles
-
-	local silent = { noremap = true, silent = true }
-	vim.keymap.set("n", "<M-f>", "<cmd>Pick files<CR>", silent)
-	vim.keymap.set("n", "<M-g>", "<cmd>Pick grep_live<CR>", silent)
-	vim.keymap.set("n", "<M-r>", pick_oldfiles, silent)
-
-	local dir_pickers = {
-		{ key = "<M-v>", dir = "~/.config/nvim", desc = "Neovim Config" },
-		{ key = "<M-i>", dir = "~/.dotfiles", desc = "Dotfiles" },
-	}
-
-	for _, target in ipairs(dir_pickers) do
-		vim.keymap.set(
-			"n",
-			target.key,
-			pick_dir(target.dir, target.desc),
-			vim.tbl_extend("force", silent, { desc = target.desc })
-		)
-	end
 end
 
+pick.registry.oldfiles = pick_oldfiles
+
+local silent = { noremap = true, silent = true }
+vim.keymap.set("n", "<M-f>", "<cmd>Pick files<CR>", silent)
+vim.keymap.set("n", "<M-g>", "<cmd>Pick grep_live<CR>", silent)
+vim.keymap.set("n", "<M-r>", pick_oldfiles, silent)
+
+local dir_pickers = {
+	{ key = "<M-v>", dir = "~/.config/nvim", desc = "Neovim Config" },
+	{ key = "<M-i>", dir = "~/.dotfiles", desc = "Dotfiles" },
+}
+
+for _, target in ipairs(dir_pickers) do
+	vim.keymap.set(
+		"n",
+		target.key,
+		pick_dir(target.dir, target.desc),
+		vim.tbl_extend("force", silent, { desc = target.desc })
+	)
+end
+
+--- tree-sitter configuration
 require("nvim-treesitter").setup({
 	install_dir = vim.fn.stdpath("data") .. "/site",
 })
