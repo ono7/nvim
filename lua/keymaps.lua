@@ -149,7 +149,6 @@ end, { expr = true })
 
 -- Emacs Insert Mode Navigation
 vim.keymap.set("i", "<C-a>", "<C-o>^", silent)
-vim.keymap.set("i", "<C-w>", "<Cmd>write<CR>", { desc = "Save file", silent = true })
 vim.keymap.set("i", "<C-e>", "<End>", silent)
 vim.keymap.set("i", "<C-b>", "<Left>", silent)
 vim.keymap.set("i", "<C-f>", "<Right>", silent)
@@ -167,7 +166,7 @@ vim.keymap.set("i", "<C-k>", function()
 	return col >= line_len and "<C-g>u<Del>" or "<C-g>u<C-o>D"
 end, { expr = true, replace_keycodes = true })
 vim.keymap.set("i", "<C-u>", "<C-g>u<C-u>", silent)
-vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>", silent)
+-- vim.keymap.set("i", "<C-w>", "<C-g>u<C-w>", silent)
 vim.keymap.set("i", "<M-d>", "<C-g>u<C-\\><C-o>dw", silent)
 vim.keymap.set("i", "<M-BS>", "<C-g>u<C-w>", silent)
 vim.keymap.set("i", "<C-BS>", "<C-g>u<C-w>", silent)
