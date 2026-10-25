@@ -27,8 +27,8 @@ vim.keymap.set("n", "cp", "yap<S-}>p", nore)
 
 vim.keymap.set({ "n", "x" }, ";", ":", nore)
 vim.keymap.set("n", "Y", "y$", nore)
-vim.keymap.set("n", "&", ":&&<CR>", nore)
 vim.keymap.set("n", "j", "gj", nore)
+vim.keymap.set("n", "&", ":&&<CR>", nore)
 vim.keymap.set("n", "k", "gk", nore)
 vim.keymap.set("n", "<leader><leader>", "<cmd>set hlsearch!<CR>", silent)
 vim.keymap.set("n", "<leader>a", "ggVG", silent)
@@ -63,7 +63,8 @@ end
 
 vim.keymap.set("n", "<CR>", function()
 	vim.cmd.lcd("%:p:h")
-	print("new lcd: " .. trim_path(vim.fn.getcwd()))
+	-- print("new lcd: " .. trim_path(vim.fn.getcwd()))
+	print("...")
 end, silent)
 
 -- Deterministic Save Execution
