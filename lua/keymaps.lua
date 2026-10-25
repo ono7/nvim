@@ -70,6 +70,9 @@ vim.keymap.set("n", "<CR>", function()
 	print(trim_path(vim.fn.getcwd()))
 end, silent)
 
+-- NOTE(jlima): Bind Alt+Enter in insert mode to break the current line and open a new line below regardless of cursor position.
+vim.keymap.set("i", "<M-CR>", "<C-o>o", { noremap = true, silent = true })
+
 -- Deterministic Save Execution
 local function safe_write()
 	local b = vim.api.nvim_get_current_buf()
