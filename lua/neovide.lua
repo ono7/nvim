@@ -74,8 +74,8 @@ if os_name == "Windows" or is_wsl then
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
 	vim.g.neovide_pixel_geometry = "Unknown"
-	-- vim.o.guifont = "SF Mono,SFMono Nerd Font:h22"
-	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
+	vim.o.guifont = "SF Mono,SFMono Nerd Font:h22"
+	-- vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
 	-- vim.o.guifont = "SF Mono Terminal,IosevkaTerm Nerd Font:h22"
 
 	-- NOTE(jlima): Set line height for astigmatism readability.
