@@ -81,7 +81,8 @@ elseif is_mac then
 	-- NOTE(jlima): Set line height for astigmatism readability.
 else
 	-- vim.o.guifont = "Iosevka Custom:h17:#e-subpixelantialias:#h-full"
-	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
+	-- vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
+	vim.o.guifont = "SF Mono, MesloLGL Nerd Font Mono:h22"
 end
 
 vim.opt.linespace = 21
