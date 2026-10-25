@@ -50,6 +50,9 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", silent)
 vim.keymap.set("n", "<C-k>", "<C-w>k", silent)
 vim.keymap.set("n", "<C-l>", "<C-w>l", silent)
 
+-- Undo
+vim.keymap.set("n", "U", "<c-r>", silent)
+
 -- Tab Switching
 local modes = { "n", "x" }
 for i = 1, 8 do
