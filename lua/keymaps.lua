@@ -64,7 +64,7 @@ end
 vim.keymap.set("n", "<CR>", function()
 	vim.cmd.lcd("%:p:h")
 	-- print("new lcd: " .. trim_path(vim.fn.getcwd()))
-	print("...")
+	print(trim_path(vim.fn.getcwd()))
 end, silent)
 
 -- Deterministic Save Execution
