@@ -72,6 +72,7 @@ end, silent)
 
 -- NOTE(jlima): Bind Alt+Enter in insert mode to break the current line and open a new line below regardless of cursor position.
 vim.keymap.set("i", "<M-CR>", "<C-o>o", { noremap = true, silent = true })
+vim.keymap.set("i", "<S-M-CR>", "<C-o>O", { noremap = true, silent = true })
 
 -- Deterministic Save Execution
 local function safe_write()

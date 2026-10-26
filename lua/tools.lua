@@ -18,6 +18,7 @@ local function get_tab_state()
 			last_win = nil,
 			last_cursor = nil,
 			height = term_size,
+			cwd = nil,
 		}
 	end
 	return tab_state[tab]
@@ -88,8 +89,13 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	close_quickfix()
 
 	local function save_editor_pos()
-		state.last_win = vim.api.nvim_get_current_win()
-		state.last_cursor = vim.api.nvim_win_get_cursor(0)
+		local cur_win = vim.api.nvim_get_current_win()
+		local cur_buf = vim.api.nvim_win_get_buf(cur_win)
+		-- NOTE(jlima): Never record terminal window itself as last editor pos
+		if vim.bo[cur_buf].buftype ~= "terminal" then
+			state.last_win = cur_win
+			state.last_cursor = vim.api.nvim_win_get_cursor(0)
+		end
 	end
 
 	local function restore_editor_pos()
@@ -108,18 +114,18 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		end
 	end
 
-	local function send_terminal_cmd(job, payload)
+	local function send_terminal_cmd(job, payload, delay_ms)
 		if not payload or payload == "" then
 			return
 		end
+		local delay = delay_ms or 50
 		-- NOTE(jlima): Ctrl-C kills active foreground jobs, Ctrl-U purges buffered readline input
 		vim.fn.chansend(job, "\x03\x15")
 		vim.defer_fn(function()
-			-- NOTE(jlima): 20ms yields event loop so PTY line discipline finishes signal dispatch
 			if pcall(vim.fn.jobwait, { job }, 0) and vim.fn.jobwait({ job }, 0)[1] == -1 then
 				vim.fn.chansend(job, payload .. "\n")
 			end
-		end, 20)
+		end, delay)
 	end
 
 	local is_alive = state.buf
@@ -127,6 +133,22 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		and state.job
 		and pcall(vim.fn.jobwait, { state.job }, 0)
 		and vim.fn.jobwait({ state.job }, 0)[1] == -1
+
+	-- NOTE(jlima): Resolve file directory strictly from standard file buffers to avoid term:// URI pollution
+	local cur_buf = vim.api.nvim_get_current_buf()
+	local is_term_buf = vim.bo[cur_buf].buftype == "terminal"
+	local current_dir = nil
+
+	if not is_term_buf then
+		local current_file = vim.api.nvim_buf_get_name(cur_buf)
+		if current_file ~= "" and not current_file:match("^%a+://") then
+			current_dir = vim.fs.dirname(current_file)
+		end
+	end
+
+	if not current_dir then
+		current_dir = state.cwd or vim.fn.getcwd()
+	end
 
 	if not is_alive then
 		if state.buf and vim.api.nvim_buf_is_valid(state.buf) then
@@ -138,30 +160,41 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		vim.cmd("botright split")
 		vim.wo.winfixheight = true
 		vim.cmd("resize " .. state.height)
-
-		local current_file = vim.api.nvim_buf_get_name(0)
-		local current_dir = current_file ~= "" and vim.fs.dirname(current_file) or vim.fn.getcwd()
-
-		vim.cmd.term()
+		vim.cmd("enew")
 
 		state.buf = vim.api.nvim_get_current_buf()
 		state.win = vim.api.nvim_get_current_win()
-		state.job = vim.b.terminal_job_id
+		state.cwd = current_dir
 		vim.wo.statusline = "%#Normal# "
 
-		vim.fn.chansend(state.job, "cd " .. vim.fn.shellescape(current_dir) .. "\n")
+		-- NOTE(jlima): Bind terminal cwd at spawn to eliminate manual shell cd chatter
+		state.job = vim.fn.termopen(vim.o.shell, {
+			cwd = current_dir,
+		})
+
 		if cmd ~= "" then
-			vim.fn.chansend(state.job, cmd .. "\n")
+			-- NOTE(jlima): Allow shell startup and direnv initialization to finish before submitting payload
+			vim.defer_fn(function()
+				if pcall(vim.fn.jobwait, { state.job }, 0) and vim.fn.jobwait({ state.job }, 0)[1] == -1 then
+					vim.fn.chansend(state.job, cmd .. "\n")
+				end
+			end, 150)
+
 			if focus_insert then
 				vim.cmd("startinsert")
 			else
-				-- NOTE(jlima): Retain editor focus when executed via automated runner hook
 				restore_editor_pos()
 			end
 		else
 			vim.cmd("startinsert")
 		end
 		return
+	end
+
+	-- NOTE(jlima): Sync directory only when switching from an actual editor buffer in a different directory
+	if not is_term_buf and state.cwd ~= current_dir then
+		state.cwd = current_dir
+		vim.fn.chansend(state.job, "\x15cd " .. vim.fn.shellescape(current_dir) .. "\n")
 	end
 
 	local visible_win = nil
@@ -175,7 +208,6 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	if visible_win then
 		state.win = visible_win
 		state.height = vim.api.nvim_win_get_height(visible_win)
-		-- NOTE(jlima): Toggle closed ONLY when :T is called without an execution argument.
 		if cmd == "" then
 			if #get_normal_wins() > 1 then
 				pcall(vim.api.nvim_win_hide, visible_win)
@@ -313,8 +345,8 @@ local function execute_hook_command(bufnr)
 	end)
 
 	if expanded_cmd and expanded_cmd ~= "" then
-		local escaped_dir = vim.fn.fnameescape(buf_dir)
-		vim.cmd(string.format("T! cd %s && %s", escaped_dir, expanded_cmd))
+		-- NOTE(jlima): Dispatch expanded hook command without prepending cd
+		vim.cmd(string.format("T! %s", expanded_cmd))
 	end
 end
 
@@ -540,17 +572,6 @@ end, {
 })
 
 vim.api.nvim_create_user_command("D", "bdelete!", {})
-
--- vim.api.nvim_create_user_command("Cd", function()
--- 	local name = vim.api.nvim_buf_get_name(0)
--- 	local start = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
--- 	local git = vim.fs.find(".git", { path = start, upward = true })[1]
--- 	if git then
--- 		vim.cmd.lcd(vim.fs.dirname(git))
--- 	else
--- 		print("not a git repo")
--- 	end
--- end, {})
 
 vim.api.nvim_create_user_command("Cd", function()
 	local root = vim.fs.root(0, ".git")
