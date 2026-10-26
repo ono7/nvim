@@ -582,10 +582,23 @@ vim.api.nvim_create_user_command("Cd", function()
 	end
 end, { desc = "Change local window directory to git root" })
 
-vim.api.nvim_create_user_command("Mktags", function()
-	local root = vim.fs.root(0, ".git")
+vim.api.nvim_create_user_command("Mktags", function(opts)
+	local target_path
+	if opts.args and #opts.args > 0 then
+		-- NOTE(jlima): Normalize user-supplied path to resolve relative segments, tilde, and trailing separators.
+		target_path = vim.fs.normalize(vim.fn.fnamemodify(opts.args, ":p"))
+	else
+		target_path = 0
+	end
+
+	local root = vim.fs.root(target_path, ".git")
 	if not root then
 		return vim.notify("Not a git repository: cannot generate tags", vim.log.levels.WARN)
+	end
+
+	-- NOTE(jlima): Guard against invalid/unreadable directory paths before dispatching async process.
+	if vim.fn.isdirectory(root) ~= 1 then
+		return vim.notify("Target path is not a valid directory: " .. root, vim.log.levels.ERROR)
 	end
 
 	local args = {
@@ -613,16 +626,28 @@ vim.api.nvim_create_user_command("Mktags", function()
 	-- NOTE(jlima): Spawns ctags directly without a subshell; swaps tags.temp atomically to avoid corrupt reads during rebuilds.
 	vim.system(args, { cwd = root }, function(obj)
 		vim.schedule(function()
+			local tmp = root .. "/tags.temp"
+			local dst = root .. "/tags"
+
 			if obj.code == 0 then
-				os.rename(root .. "/tags.temp", root .. "/tags")
-				vim.notify("Tags updated: " .. root .. "/tags", vim.log.levels.INFO)
+				local ok, err = os.rename(tmp, dst)
+				if ok then
+					vim.notify("Tags updated: " .. dst, vim.log.levels.INFO)
+				else
+					os.remove(tmp)
+					vim.notify("Atomic rename failed: " .. (err or "unknown"), vim.log.levels.ERROR)
+				end
 			else
-				os.remove(root .. "/tags.temp")
+				os.remove(tmp)
 				vim.notify("Ctags failed (exit code " .. obj.code .. "): " .. (obj.stderr or ""), vim.log.levels.ERROR)
 			end
 		end)
 	end)
-end, { desc = "Generate tags with full disambiguation atomically in git root" })
+end, {
+	nargs = "?",
+	complete = "dir",
+	desc = "Generate tags with full disambiguation atomically in git root",
+})
 
 vim.api.nvim_create_user_command("Take", function(opts)
 	local path = vim.fn.fnamemodify(opts.args:gsub("%s+", "-"), ":p")
