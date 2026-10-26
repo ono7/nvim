@@ -23,10 +23,8 @@ vim.opt.tags = "./tags;,tags"
 
 -- NOTE(jlima): append system tag files to existing resolution chain
 vim.opt.tags:append({
-	"./system-tags;",
-	"system-tags",
-	"./system_tags;",
-	"system_tags",
+	"./stags;",
+	"stags",
 })
 
 vim.opt.tagcase = "smart"
