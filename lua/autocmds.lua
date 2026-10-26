@@ -66,7 +66,12 @@ vim.api.nvim_create_autocmd("FileType", {
 			"<cmd>cprev<CR>",
 			{ buffer = args.buf, silent = true, desc = "Previous quickfix entry" }
 		)
-		vim.keymap.set("n", "<CR>", "<CR>", { buffer = args.buf, desc = "Jump to quickfix entry" })
+		-- NOTE(jlima): explicitly execute .cc to bypass global <CR> mapping collision
+		vim.keymap.set("n", "<CR>", "<cmd>.cc<CR>", {
+			buffer = args.buf,
+			silent = true,
+			desc = "Jump to quickfix entry",
+		})
 	end,
 })
 
