@@ -64,7 +64,7 @@ local function trim_path(s)
 	return #s < 50 and s or s:sub(-(#s / 2))
 end
 
-vim.keymap.set("n", "<CR>", function()
+vim.keymap.set("n", "<M-CR>", function()
 	vim.cmd.lcd("%:p:h")
 	-- print("new lcd: " .. trim_path(vim.fn.getcwd()))
 	print(trim_path(vim.fn.getcwd()))
