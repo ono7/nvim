@@ -20,6 +20,15 @@ vim.opt.listchars = {
 
 -- vim.opt.tags = { "./tags;", "tags" }
 vim.opt.tags = "./tags;,tags"
+
+-- NOTE(jlima): append system tag files to existing resolution chain
+vim.opt.tags:append({
+	"./system-tags;",
+	"system-tags",
+	"./system_tags;",
+	"system_tags",
+})
+
 vim.opt.tagcase = "smart"
 
 -- NOTE(jlima): configure insert-mode completion options
