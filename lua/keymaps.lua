@@ -67,7 +67,7 @@ end
 vim.keymap.set("n", "-", function()
 	vim.cmd.lcd("%:p:h")
 	-- print("new lcd: " .. trim_path(vim.fn.getcwd()))
-	print(trim_path(vim.fn.getcwd()))
+	print("lcd: " .. trim_path(vim.fn.getcwd()))
 end, silent)
 
 -- NOTE(jlima): Bind Alt+Enter in insert mode to break the current line and open a new line below regardless of cursor position.
