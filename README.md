@@ -1,12 +1,22 @@
 ## bootstrap new workstation
 
-- short urls
+see other install scripts here
+https://webinstall.dev/
+
+### neovim install
+
+- install vim for mac and linux/debian
   curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/mac.sh | bash
   curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/debian.sh | sudo bash
 
 - long urls
   curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/debian.sh | sudo bash
   curl -sSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/mac.sh | bash
+
+### node install (mac/debian)
+
+- node install supports linux and macos
+  curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/node.sh | sudo bash
 
 ## notes
 
