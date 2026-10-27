@@ -1,6 +1,6 @@
 ## bootstrap new workstation
 
-see other install scripts here
+see other install scripts here for jq, prettier etc
 https://webinstall.dev/
 
 ### neovim install
