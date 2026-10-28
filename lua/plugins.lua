@@ -104,7 +104,7 @@ if has_snippy then
 	snippy.setup({
 		snippet_dirs = "~/.config/nvim/snippets",
 		mappings = {
-			is = {
+			ix = {
 				["<Tab>"] = "expand_or_advance",
 				-- ["<S-Tab>"] = "previous",
 			},
