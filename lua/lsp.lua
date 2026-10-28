@@ -5,13 +5,32 @@ vim.lsp.config("*", {
 	},
 })
 
-vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
-	return vim.lsp.handlers.hover(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
-end
+-- vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+-- 	return vim.lsp.handlers.hover(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
+-- end
+--
+-- vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+-- 	return vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
+-- end
 
-vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
-	return vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
-end
+local lsp_notify_group = vim.api.nvim_create_augroup("LspManualNotify", { clear = true })
+--- Manual LSP File Change Notification ---
+vim.api.nvim_create_autocmd("BufWritePost", {
+	group = lsp_notify_group,
+	callback = function(args)
+		local clients = vim.lsp.get_clients({ bufnr = args.buf })
+		for _, client in ipairs(clients) do
+			client:notify("workspace/didChangeWatchedFiles", {
+				changes = {
+					{
+						uri = vim.uri_from_bufnr(args.buf),
+						type = 2, -- LSP Protocol: 1 = Created, 2 = Changed, 3 = Deleted
+					},
+				},
+			})
+		end
+	end,
+})
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
