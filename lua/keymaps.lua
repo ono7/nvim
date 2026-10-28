@@ -305,6 +305,7 @@ vim.cmd([[
   xnoremap & :<C-u>'<,'>s/\%V\v
 
   cnoreabbrev qq qa!
+  cnoreabbrev da Da
   cnoreabbrev mktags Mktags
   cnoreabbrev mt Mktags
   cabbrev <expr> w!! (getcmdtype() == ':' && getcmdline() == 'w!!') ? 'w !sudo tee > /dev/null %' : 'w!!'

@@ -15,10 +15,10 @@ return {
 				-- Only include the Neovim runtime and specifically your config
 				-- Avoid using vim.api.nvim_get_runtime_file("", true) as it is too broad
 				library = {
-					-- vim.env.VIMRUNTIME,
-					vim.api.nvim_get_runtime_file("", true),
+					vim.env.VIMRUNTIME,
+					-- vim.api.nvim_get_runtime_file("", true),
 				},
-				maxPreload = 2000,
+				maxPreload = 500,
 				preloadFileSize = 1000,
 				-- Prevents the LSP from asking to configure your workspace every time
 				checkThirdParty = false,
