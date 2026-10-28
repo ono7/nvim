@@ -5,14 +5,6 @@ vim.lsp.config("*", {
 	},
 })
 
--- vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
--- 	return vim.lsp.handlers.hover(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
--- end
---
--- vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
--- 	return vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend("force", { border = border }, config or {}))
--- end
-
 local lsp_notify_group = vim.api.nvim_create_augroup("LspManualNotify", { clear = true })
 --- Manual LSP File Change Notification ---
 vim.api.nvim_create_autocmd("BufWritePost", {
@@ -32,6 +24,19 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
+-- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word
+-- fallback works when no LSP is running.
+vim.keymap.set("i", "<C-l>", function()
+	if vim.fn.pumvisible() == 1 then
+		return "<C-y>"
+	end
+	local clients = vim.lsp.get_clients({
+		bufnr = 0,
+		method = "textDocument/completion",
+	})
+	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
+end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
 	callback = function(args)
@@ -44,16 +49,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, { buffer = args.buf, desc = "LSP Hover Documentation" })
 
 		-- NOTE(jlima): Filter strictly for clients supporting textDocument/completion before triggering omnifunc.
-		vim.keymap.set("i", "<C-l>", function()
-			if vim.fn.pumvisible() == 1 then
-				return "<C-y>"
-			end
-			local clients = vim.lsp.get_clients({
-				bufnr = args.buf,
-				method = "textDocument/completion",
-			})
-			return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
-		end, { expr = true, replace_keycodes = true, buffer = args.buf, desc = "Smart Completion" })
+		-- vim.keymap.set("i", "<C-l>", function()
+		-- 	if vim.fn.pumvisible() == 1 then
+		-- 		return "<C-y>"
+		-- 	end
+		-- 	local clients = vim.lsp.get_clients({
+		-- 		bufnr = args.buf,
+		-- 		method = "textDocument/completion",
+		-- 	})
+		-- 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
+		-- end, { expr = true, replace_keycodes = true, buffer = args.buf, desc = "Smart Completion" })
 	end,
 })
 
