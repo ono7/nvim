@@ -1,7 +1,7 @@
 vim.lsp.config("*", {
 	root_markers = { ".git" },
 	float = {
-		border = border,
+		border = "rounded",
 	},
 })
 
@@ -61,7 +61,10 @@ vim.diagnostic.config({
 	update_in_insert = false,
 	virtual_text = false,
 	severity_sort = true,
-	float = { border = border },
+	float = { border = "rounded", source = true },
+	jump = {
+		float = true,
+	},
 })
 
 local diagnostic_group = vim.api.nvim_create_augroup("DiagnosticToggle", { clear = true })
