@@ -36,11 +36,11 @@ require("mason-tool-installer").setup({
 		"ansiblels",
 		"dockerls",
 		"gopls",
-		"jsonls",
+		-- "jsonls",
 		"lua_ls",
 		"pyright",
 		"ts_ls",
-		"vimls",
+		-- "vimls",
 		"yamlls",
 		-- Linters, Formatters & Binaries
 		"gofumpt",
