@@ -5,13 +5,18 @@ vim.g.mapleader = " "
 
 -- ctags completion
 
--- NOTE(jlima): fallback to native tag completion only when buffer omnifunc is empty
--- vim.keymap.set("i", "<C-l>", function()
--- 	if vim.bo.omnifunc == "" then
--- 		return "<C-x><C-]>"
--- 	end
--- 	return "<C-x><C-o>" or "<C-x><C-n>"
--- end, { expr = true, replace_keycodes = true, buffer = 0, desc = "Smart Completion" })
+-- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word
+-- fallback works when no LSP is running.
+vim.keymap.set("i", "<C-l>", function()
+	if vim.fn.pumvisible() == 1 then
+		return "<C-y>"
+	end
+	local clients = vim.lsp.get_clients({
+		bufnr = 0,
+		method = "textDocument/completion",
+	})
+	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
+end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
 
 vim.keymap.set("n", "<leader>q", function()
 	vim.diagnostic.setqflist({ bufnr = 0 })
