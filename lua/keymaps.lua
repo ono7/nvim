@@ -7,14 +7,34 @@ vim.g.mapleader = " "
 
 -- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word
 -- fallback works when no LSP is running.
+-- vim.keymap.set("i", "<C-l>", function()
+-- 	if vim.fn.pumvisible() == 1 then
+-- 		return "<C-y>"
+-- 	end
+-- 	local clients = vim.lsp.get_clients({
+-- 		bufnr = 0,
+-- 		method = "textDocument/completion",
+-- 	})
+-- 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
+-- end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
+
+-- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word fallback works when no LSP is running.
 vim.keymap.set("i", "<C-l>", function()
+	-- NOTE(jlima): Confirm selection if a popup item is actively chosen; otherwise close or fallback.
 	if vim.fn.pumvisible() == 1 then
-		return "<C-y>"
+		-- NOTE(jlima): If an item in the popup menu is explicitly selected, accept it with <C-y>.
+		if vim.fn.complete_info({ "selected" }).selected ~= -1 then
+			return "<C-y>"
+		end
+		-- NOTE(jlima): If no item is selected, advance to the first item.
+		return "<C-n>"
 	end
+
 	local clients = vim.lsp.get_clients({
 		bufnr = 0,
 		method = "textDocument/completion",
 	})
+
 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
 end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
 

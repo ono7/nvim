@@ -18,7 +18,7 @@ local bg_subtle = "#252932"
 local bg = "#1E2229"
 local fg = "#D8DBE1"
 local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
-local orange = "#CD916A"
+-- local orange = "#CD916A"
 -- local green = "#aec379"
 local green = "#A3BE8C"
 local orange = "#FA903E"
@@ -60,7 +60,7 @@ vim.g.terminal_color_15 = fg
 local hl_groups = {
 	Normal = { fg = fg, bg = bg },
 	NormalFloat = { fg = fg, bg = "none" },
-	FloatBorder = { fg = gray, bg = "none" },
+	FloatBorder = { fg = bg_light, bg = "none" },
 	Visual = { bg = bg_visual },
 	CursorLine = { bg = bg_light },
 	LineNr = { fg = gray, bg = bg },
