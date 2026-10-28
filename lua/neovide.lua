@@ -69,20 +69,23 @@ vim.g.neovide_progress_bar_enabled = false
 
 -- NOTE(jlima): Configure platform-specific typography and keybindings.
 if os_name == "Windows" or is_wsl then
-	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h16"
+	-- vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h16"
+	vim.o.guifont = "Hack, MesloLGL Nerd Font Mono:h16"
 	vim.g.neovide_input_use_logo = false
 	vim.opt.winaltkeys = "yes"
 elseif is_mac then
 	vim.g.neovide_pixel_geometry = "Unknown"
 	-- vim.o.guifont = "SF Mono,SFMono Nerd Font:h22"
-	vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h23"
+	vim.o.guifont = "Hack, MesloLGL Nerd Font Mono:h23"
+	-- vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h23"
 	-- vim.o.guifont = "SF Mono Terminal,IosevkaTerm Nerd Font:h22"
 
 	-- NOTE(jlima): Set line height for astigmatism readability.
 else
 	-- vim.o.guifont = "Iosevka Custom:h17:#e-subpixelantialias:#h-full"
 	-- vim.o.guifont = "Menlo, MesloLGL Nerd Font Mono:h22"
-	vim.o.guifont = "SF Mono, MesloLGL Nerd Font Mono:h22"
+	-- vim.o.guifont = "SF Mono, MesloLGL Nerd Font Mono:h22"
+	vim.o.guifont = "Hack, MesloLGL Nerd Font Mono:h22"
 end
 
 vim.opt.linespace = 21
