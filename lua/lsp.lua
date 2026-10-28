@@ -62,9 +62,10 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
 
 -- NOTE(jlima): Load Lua module tables from lua/lsp/*.lua and register them with vim.lsp.config.
 vim.lsp.config("pyright", require("lsp.pyright"))
+vim.lsp.config("lua_ls", require("lsp.lua_ls"))
 -- vim.lsp.config("ruff", require("lsp.ruff"))
 
 vim.lsp.enable({
 	"pyright",
-	"luals",
+	"lua_ls",
 })
