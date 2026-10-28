@@ -32,16 +32,15 @@ require("mason-lspconfig").setup()
 -- NOTE(jlima): Single declarative source of truth for all LSPs, linters, and formatters (deduplicated).
 require("mason-tool-installer").setup({
 	ensure_installed = {
-		-- Language Servers (via mason-lspconfig name resolution)
 		"ansiblels",
-		"dockerls",
 		"gopls",
-		-- "jsonls",
 		"lua_ls",
 		"pyright",
-		"ts_ls",
-		-- "vimls",
 		"yamlls",
+		-- "dockerls",
+		-- "jsonls",
+		-- "ts_ls",
+		-- "vimls",
 		-- Linters, Formatters & Binaries
 		"gofumpt",
 		"goimports",
