@@ -15,7 +15,9 @@ vim.g.colors_name = "google-dark-minimal"
 -- local green = "#a4bb68"
 -- local green = "#97b252"
 local bg_subtle = "#252932"
-local bg = "#1E2229"
+-- local bg = "#1E2229" -- works good but one below is slightly better
+local bg = "#1D2129"
+
 local fg = "#D8DBE1"
 local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
 -- local orange = "#CD916A"
@@ -27,7 +29,7 @@ local cmt = "#7F8996"
 local bg_light = "#363840"
 local bg_visual = "#42444D"
 local gray = "#A7A9B2"
-local gray_dim = "#515A7B"
+-- local gray_dim = "#515A7B"
 local red = "#F28B82"
 local blue = "#8AB4F8"
 
