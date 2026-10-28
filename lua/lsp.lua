@@ -34,18 +34,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "K", function()
 			vim.lsp.buf.hover({ border = "rounded" })
 		end, { buffer = args.buf, desc = "LSP Hover Documentation" })
-
-		-- NOTE(jlima): Filter strictly for clients supporting textDocument/completion before triggering omnifunc.
-		-- vim.keymap.set("i", "<C-l>", function()
-		-- 	if vim.fn.pumvisible() == 1 then
-		-- 		return "<C-y>"
-		-- 	end
-		-- 	local clients = vim.lsp.get_clients({
-		-- 		bufnr = args.buf,
-		-- 		method = "textDocument/completion",
-		-- 	})
-		-- 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
-		-- end, { expr = true, replace_keycodes = true, buffer = args.buf, desc = "Smart Completion" })
 	end,
 })
 
@@ -80,4 +68,6 @@ vim.lsp.enable({
 	"pyright",
 	"lua_ls",
 	"ansiblels",
+	"gopls",
+	"clangd",
 })
