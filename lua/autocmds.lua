@@ -11,6 +11,21 @@ local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { cle
 -- 	end,
 -- })
 
+local mason_hook = vim.api.nvim_create_augroup("MasonPackHooks", { clear = true }),
+vim.api.nvim_create_autocmd("PackChanged", {
+  group = mason_hook 
+  callback = function(ev)
+    local name = ev.data.spec.name
+    local kind = ev.data.kind
+    if name == "mason.nvim" and (kind == "install" or kind == "update") then
+      if not ev.data.active then
+        vim.cmd.packadd("mason.nvim")
+      end
+      pcall(vim.cmd, "MasonUpdate")
+    end
+  end,
+})
+
 local yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	group = yank_group,
