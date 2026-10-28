@@ -18,7 +18,68 @@ vim.pack.add({
 		src = gh("nvim-treesitter/nvim-treesitter"),
 		version = "main",
 	},
+  { src = gh("mason-org/mason.nvim")},
+  { src = gh("mason-org/mason-lspconfig.nvim")},
+  { src = gh("WhoIsSethDaniel/mason-tool-installer.nvim")},
 }, { confirm = false })
+
+-- NOTE(jlima): Initialize core registry before dependent bridges.
+require("mason").setup()
+
+-- NOTE(jlima): Initialize lspconfig bridge without duplicate ensure_installed list; tool-installer manages state.
+require("mason-lspconfig").setup()
+
+-- NOTE(jlima): Single declarative source of truth for all LSPs, linters, and formatters (deduplicated).
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    -- Language Servers (via mason-lspconfig name resolution)
+    "ansiblels",
+    "bashls",
+    "cssls",
+    "dockerls",
+    "eslint",
+    "gopls",
+    "html",
+    "jsonls",
+    "lua_ls",
+    "pyright",
+    "ruff",
+    "terraformls",
+    "ts_ls",
+    "vimls",
+    "yamlls",
+    -- Linters, Formatters & Binaries
+    "black",
+    "editorconfig-checker",
+    "gofumpt",
+    "goimports",
+    "golangci-lint",
+    "golines",
+    "gomodifytags",
+    "gotests",
+    "impl",
+    "jq",
+    "json-to-struct",
+    "misspell",
+    "revive",
+    "shellcheck",
+    "shfmt",
+    "sqlfmt",
+    "staticcheck",
+    "stylua",
+    "vint",
+    "yamlfmt",
+    "yamllint",
+    -- "clangd",
+    -- "delve",
+    -- "diagnosticls",
+    -- "hadolint",
+    -- "qmlls",
+    -- "sqlls",
+  },
+  auto_update = false,
+  run_on_start = true,
+})
 
 require("colorizer").setup({
 	"lua",

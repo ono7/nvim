@@ -13,8 +13,55 @@ vim.keymap.set("i", "<C-l>", function()
 	return "<C-x><C-o>"
 end, { expr = true, noremap = true })
 
--- ctags search
-vim.keymap.set({ "n", "v" }, "<C-]>", "g<C-]>", nore)
+vim.keymap.set("n", "<leader>q", function()
+	vim.diagnostic.setqflist({ bufnr = 0 })
+end, { desc = "Buffer LSP to Quickfix" })
+
+vim.keymap.set("n", "<leader>nq", function()
+	-- Get cursor position (0-indexed for API)
+	local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+
+	-- Fetch diagnostics for the current line
+	local diagnostics = vim.diagnostic.get(0, { lnum = lnum })
+	if #diagnostics == 0 then
+		vim.notify("No diagnostics found on current line", vim.log.levels.WARN)
+		return
+	end
+
+	-- Extract the rule ID (code) from the first diagnostic
+	local rule_id = diagnostics[1].code
+	if not rule_id then
+		vim.notify("Diagnostic does not contain a rule ID", vim.log.levels.WARN)
+		return
+	end
+
+	-- Get current line text
+	local line = vim.api.nvim_get_current_line()
+
+	-- Append logic: check if `# noqa` already exists to append vs create
+	local new_line
+	if line:match("# noqa:") then
+		new_line = line .. " " .. rule_id
+	elseif line:match("# noqa") then
+		new_line = line:gsub("# noqa", "# noqa: " .. rule_id)
+	else
+		new_line = line .. " # noqa: " .. tostring(rule_id)
+	end
+
+	-- Set the updated line
+	vim.api.nvim_set_current_line(new_line)
+
+	-- Optional: trigger formatter or clear diagnostics temporarily
+	vim.notify("Appended noqa for: " .. tostring(rule_id), vim.log.levels.INFO)
+end, { desc = "Automate Ansible noqa appending" })
+
+--- copy diagnostic
+vim.keymap.set("n", "<leader>e", function()
+	vim.diagnostic.open_float(nil, { focus = true })
+end)
+
+-- TODO(jlima): ctags search, we need to revisit this again with lsp integration
+-- vim.keymap.set({ "n", "v" }, "<C-]>", "g<C-]>", nore)
 
 -- shortcuts
 vim.keymap.set("n", "vw", "viw", nore)

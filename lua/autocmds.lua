@@ -2,29 +2,20 @@ local core_group = vim.api.nvim_create_augroup("CoreSystemAutoCmds", { clear = t
 local quickfix_group = vim.api.nvim_create_augroup("quickfixGroup", { clear = true })
 local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { clear = true })
 
--- prevents indenting when pressing : accross all files
--- vim.api.nvim_create_autocmd("FileType", {
--- 	group = indent_group,
--- 	pattern = "*",
--- 	callback = function()
--- 		vim.opt_local.indentkeys:remove({ "<:>", ":" })
--- 	end,
+-- local mason_hook = vim.api.nvim_create_augroup("MasonPackHooks", { clear = true })
+-- vim.api.nvim_create_autocmd("PackChanged", {
+--   group = mason_hook 
+--   callback = function(ev)
+--     local name = ev.data.spec.name
+--     local kind = ev.data.kind
+--     if name == "mason.nvim" and (kind == "install" or kind == "update") then
+--       if not ev.data.active then
+--         vim.cmd.packadd("mason.nvim")
+--       end
+--       pcall(vim.cmd, "MasonUpdate")
+--     end
+--   end,
 -- })
-
-local mason_hook = vim.api.nvim_create_augroup("MasonPackHooks", { clear = true }),
-vim.api.nvim_create_autocmd("PackChanged", {
-  group = mason_hook 
-  callback = function(ev)
-    local name = ev.data.spec.name
-    local kind = ev.data.kind
-    if name == "mason.nvim" and (kind == "install" or kind == "update") then
-      if not ev.data.active then
-        vim.cmd.packadd("mason.nvim")
-      end
-      pcall(vim.cmd, "MasonUpdate")
-    end
-  end,
-})
 
 local yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

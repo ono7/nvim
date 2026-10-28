@@ -59,8 +59,8 @@ vim.g.terminal_color_15 = fg
 -- NOTE(jlima): Apply strict monochrome mapping with explicit callouts for strings, numbers, and core keywords.
 local hl_groups = {
 	Normal = { fg = fg, bg = bg },
-	NormalFloat = { fg = fg, bg = bg_light },
-	FloatBorder = { fg = gray, bg = bg_light },
+	NormalFloat = { fg = fg, bg = "none" },
+	FloatBorder = { fg = gray, bg = "none" },
 	Visual = { bg = bg_visual },
 	CursorLine = { bg = bg_light },
 	LineNr = { fg = gray, bg = bg },
