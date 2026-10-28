@@ -24,19 +24,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
--- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word
--- fallback works when no LSP is running.
-vim.keymap.set("i", "<C-l>", function()
-	if vim.fn.pumvisible() == 1 then
-		return "<C-y>"
-	end
-	local clients = vim.lsp.get_clients({
-		bufnr = 0,
-		method = "textDocument/completion",
-	})
-	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
-end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
 	callback = function(args)
