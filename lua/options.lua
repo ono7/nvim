@@ -210,8 +210,8 @@ end
 -- Shell & Terminal Detection
 vim.o.shell = vim.fn.executable("zsh") == 1 and "zsh" or vim.o.shell
 
--- SSH OSC 52 Clipboard Integration
-if vim.env.SSH_TTY then
+-- NOTE(jlima): Fallback to OSC 52 over TTY when running in headless or SSH sessions.
+if vim.env.SSH_TTY or vim.env.SSH_CLIENT then
 	vim.g.clipboard = {
 		name = "OSC 52",
 		copy = {
@@ -224,3 +224,6 @@ if vim.env.SSH_TTY then
 		},
 	}
 end
+
+-- NOTE(jlima): Route unnamed operations through the defined provider.
+vim.opt.clipboard = "unnamedplus"
