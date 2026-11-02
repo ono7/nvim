@@ -72,6 +72,12 @@ unzip -q -o "$TMP_ZIP" -d "$DEST_BIN"
 rm -f "$TMP_ZIP"
 chmod 0755 "${DEST_BIN}/tree-sitter"
 
+log_step "Cleaning up previous neovim artifacts"
+
+rm -rf ~/.local/share/nvim
+rm -rf ~/.local/state/nvim
+rm -rf ~/.cache/nvim
+
 # 2. Install Neovim (Latest Stable Release)
 log_step "Installing latest Neovim stable (${NVIM_RELEASE})..."
 NVIM_URL="https://github.com/neovim/neovim/releases/download/stable/${NVIM_RELEASE}"
