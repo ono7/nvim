@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-nvim.sh | bash
 set -euo pipefail
 
 # NOTE(jlima): ANSI banner helper for tracking installation progress.
@@ -16,6 +17,7 @@ DEST_OPT="$HOME/.local/opt"
 DEST_BIN="$HOME/.local/bin"
 mkdir -p "$DEST_OPT" "$DEST_BIN"
 
+# NOTE(jlima): Export PATH locally within execution subshell so dependent bootstrap steps resolve new binaries immediately.
 export PATH="${DEST_BIN}:${PATH}"
 
 # NOTE(jlima): Verify prerequisite tools (node, rg, fd) exist; pull installer if absent.
@@ -25,7 +27,7 @@ if ! command -v node >/dev/null 2>&1 || ! command -v rg >/dev/null 2>&1 || ! com
     curl -fsSL "$PREREQ_INSTALL_URL" | bash
 fi
 
-# NOTE(jlima): Target release mapping for upstream assets.
+# NOTE(jlima): Target release mapping for upstream assets across Linux and macOS.
 OS_RAW="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH_RAW="$(uname -m)"
 
@@ -58,10 +60,8 @@ case "$OS_RAW" in
     *) echo "Unsupported OS: $OS_RAW" >&2; exit 1 ;;
 esac
 
-
 # 1. Install tree-sitter-cli (Latest Stable Release)
 log_step "Installing latest tree-sitter-cli (${TS_RELEASE})..."
-# NOTE(jlima): Use GitHub latest download endpoint to automatically follow redirect to newest stable artifact.
 TS_URL="https://github.com/tree-sitter/tree-sitter/releases/latest/download/${TS_RELEASE}"
 TMP_ZIP="$(mktemp "${TMPDIR:-/tmp}/tree-sitter.XXXXXX.zip")"
 curl -fsSL "$TS_URL" -o "$TMP_ZIP"
@@ -71,14 +71,7 @@ rm -f "$TMP_ZIP"
 chmod 0755 "${DEST_BIN}/tree-sitter"
 
 # 2. Install Neovim (Latest Stable Release)
-
-log_step "Cleaning up old artifcats...." 
-
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-
 log_step "Installing latest Neovim stable (${NVIM_RELEASE})..."
-# NOTE(jlima): Use official stable release alias tag.
 NVIM_URL="https://github.com/neovim/neovim/releases/download/stable/${NVIM_RELEASE}"
 NVIM_INSTALL_ROOT="${DEST_OPT}/neovim"
 
@@ -110,10 +103,55 @@ log_step "Bootstrapping Neovim plugins and Tree-sitter parsers..."
 "${DEST_BIN}/nvim" --headless "+lua vim.pack.update()" +qa
 "${DEST_BIN}/nvim" --headless "+TSInstallMyParsers" +qa
 
-# 5. Verification
+# 5. Shell RC PATH reconciliation
+log_step "Configuring shell RC files for PATH exports..."
+
+# NOTE(jlima): Configure PATH export idempotently across active and default shell configurations.
+ensure_path_in_file() {
+    local rc_file="$1"
+    local export_line='export PATH="$HOME/.local/bin:$PATH"'
+
+    if [ ! -f "$rc_file" ]; then
+        touch "$rc_file"
+    fi
+
+    if grep -qs '\.local/bin' "$rc_file"; then
+        printf "  [-] %s already contains ~/.local/bin in PATH.\n" "$rc_file"
+    else
+        printf "\n# NOTE(jlima): Ensure local user binaries take precedence in PATH\n%s\n" "$export_line" >> "$rc_file"
+        printf "  [+] Appended PATH export to %s\n" "$rc_file"
+    fi
+}
+
+# NOTE(jlima): Resolve user target RC files depending on shell environments.
+TARGET_RCS=()
+
+# zsh detection
+if [ -f "$HOME/.zshrc" ] || [[ "${SHELL:-}" =~ "zsh" ]]; then
+    TARGET_RCS+=("$HOME/.zshrc")
+fi
+
+# bash detection
+if [ -f "$HOME/.bashrc" ] || [[ "${SHELL:-}" =~ "bash" ]]; then
+    TARGET_RCS+=("$HOME/.bashrc")
+fi
+
+# login profile fallback on macOS/BSD where interactive login shells read .profile or .bash_profile
+if [ "$OS_RAW" = "darwin" ] && [ -f "$HOME/.zprofile" ]; then
+    TARGET_RCS+=("$HOME/.zprofile")
+elif [ -f "$HOME/.bash_profile" ]; then
+    TARGET_RCS+=("$HOME/.bash_profile")
+elif [ -f "$HOME/.profile" ]; then
+    TARGET_RCS+=("$HOME/.profile")
+fi
+
+for rc in "${TARGET_RCS[@]}"; do
+    ensure_path_in_file "$rc"
+done
+
+# 6. Verification
 log_step "Verification complete:"
 "${DEST_BIN}/nvim" --version | head -n 2
 "${DEST_BIN}/tree-sitter" --version
 
-printf "\n\033[1;32m==>\033[0m Ensure \033[1m%s\033[0m is in your shell PATH:\n" "$DEST_BIN"
-printf "    export PATH=\"%s:\$PATH\"\n\n" "$DEST_BIN"
+printf "\n\033[1;32m==>\033[0m Success. Run \033[1msource <your-rc-file>\033[0m or launch a new terminal to reload PATH.\n\n"h
