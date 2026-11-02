@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-nvim.sh | bash
 set -euo pipefail
+
+## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-nvim.sh | bash
 
 # NOTE(jlima): ANSI banner helper for tracking installation progress.
 log_step() {
