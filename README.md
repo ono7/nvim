@@ -3,6 +3,10 @@
 see other install scripts here for jq, prettier etc
 https://webinstall.dev/
 
+### Install minimal version of neovim with node/rg/fd/tree-sitter suppord
+
+curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/install.sh | bash
+
 ### neovim install
 
 - install vim for mac and linux/debian
