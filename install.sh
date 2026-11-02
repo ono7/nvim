@@ -58,6 +58,7 @@ case "$OS_RAW" in
     *) echo "Unsupported OS: $OS_RAW" >&2; exit 1 ;;
 esac
 
+
 # 1. Install tree-sitter-cli (Latest Stable Release)
 log_step "Installing latest tree-sitter-cli (${TS_RELEASE})..."
 # NOTE(jlima): Use GitHub latest download endpoint to automatically follow redirect to newest stable artifact.
@@ -70,6 +71,12 @@ rm -f "$TMP_ZIP"
 chmod 0755 "${DEST_BIN}/tree-sitter"
 
 # 2. Install Neovim (Latest Stable Release)
+
+log_step "Cleaning up old artifcats...." 
+
+rm -rf ~/.local/share/nvim
+rm -rf ~/.local/state/nvim
+
 log_step "Installing latest Neovim stable (${NVIM_RELEASE})..."
 # NOTE(jlima): Use official stable release alias tag.
 NVIM_URL="https://github.com/neovim/neovim/releases/download/stable/${NVIM_RELEASE}"
