@@ -95,7 +95,9 @@ CONFIG_DIR="$HOME/.config/nvim"
 
 log_step "Reconciling Neovim configuration repository at ${CONFIG_DIR}..."
 if [ -d "$CONFIG_DIR/.git" ]; then
-    git -C "$CONFIG_DIR" pull --ff-only
+    # git -C "$CONFIG_DIR" pull --ff-only
+    rm -rf "$CONFIG_DIR"
+    git clone "$CONFIG_REPO" "$CONFIG_DIR"
 else
     rm -rf "$CONFIG_DIR"
     git clone "$CONFIG_REPO" "$CONFIG_DIR"
