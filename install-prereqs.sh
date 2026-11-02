@@ -123,6 +123,14 @@ cp -f "${TMP_FD_DIR}/${FD_NAME}/fd" "${DEST_BIN}/fd"
 chmod 0755 "${DEST_BIN}/fd"
 rm -rf "$TMP_FD_DIR"
 
+log_step "install jq"
+
+curl -sS https://webi.sh/jq | sh
+
+log_step "install prettier"
+
+npm install -g prettier
+
 # -----------------------------------------------------------------------------
 # Verification
 # -----------------------------------------------------------------------------
@@ -131,3 +139,4 @@ log_step "Verification complete:"
 "${DEST_BIN}/npm" -v
 "${DEST_BIN}/rg" --version | head -n 1
 "${DEST_BIN}/fd" --version
+"${DEST_BIN}/jq" --version
