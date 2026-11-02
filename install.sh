@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euox pipefail
 
 ## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-nvim.sh | bash
 
