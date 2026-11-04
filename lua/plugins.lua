@@ -13,7 +13,7 @@ vim.pack.add({
 	{ src = gh("dcampos/nvim-snippy") },
 	{ src = gh("stevearc/quicker.nvim") },
 	{ src = gh("stevearc/dressing.nvim") },
-	{ src = gh("norcalli/nvim-colorizer.lua") },
+	-- { src = gh("norcalli/nvim-colorizer.lua") },
 	{
 		src = gh("nvim-treesitter/nvim-treesitter"),
 		version = "main",
@@ -62,16 +62,16 @@ require("mason-tool-installer").setup({
 	run_on_start = false,
 })
 
-require("colorizer").setup({
-	"lua",
-	"css",
-	"html",
-}, {
-	RGB = true,
-	RRGGBB = true,
-	names = false,
-	mode = "background",
-})
+-- require("colorizer").setup({
+-- 	"lua",
+-- 	"css",
+-- 	"html",
+-- }, {
+-- 	RGB = true,
+-- 	RRGGBB = true,
+-- 	names = false,
+-- 	mode = "background",
+-- })
 
 -- quickfix editor
 require("quicker").setup({
