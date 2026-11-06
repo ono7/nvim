@@ -544,14 +544,17 @@ vim.api.nvim_create_user_command("Da", function(opts_cmd)
 		return
 	end
 
+	-- NOTE(jlima): Invert bang semantics so force-delete is the default; bang preserves unwritten changes.
+	local force_delete = not opts_cmd.bang
 	local closed, skipped_modified = 0, 0
+
 	for _, buf in ipairs(targets) do
 		if vim.api.nvim_buf_is_valid(buf) then
 			local ok_mod, is_modified = pcall(vim.api.nvim_get_option_value, "modified", { buf = buf })
-			if not opts_cmd.bang and ok_mod and is_modified then
+			if not force_delete and ok_mod and is_modified then
 				skipped_modified = skipped_modified + 1
 			else
-				if pcall(vim.api.nvim_buf_delete, buf, { force = opts_cmd.bang }) then
+				if pcall(vim.api.nvim_buf_delete, buf, { force = force_delete }) then
 					closed = closed + 1
 				end
 			end
@@ -561,7 +564,7 @@ vim.api.nvim_create_user_command("Da", function(opts_cmd)
 	if skipped_modified > 0 then
 		vim.notify(
 			string.format(
-				"Closed %d buffer(s). Skipped %d modified buffer(s) (use :Da! to force).",
+				"Closed %d buffer(s). Skipped %d modified buffer(s) (run :Da without '!' to force).",
 				closed,
 				skipped_modified
 			),
@@ -573,7 +576,7 @@ vim.api.nvim_create_user_command("Da", function(opts_cmd)
 end, {
 	bang = true,
 	nargs = "?",
-	desc = "Close buffers matching pattern(s); prefix with '!' to exclude",
+	desc = "Force close matching buffers by default; use '!' to preserve unsaved buffers",
 })
 
 vim.api.nvim_create_user_command("D", "bdelete!", {})
