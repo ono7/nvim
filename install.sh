@@ -87,7 +87,7 @@ rm -rf "${DEST_OPT:?}/${NVIM_DIR_NAME}" "$NVIM_INSTALL_ROOT"
 curl -fsSL "$NVIM_URL" | tar -xz -C "$DEST_OPT"
 mv "${DEST_OPT}/${NVIM_DIR_NAME}" "$NVIM_INSTALL_ROOT"
 
-ln -sf "${NVIM_INSTALL_ROOT}/bin/nvim" "${DEST_BIN}/nvim"
+ln -sfv "${NVIM_INSTALL_ROOT}/bin/nvim" "${DEST_BIN}/nvim"
 
 # 3. Deploy Neovim dotfiles configuration
 CONFIG_REPO="https://github.com/ono7/nvim.git"
@@ -106,7 +106,7 @@ fi
 
 if [ -d "${CONFIG_DIR}/ctags.d" ]; then
     rm -rf "$HOME/.ctags.d"
-    ln -sfnv "${CONFIG_DIR}/ctags.d" "$HOME/.ctags.d"
+    ln -sfvn "${CONFIG_DIR}/ctags.d" "$HOME/.ctags.d"
 fi
 
 # 4. Bootstrap plugins and parsers headlessly
