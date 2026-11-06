@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euox pipefail
 
-## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-nvim.sh | bash
+## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install.sh | bash
 
 # NOTE(jlima): ANSI banner helper for tracking installation progress.
 log_step() {
@@ -95,9 +95,10 @@ CONFIG_DIR="$HOME/.config/nvim"
 
 log_step "Reconciling Neovim configuration repository at ${CONFIG_DIR}..."
 if [ -d "$CONFIG_DIR/.git" ]; then
-    # git -C "$CONFIG_DIR" pull --ff-only
-    rm -rf "$CONFIG_DIR"
-    git clone "$CONFIG_REPO" "$CONFIG_DIR"
+    # if exists just pull changes
+    git -C "$CONFIG_DIR" pull --ff-only
+    # rm -rf "$CONFIG_DIR"
+    # git clone "$CONFIG_REPO" "$CONFIG_DIR"
 else
     rm -rf "$CONFIG_DIR"
     git clone "$CONFIG_REPO" "$CONFIG_DIR"
