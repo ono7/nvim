@@ -60,9 +60,9 @@ rm -rf "${DEST_OPT}/node"
 mv "${DEST_OPT}/${NODE_RELEASE}" "${DEST_OPT}/node"
 
 log_step "Symlinking Node binaries into ${DEST_BIN}..."
-ln -sf "${DEST_OPT}/node/bin/node" "${DEST_BIN}/node"
-ln -sf "${DEST_OPT}/node/bin/npm"  "${DEST_BIN}/npm"
-ln -sf "${DEST_OPT}/node/bin/npx"  "${DEST_BIN}/npx"
+ln -sfv "${DEST_OPT}/node/bin/node" "${DEST_BIN}/node"
+ln -sfv "${DEST_OPT}/node/bin/npm"  "${DEST_BIN}/npm"
+ln -sfv "${DEST_OPT}/node/bin/npx"  "${DEST_BIN}/npx"
 
 log_step "Configuring npm global prefix to ~/.local..."
 "${DEST_BIN}/npm" config set prefix "$HOME/.local"
