@@ -194,6 +194,56 @@ local function show_truncate_left(buf_id, items_to_show, query)
 	pick.default_show(buf_id, truncated_items, query)
 end
 
+-- NOTE(jlima): Query zoxide database and set window-local cwd safely handling spaces and WSL mount paths
+local function pick_zoxide()
+	if vim.fn.executable("zoxide") == 0 then
+		vim.notify("zoxide executable not found in PATH", vim.log.levels.ERROR)
+		return
+	end
+
+	-- NOTE(jlima): fetch raw list of matching directories from zoxide frecency db
+	local result = vim.system({ "zoxide", "query", "-l" }, { text = true }):wait()
+	if result.code ~= 0 or not result.stdout then
+		vim.notify("zoxide query failed", vim.log.levels.WARN)
+		return
+	end
+
+	local dirs = {}
+	for line in result.stdout:gmatch("[^\r\n]+") do
+		if line ~= "" and vim.uv.fs_stat(line) ~= nil then
+			table.insert(dirs, line)
+		end
+	end
+
+	if #dirs == 0 then
+		vim.notify("zoxide database is empty", vim.log.levels.INFO)
+		return
+	end
+
+	pick.start({
+		source = {
+			name = "Zoxide",
+			items = dirs,
+			show = show_truncate_left,
+			choose = function(item)
+				if not item or item == "" then
+					return
+				end
+				-- NOTE(jlima): vim.fn.chdir avoids Ex command parsing issues with spaces and parens in path
+				local ok, err = pcall(vim.fn.chdir, item)
+				if ok then
+					vim.notify("lcd: " .. item, vim.log.levels.INFO)
+				else
+					vim.notify("Failed to lcd to " .. item .. ": " .. tostring(err), vim.log.levels.ERROR)
+				end
+			end,
+		},
+	})
+end
+
+pick.registry.zoxide = pick_zoxide
+vim.keymap.set("n", "<M-z>", pick_zoxide, { noremap = true, silent = true, desc = "Zoxide (lcd)" })
+
 -- NOTE(jlima): fast fd files picker; excludes build artifacts to restore rg-level throughput
 pick.registry.files = function(local_opts)
 	local_opts = local_opts or {}
