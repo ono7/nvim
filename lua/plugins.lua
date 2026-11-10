@@ -1,4 +1,6 @@
 -- NOTE(jlima): Package manifest managing remote repositories via vim.pack.
+-- update all
+-- :lua vim.pack.update(nil, {force = true})
 local gh = function(x)
 	return "https://github.com/" .. x
 end
