@@ -47,20 +47,21 @@ vim.diagnostic.config({
 	},
 })
 
-local diagnostic_group = vim.api.nvim_create_augroup("DiagnosticToggle", { clear = true })
-vim.api.nvim_create_autocmd("InsertEnter", {
-	group = diagnostic_group,
-	callback = function()
-		vim.diagnostic.enable(false)
-	end,
-})
-
-vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
-	group = diagnostic_group,
-	callback = function()
-		vim.diagnostic.enable(true)
-	end,
-})
+-- not needed if update_in_insert = false in vim.diagnostics.config
+-- local diagnostic_group = vim.api.nvim_create_augroup("DiagnosticToggle", { clear = true })
+-- vim.api.nvim_create_autocmd("InsertEnter", {
+-- 	group = diagnostic_group,
+-- 	callback = function()
+-- 		vim.diagnostic.enable(false)
+-- 	end,
+-- })
+--
+-- vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
+-- 	group = diagnostic_group,
+-- 	callback = function()
+-- 		vim.diagnostic.enable(true)
+-- 	end,
+-- })
 
 -- add configs under ~/.config/nvim/lsp/
 -- file name must match the language server to enable
