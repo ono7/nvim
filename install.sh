@@ -21,7 +21,10 @@ DEST_BIN="$HOME/.local/bin"
 mkdir -p "$DEST_OPT" "$DEST_BIN"
 
 # NOTE(jlima): Export PATH locally within execution subshell so dependent bootstrap steps resolve new binaries immediately.
-export PATH="${DEST_BIN}:${PATH}"
+export PATH="$HOME/.local/bin:$HOME/.npm-global/bin/npm:${DEST_BIN}:${PATH}"
+export GOROOT="${HOME}/.local/go"
+export GOPATH="${HOME}/go"
+export PATH="${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
 # NOTE(jlima): Verify prerequisite tools (node, rg, fd) exist; pull installer if absent.
 if ! command -v node >/dev/null 2>&1 || ! command -v rg >/dev/null 2>&1 || ! command -v fd >/dev/null 2>&1; then
