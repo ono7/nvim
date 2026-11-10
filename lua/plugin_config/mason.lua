@@ -28,7 +28,7 @@ if has_installer and has_registry then
 				-- Linters, Formatters & Binaries
 				"gofumpt",
 				"goimports",
-				"goimports-revisor",
+				"goimports-reviser",
 				"golangci-lint",
 				"golines",
 				"gomodifytags",
