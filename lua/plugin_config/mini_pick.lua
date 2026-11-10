@@ -73,7 +73,17 @@ local function pick_zoxide()
 				if not item or item == "" then
 					return
 				end
-				local ok, err = pcall(vim.fn.chdir, item)
+
+				local state = pick.get_picker_state()
+				local target_win = state and state.windows and state.windows.target
+				if not target_win or not vim.api.nvim_win_is_valid(target_win) then
+					target_win = vim.api.nvim_get_current_win()
+				end
+
+				local ok, err = pcall(vim.api.nvim_win_call, target_win, function()
+					vim.cmd.lcd(vim.fn.fnameescape(item))
+				end)
+
 				if ok then
 					vim.notify("lcd: " .. item, vim.log.levels.INFO)
 				else
