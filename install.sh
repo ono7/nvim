@@ -111,8 +111,11 @@ fi
 
 # 4. Bootstrap plugins and parsers headlessly
 log_step "Bootstrapping Neovim plugins and Tree-sitter parsers..."
-"${DEST_BIN}/nvim" --headless "+lua vim.pack.update()" +qa
+"${DEST_BIN}/nvim" --headless "+UpdateRemotePlugins" +qa
+"${DEST_BIN}/nvim" --headless "+lua vim.pack.update(nil, {force = true})" +qa
 "${DEST_BIN}/nvim" --headless "+TSInstallMyParsers" +qa
+"${DEST_BIN}/nvim" --headless "+TSInstallMyParsers" +qa
+"${DEST_BIN}/nvim" --headless "+MasonToolsInstallSync" +qa
 
 # 5. Shell RC PATH reconciliation
 log_step "Configuring shell RC files for PATH exports..."
