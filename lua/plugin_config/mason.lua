@@ -18,6 +18,7 @@ if has_installer then
 	tool_installer.setup({
 		ensure_installed = {
 			"ansiblels",
+			"clang-format",
 			"gopls",
 			"lua_ls",
 			"pyright",
@@ -25,6 +26,7 @@ if has_installer then
 			-- Linters, Formatters & Binaries
 			"gofumpt",
 			"goimports",
+			"goimports-revisor",
 			"golangci-lint",
 			"golines",
 			"gomodifytags",
