@@ -167,11 +167,6 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		state.cwd = current_dir
 		vim.wo.statusline = "%#Normal# "
 
-		-- NOTE(jlima): Bind terminal cwd at spawn to eliminate manual shell cd chatter
-		-- termopen is depricated
-		-- state.job = vim.fn.termopen(vim.o.shell, {
-		-- 	cwd = current_dir,
-		-- })
 		state.job = vim.fn.jobstart(vim.o.shell, {
 			term = true,
 			cwd = current_dir,
