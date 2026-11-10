@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euox pipefail
+set -euo pipefail
 
 ## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install.sh | bash
 
@@ -7,6 +7,8 @@ set -euox pipefail
 log_step() {
     printf "\n\033[1;36m==>\033[0m \033[1m%s\033[0m\n" "$1"
 }
+
+log_step "This installer supports MacOS and Linux"
 
 # NOTE(jlima): Enforce strictly unprivileged user execution.
 if [ "${EUID:-$(id -u)}" -eq 0 ] || [ -n "${SUDO_USER:-}" ]; then
@@ -167,5 +169,7 @@ done
 log_step "Verification complete:"
 "${DEST_BIN}/nvim" --version | head -n 2
 "${DEST_BIN}/tree-sitter" --version
+
+log_step "${OS_RAW} - ${ARCH_RAW}"
 
 printf "\n\033[1;32m==>\033[0m Success. Run \033[1msource <your-rc-file>\033[0m or launch a new terminal to reload PATH.\n\n"h
