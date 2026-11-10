@@ -148,14 +148,34 @@ pick.registry.grep_live = function(local_opts)
 	return pick.builtin.grep_live(rg_opts, vim.tbl_deep_extend("force", default_opts, local_opts))
 end
 
+-- NOTE(jlima): sync shada from disk and prepend current session buffers for real-time recency
 local function pick_oldfiles()
-	local old = vim.tbl_filter(function(path)
-		return path ~= "" and vim.uv.fs_stat(path) ~= nil
-	end, vim.v.oldfiles)
+	-- NOTE(jlima): force read latest shada file from disk into runtime state
+	pcall(vim.cmd, "rshada!")
 
+	local seen = {}
 	local items = {}
-	for i = 1, math.min(#old, 50) do
-		table.insert(items, old[i])
+
+	-- NOTE(jlima): collect valid file buffers from active session first
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+			local name = vim.api.nvim_buf_get_name(buf)
+			if name ~= "" and vim.uv.fs_stat(name) ~= nil and not seen[name] then
+				seen[name] = true
+				table.insert(items, name)
+			end
+		end
+	end
+
+	-- NOTE(jlima): merge historical v:oldfiles preserving access order
+	for _, path in ipairs(vim.v.oldfiles or {}) do
+		if path ~= "" and not seen[path] and vim.uv.fs_stat(path) ~= nil then
+			seen[path] = true
+			table.insert(items, path)
+		end
+		if #items >= 50 then
+			break
+		end
 	end
 
 	pick.start({
