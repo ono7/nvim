@@ -19,11 +19,13 @@ local bg_subtle = "#252932"
 local bg = "#1D2129"
 
 local fg = "#D8DBE1"
-local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
+-- local yellow = "#D4B976" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
+local yellow = "#DCA561" -- NOTE(jlima): matches desaturated earthy tone and luminance of the green
 -- local orange = "#CD916A"
 -- local green = "#aec379"
 local green = "#A3BE8C"
-local orange = "#FA903E"
+-- local orange = "#FA903E"
+local orange = "#DCA561"
 local purple = "#C58AF9"
 local cmt = "#7F8996"
 local bg_light = "#363840"
