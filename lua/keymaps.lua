@@ -341,3 +341,25 @@ vim.keymap.set("v", "gh", function()
 	-- NOTE(jlima): Utilize Neovim 0.10+ native URL opener (uses xdg-open on your Linux setups)
 	vim.ui.open(url)
 end, { desc = "Search Google for visual selection + filetype" })
+
+-- NOTE(jlima): Toggle window maximization via isolated tabpage to preserve exact split tree and terminal state.
+local function toggle_maximize()
+	if vim.t.maximized_win then
+		if vim.api.nvim_tabpage_is_valid(vim.t.maximized_tab) and #vim.api.nvim_list_tabpages() > 1 then
+			vim.cmd("tabclose")
+		end
+		return
+	end
+
+	local cur_win = vim.api.nvim_get_current_win()
+	vim.cmd("tab split")
+	vim.t.maximized_win = cur_win
+	vim.t.maximized_tab = vim.api.nvim_get_current_tabpage()
+end
+
+vim.keymap.set("n", "<M-y>", toggle_maximize, { silent = true, desc = "Toggle maximize current window" })
+vim.keymap.set("t", "<M-y>", function()
+	-- NOTE(jlima): Escape terminal mode to run window command deterministically.
+	vim.cmd([[stopinsert]])
+	toggle_maximize()
+end, { silent = true, desc = "Toggle maximize current terminal window" })

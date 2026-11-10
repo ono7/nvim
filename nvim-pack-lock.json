@@ -9,7 +9,7 @@
       "src": "https://github.com/stevearc/dressing.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "a338f44149f5673882c32629697d67b0c0547aec",
+      "rev": "55eceab8975036ac43a4176cbfe0d4bf1ddae93f",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-tool-installer.nvim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.pick": {
-      "rev": "7cb8fd34bde460986e5e39e9539a9f992ec9772e",
+      "rev": "f1216d764d0c2772e88d4e1a0cef3082f5b498e1",
       "src": "https://github.com/echasnovski/mini.pick"
     },
     "nvim-colorizer.lua": {
@@ -29,11 +29,11 @@
       "src": "https://github.com/norcalli/nvim-colorizer.lua"
     },
     "nvim-snippy": {
-      "rev": "1f5a5c82cb4902522806a58cf25479f6f8fe16ac",
+      "rev": "fb49f5cf32bd20d0aa8804648c15775ace2fc66a",
       "src": "https://github.com/dcampos/nvim-snippy"
     },
     "nvim-treesitter": {
-      "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2",
+      "rev": "19bdfc04f40ed2ccb3340591d125f759b0406875",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
