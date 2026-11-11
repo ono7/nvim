@@ -47,21 +47,22 @@ vim.diagnostic.config({
 	},
 })
 
--- not needed if update_in_insert = false in vim.diagnostics.config
--- local diagnostic_group = vim.api.nvim_create_augroup("DiagnosticToggle", { clear = true })
--- vim.api.nvim_create_autocmd("InsertEnter", {
--- 	group = diagnostic_group,
--- 	callback = function()
--- 		vim.diagnostic.enable(false)
--- 	end,
--- })
---
--- vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
--- 	group = diagnostic_group,
--- 	callback = function()
--- 		vim.diagnostic.enable(true)
--- 	end,
--- })
+-- NOTE(jlima): Buffer-scoped diagnostic toggle to isolate extmark redraws to current bufnr
+local diagnostic_group = vim.api.nvim_create_augroup("DiagnosticToggle", { clear = true })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+	group = diagnostic_group,
+	callback = function(args)
+		vim.diagnostic.enable(false, { bufnr = args.buf })
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
+	group = diagnostic_group,
+	callback = function(args)
+		vim.diagnostic.enable(true, { bufnr = args.buf })
+	end,
+})
 
 -- add configs under ~/.config/nvim/lsp/
 -- file name must match the language server to enable
