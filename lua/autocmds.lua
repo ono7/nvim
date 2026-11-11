@@ -241,6 +241,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = format_group,
 	pattern = "*",
 	callback = function()
-		vim.opt_local.formatoptions:remove({ "r", "o" })
+		vim.opt_local.formatoptions:remove({ "c", "r", "o" })
 	end,
 })
