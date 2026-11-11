@@ -3,6 +3,8 @@ set -euo pipefail
 
 ## curl -fsSL https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install.sh | bash
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # NOTE(jlima): ANSI banner helper for tracking installation progress.
 log_step() {
     printf "\n\033[1;36m==>\033[0m \033[1m%s\033[0m\n" "$1"
