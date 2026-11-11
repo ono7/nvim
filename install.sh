@@ -109,7 +109,7 @@ export GOPATH="${GOPATH}"
 export PATH="${DEST_BIN}:${GOROOT}/bin:${GOPATH}/bin:$HOME/.npm-global/bin:${PATH}"
 
 # 2. Verify external prerequisites
-if ! command -v node >/dev/null 2>&1 || ! command -v rg >/dev/null 2>&1 || ! command -v fd >/dev/null 2>&1; then
+if ! command -v node >/dev/null 2>&1 || ! command -v rg >/dev/null 2>&1 || ! command -v fd >/dev/null 2>&1 || ! command -v hunk >/dev/null 2>&1; then
     log_step "Prerequisites missing from PATH. Invoking prerequisite installer..."
     PREREQ_INSTALL_URL="https://raw.githubusercontent.com/ono7/nvim/refs/heads/main/install-prereqs.sh"
     curl -fsSL "$PREREQ_INSTALL_URL" | bash
