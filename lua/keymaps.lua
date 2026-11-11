@@ -258,7 +258,7 @@ vim.keymap.set("c", "<C-a>", "<Home>", nore)
 vim.keymap.set("c", "<C-e>", "<End>", nore)
 vim.keymap.set("c", "<C-b>", "<Left>", nore)
 -- disable this so that we can use completion in command mode
--- map("c", "<C-d>", "<Del>", nore)
+vim.keymap.set("c", "<C-d>", "<Del>", nore)
 vim.keymap.set("c", "<C-BS>", "<C-w>", nore)
 vim.keymap.set("c", "<M-b>", "<S-Left>", nore)
 vim.keymap.set("c", "<M-f>", "<S-Right>", nore)
