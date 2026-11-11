@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # NOTE(jlima): ANSI banner helper for tracking installation progress.
 log_step() {
     printf "\n\033[1;36m==>\033[0m \033[1m%s\033[0m\n" "$1"
@@ -130,6 +132,7 @@ curl -sS https://webi.sh/jq | sh
 log_step "install prettier"
 
 npm install -g prettier
+
 
 log_step "install hunk"
 curl -fsSL https://hunk.dev/install.sh | HUNK_INSTALL_DIR=$HOME/.local/bin sh -s -- --no-modify-path
