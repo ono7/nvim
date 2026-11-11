@@ -131,6 +131,9 @@ log_step "install prettier"
 
 npm install -g prettier
 
+log_step "install hunk"
+curl -fsSL https://hunk.dev/install.sh | HUNK_INSTALL_DIR=$HOME/.local/bin sh -s -- --no-modify-path
+
 # -----------------------------------------------------------------------------
 # Verification
 # -----------------------------------------------------------------------------
@@ -140,3 +143,4 @@ log_step "Verification complete:"
 "${DEST_BIN}/rg" --version | head -n 1
 "${DEST_BIN}/fd" --version
 "${DEST_BIN}/jq" --version
+"${DEST_BIN}/hunk" --version
