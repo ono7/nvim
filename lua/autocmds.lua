@@ -1,10 +1,10 @@
 local core_group = vim.api.nvim_create_augroup("CoreSystemAutoCmds", { clear = true })
 local quickfix_group = vim.api.nvim_create_augroup("quickfixGroup", { clear = true })
-local indent_group = vim.api.nvim_create_augroup("strip_colon_indentkeys", { clear = true })
+local restore_on_enter = vim.api.nvim_create_augroup("strip_colon_indentkeys", { clear = true })
 
 -- local mason_hook = vim.api.nvim_create_augroup("MasonPackHooks", { clear = true })
 -- vim.api.nvim_create_autocmd("PackChanged", {
---   group = mason_hook 
+--   group = mason_hook
 --   callback = function(ev)
 --     local name = ev.data.spec.name
 --     local kind = ev.data.kind
@@ -143,12 +143,13 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 	end,
 })
 
+-- restores cursor position on enter
 vim.api.nvim_create_autocmd("BufReadPost", {
-	group = core_group,
+	group = restore_on_enter,
 	callback = function(args)
 		local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
 		local line_count = vim.api.nvim_buf_line_count(args.buf)
-		if mark[1] > 1 and mark[1] <= line_count then
+		if mark[1] > 0 and mark[1] <= line_count then
 			pcall(vim.api.nvim_win_set_cursor, 0, mark)
 		end
 	end,
