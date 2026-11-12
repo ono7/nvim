@@ -256,3 +256,17 @@ for _, target in ipairs(dir_pickers) do
 		vim.tbl_extend("force", silent, { desc = target.desc })
 	)
 end
+
+-- NOTE(jlima): explicitly wrap the built-in buffers picker to enforce the custom left-truncation UI uniformly across all sources
+pick.registry.buffers = function(local_opts)
+	local_opts = local_opts or {}
+	local default_opts = {
+		source = {
+			name = "Buffers",
+			show = show_truncate_left,
+		},
+	}
+	return pick.builtin.buffers(local_opts, vim.tbl_deep_extend("force", default_opts, local_opts))
+end
+
+vim.keymap.set("n", "<M-b>", "<cmd>Pick buffers<CR>", silent)
