@@ -1,1 +1,5 @@
-{"c":"mkdir -p build && gcc -g -o build/%< % && build/%<","cpp":"mkdir -p build && g++ -std=c++20 -Wall -Wextra -Wpedantic % -o build/%< && build/%<","go":"go run %"}
+{
+  "c": "mkdir -p build && gcc -g -O0 -o build/%< % && build/%<",
+  "cpp": "mkdir -p build && g++ -std=c++20 -Wall -Wextra -Wpedantic -g -O0 -o build/%< % && build/%<",
+  "go": "go run %"
+}
