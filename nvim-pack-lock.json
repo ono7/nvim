@@ -21,7 +21,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.pick": {
-      "rev": "f1216d764d0c2772e88d4e1a0cef3082f5b498e1",
+      "rev": "406d41308e58486ea5c3352f5821c4cd9992af65",
       "src": "https://github.com/echasnovski/mini.pick"
     },
     "nvim-colorizer.lua": {
@@ -33,7 +33,7 @@
       "src": "https://github.com/dcampos/nvim-snippy"
     },
     "nvim-treesitter": {
-      "rev": "19bdfc04f40ed2ccb3340591d125f759b0406875",
+      "rev": "04f17886f75416dfdc25374c950a52c63f0e98fe",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
