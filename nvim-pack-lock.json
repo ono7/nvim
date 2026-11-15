@@ -24,10 +24,6 @@
       "rev": "406d41308e58486ea5c3352f5821c4cd9992af65",
       "src": "https://github.com/echasnovski/mini.pick"
     },
-    "nvim-colorizer.lua": {
-      "rev": "a065833f35a3a7cc3ef137ac88b5381da2ba302e",
-      "src": "https://github.com/norcalli/nvim-colorizer.lua"
-    },
     "nvim-snippy": {
       "rev": "fb49f5cf32bd20d0aa8804648c15775ace2fc66a",
       "src": "https://github.com/dcampos/nvim-snippy"
