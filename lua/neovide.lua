@@ -138,7 +138,7 @@ vim.keymap.set("n", cmd_or_ctrl .. "0>", function()
 end)
 
 -- NOTE(jlima): Configure deduplicated clipboard and window keymaps.
-vim.keymap.set({ "n", "v" }, "<C-S-v>", '"+p')
+vim.keymap.set({ "n", "x" }, "<C-S-v>", '"+p')
 vim.keymap.set({ "i", "c" }, "<C-S-v>", "<C-r>+")
 vim.keymap.set("t", "<C-S-v>", '<C-\\><C-n>"+pi')
 if is_mac then
