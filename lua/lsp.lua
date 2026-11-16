@@ -43,7 +43,10 @@ vim.diagnostic.config({
 	severity_sort = true,
 	float = { border = "rounded", source = true },
 	jump = {
-		float = true,
+		on_jump = function(_, bufnr)
+			-- NOTE(jlima): Manually trigger the floating UI window after the cursor lands
+			vim.diagnostic.open_float({ bufnr = bufnr })
+		end,
 	},
 })
 
