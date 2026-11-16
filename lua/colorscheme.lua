@@ -8,7 +8,7 @@ vim.o.background = "dark"
 vim.g.colors_name = "google-dark-minimal"
 
 -- NOTE(jlima): Core palette mapped to specific RGB requirements.
-local bg_subtle = "#252932"
+local bg_subtle = "#323842"
 local bg = "#1D2129"
 
 local fg = "#D8DBE1"
@@ -24,6 +24,7 @@ local cmt = "#7F8996"
 local bg_light = "#363840"
 local bg_visual = "#42444D"
 local gray = "#A7A9B2"
+local gray_dim = "#515A7B"
 -- local gray_dim = "#515A7B"
 local red = "#F28B82"
 local blue = "#8AB4F8"
@@ -131,7 +132,8 @@ local hl_groups = {
 
 	DiffAdd = { fg = green, bg = "none" },
 	DiffText = { fg = bg, bg = yellow },
-	DiffDelete = { fg = red, bg = "none" },
+	DiffDelete = { fg = bg_subtle, bg = "none" },
+	-- DiffDelete = { fg = red, bg = "none" },
 	DiffChange = { bg = bg_light },
 	Folded = { fg = gray, bg = bg_light },
 	FoldColumn = { fg = gray, bg = "none" },

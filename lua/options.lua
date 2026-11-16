@@ -31,7 +31,9 @@ vim.opt.tags:append({
 vim.opt.tagcase = "smart"
 
 -- NOTE(jlima): configure insert-mode completion options
+-- this works good on 0.12, testing new settings for upcoming 0.13
 vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
+-- vim.o.completeopt = { "menu", "preselect", "popup", "fuzzy" }
 vim.opt.complete = ".,w,t"
 vim.o.statusline = "%{''}"
 
