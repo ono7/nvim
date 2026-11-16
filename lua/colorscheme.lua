@@ -88,6 +88,7 @@ local hl_groups = {
 	Function = { fg = fg },
 
 	["@type"] = { fg = red },
+	["@type.go"] = {},
 	["@type.builtin"] = { fg = red },
 	["@number"] = { fg = red },
 	["@function"] = { fg = fg },
