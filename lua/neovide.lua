@@ -3,6 +3,8 @@ if not vim.g.neovide then
 	return
 end
 
+vim.env.TERM = "xterm-256color"
+
 -- NOTE(jlima): Determine operating system environment.
 local os_name = jit.os
 local is_mac = os_name == "OSX" or vim.fn.has("macunix") == 1
