@@ -159,17 +159,17 @@ vim.keymap.set("n", "<leader>w", safe_write, silent)
 vim.keymap.set("n", "<M-w>", safe_write, silent)
 
 -- Visual Editing & Clipboard
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", silent)
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", silent)
-vim.keymap.set("v", ">", ">gv", silent)
-vim.keymap.set("v", "<", "<gv", silent)
+vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", silent)
+vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", silent)
+vim.keymap.set("x", ">", ">gv", silent)
+vim.keymap.set("x", "<", "<gv", silent)
 vim.keymap.set("x", "p", "P", silent)
 vim.keymap.set("x", "y", "ygv<Esc>", silent)
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true })
+vim.keymap.set({ "n", "x" }, "<leader>y", '"+y', { noremap = true })
 vim.keymap.set("n", "<leader>Y", '"+Y', { noremap = true })
-vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { noremap = true })
-vim.keymap.set({ "n", "v" }, "<leader>P", '"+P', { noremap = true })
-vim.keymap.set("v", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
+vim.keymap.set({ "n", "x" }, "<leader>p", '"+p', { noremap = true })
+vim.keymap.set({ "n", "x" }, "<leader>P", '"+P', { noremap = true })
+vim.keymap.set("x", "<CR>", [[y/\V<C-r>=escape(@",'/\')<CR><CR>]], silent)
 
 -- Backspace Auto-Pair Deletion
 -- NOTE(jlima): Pre-encode keycodes at load time so replace_keycodes can be disabled on the hot path.
@@ -312,7 +312,7 @@ vim.cmd([[
   " cabbrev <expr> make (getcmdtype() ==# ':' && getcmdline() ==# 'make') ? 'silent update \| silent make! \| redraw!' : 'make'
 ]])
 
-vim.keymap.set("v", "gh", function()
+vim.keymap.set("x", "gh", function()
 	-- NOTE(jlima): Temporarily use the 's' register to grab the visual selection without destroying the unnamed register
 	local saved_reg = vim.fn.getreg("s")
 	vim.cmd('normal! "sy')
