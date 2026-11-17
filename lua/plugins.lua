@@ -13,6 +13,8 @@ vim.pack.add({
 	{ src = gh("dcampos/nvim-snippy") },
 	{ src = gh("stevearc/quicker.nvim") },
 	{ src = gh("stevearc/dressing.nvim") },
+	{ src = gh("sindrets/diffview.nvim") },
+	{ src = gh("nvim-lua/plenary.nvim") },
 	{
 		src = gh("nvim-treesitter/nvim-treesitter"),
 		version = "main",
@@ -31,6 +33,7 @@ local configs = {
 	"plugin_config.mini_pick",
 	"plugin_config.mason",
 	"plugin_config.treesitter",
+	"plugin_config.diffview",
 }
 
 for _, mod in ipairs(configs) do
