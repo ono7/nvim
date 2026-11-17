@@ -20,6 +20,7 @@ local green = "#A3BE8C"
 -- local orange = "#FA903E"
 local orange = "#DCA561"
 local purple = "#C58AF9"
+local cyan = "#78D9EC"
 local cmt = "#7F8996"
 local bg_light = "#363840"
 local bg_visual = "#42444D"
@@ -42,7 +43,7 @@ vim.g.terminal_color_2 = green
 vim.g.terminal_color_3 = yellow
 vim.g.terminal_color_4 = blue
 vim.g.terminal_color_5 = purple
-vim.g.terminal_color_6 = "#78D9EC"
+vim.g.terminal_color_6 = cyan
 vim.g.terminal_color_7 = fg
 vim.g.terminal_color_8 = gray
 vim.g.terminal_color_9 = red
@@ -50,7 +51,7 @@ vim.g.terminal_color_10 = green
 vim.g.terminal_color_11 = yellow
 vim.g.terminal_color_12 = blue
 vim.g.terminal_color_13 = purple
-vim.g.terminal_color_14 = "#78D9EC"
+vim.g.terminal_color_14 = cyan
 vim.g.terminal_color_15 = fg
 
 -- NOTE(jlima): Apply strict monochrome mapping with explicit callouts for strings, numbers, and core keywords.
@@ -84,6 +85,11 @@ local hl_groups = {
 	Special = { fg = fg },
 	PreProc = { fg = fg },
 
+	-- NOTE(jlima): Base UI groups used as fallbacks by legacy markdown syntax and plugins.
+	Title = { fg = yellow, bold = true },
+	Underlined = { fg = blue, underline = true },
+	Todo = { fg = bg, bg = yellow, bold = true },
+
 	Type = { fg = fg },
 	Function = { fg = fg },
 
@@ -115,6 +121,54 @@ local hl_groups = {
 	["@keyword.return"] = { fg = yellow, bold = true },
 	["@keyword.conditional"] = { fg = yellow, bold = true },
 	["@keyword.repeat"] = { fg = yellow, bold = true },
+
+	-- NOTE(jlima): Tree-sitter Markdown & Markup captures (@markup.*)
+	["@markup.heading"] = { fg = yellow, bold = true },
+	["@markup.heading.1"] = { fg = yellow, bold = true },
+	["@markup.heading.2"] = { fg = blue, bold = true },
+	["@markup.heading.3"] = { fg = cyan, bold = true },
+	["@markup.heading.4"] = { fg = green, bold = true },
+	["@markup.heading.5"] = { fg = purple, bold = true },
+	["@markup.heading.6"] = { fg = gray, bold = true },
+
+	["@markup.strong"] = { fg = fg, bold = true },
+	["@markup.italic"] = { fg = fg, italic = true },
+	["@markup.strikethrough"] = { fg = cmt, strikethrough = true },
+
+	["@markup.quote"] = { fg = gray, italic = true },
+	["@punctuation.special.markdown"] = { fg = cmt },
+
+	-- NOTE(jlima): Foreground-only differentiation for inline code and fenced blocks
+	-- to avoid jagged per-character background shading across nested or multi-line fences.
+	["@markup.raw"] = { fg = green },
+	["@markup.raw.block"] = { fg = fg },
+	["@markup.raw.delimiter"] = { fg = cmt },
+	["@label.markdown"] = { fg = orange },
+
+	["@markup.link"] = { fg = blue },
+	["@markup.link.label"] = { fg = cyan, underline = true },
+	["@markup.link.url"] = { fg = cmt, italic = true },
+
+	["@markup.list"] = { fg = yellow, bold = true },
+	["@markup.list.checked"] = { fg = green, bold = true },
+	["@markup.list.unchecked"] = { fg = red, bold = true },
+
+	-- NOTE(jlima): Legacy Vim regex markdown fallbacks when Tree-sitter is inactive.
+	markdownH1 = { link = "@markup.heading.1" },
+	markdownH2 = { link = "@markup.heading.2" },
+	markdownH3 = { link = "@markup.heading.3" },
+	markdownH4 = { link = "@markup.heading.4" },
+	markdownH5 = { link = "@markup.heading.5" },
+	markdownH6 = { link = "@markup.heading.6" },
+	markdownHeadingDelimiter = { fg = cmt, bold = true },
+	markdownCode = { fg = green },
+	markdownCodeBlock = { fg = fg },
+	markdownCodeDelimiter = { fg = cmt },
+	markdownBlockquote = { fg = gray, italic = true },
+	markdownListMarker = { fg = yellow, bold = true },
+	markdownRule = { fg = cmt },
+	markdownUrl = { fg = cmt, italic = true },
+	markdownLinkText = { fg = cyan, underline = true },
 
 	Pmenu = { fg = fg, bg = bg_light },
 	PmenuSel = { fg = bg, bg = yellow, bold = true },
