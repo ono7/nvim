@@ -3,20 +3,11 @@ local silent = { noremap = true, silent = true }
 
 vim.g.mapleader = " "
 
--- ctags completion
-
--- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word
--- fallback works when no LSP is running.
--- vim.keymap.set("i", "<C-l>", function()
--- 	if vim.fn.pumvisible() == 1 then
--- 		return "<C-y>"
--- 	end
--- 	local clients = vim.lsp.get_clients({
--- 		bufnr = 0,
--- 		method = "textDocument/completion",
--- 	})
--- 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
--- end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
+-- NOTE(jlima): Only bind conflict helpers when Neovim is launched in diff/mergetool mode
+if vim.opt.diff:get() then
+	vim.keymap.set("n", "<leader>dl", ":diffget LO<CR>:diffupdate<CR>", { desc = "Diffget LOCAL (ours)" })
+	vim.keymap.set("n", "<leader>dr", ":diffget RE<CR>:diffupdate<CR>", { desc = "Diffget REMOTE (theirs)" })
+end
 
 -- NOTE(jlima): Register <C-l> globally outside LspAttach so buffer word fallback works when no LSP is running.
 vim.keymap.set("i", "<C-l>", function()
