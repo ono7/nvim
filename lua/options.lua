@@ -227,5 +227,4 @@ if vim.env.SSH_TTY or vim.env.SSH_CLIENT then
 	}
 end
 
--- NOTE(jlima): Route unnamed operations through the defined provider.
 vim.opt.clipboard = "unnamedplus"
