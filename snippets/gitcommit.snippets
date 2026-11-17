@@ -21,23 +21,23 @@ snippet jt "test" b
 snippet x "fix with auto file scope" b
 	fix`GitCommitScope()`: $0
 
-snippet f "type" b
-  feat: $0
+snippet f "feat with auto file scope" b
+	feat`GitCommitScope()`: $0
 
-snippet r "type" b
-  refactor: $0
+snippet r "refactor with auto file scope" b
+	refactor`GitCommitScope()`: $0
 
-snippet s "type" b
-  style: $0
+snippet s "style with auto file scope" b
+	style`GitCommitScope()`: $0
 
-snippet d "type" b
-  docs: $0
+snippet d "docs with auto file scope" b
+	docs`GitCommitScope()`: $0
 
-snippet t "type" b
-  test: $0
+snippet t "test with auto file scope" b
+	test`GitCommitScope()`: $0
 
-snippet c "type" b
-  chore: $0
+snippet c "chore with auto file scope" b
+	chore`GitCommitScope()`: $0
 
 snippet h "type help" b
   ${0}
