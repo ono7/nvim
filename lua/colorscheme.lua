@@ -88,7 +88,7 @@ local hl_groups = {
 	-- NOTE(jlima): Base UI groups used as fallbacks by legacy markdown syntax and plugins.
 	Title = { fg = yellow, bold = true },
 	Underlined = { fg = blue, underline = true },
-	Todo = { fg = bg, bg = yellow, bold = true },
+	Todo = { fg = yellow, bg = bg, bold = true },
 
 	Type = { fg = fg },
 	Function = { fg = fg },
