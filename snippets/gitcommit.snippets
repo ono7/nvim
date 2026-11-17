@@ -2,42 +2,26 @@ extends todo
 
 priority 1000
 
-# TODO(jlima): finish this
-# to trouble shoot regex we can use basic regex first to make sure our command works
-# build the command incrementally start with the basics, `git branch --show-current`
-# then add `git branch --show-current | gret -Eio 'ntwk-'` and add \d and test, etc.
+snippet f "feat: new feature" b
+	feat`v:lua.git_commit_scope()`: $0
 
-# `system("git config --get remote.origin.url")`/commit/`system("git symbolic-ref --short HEAD")`/`system("git rev-parse HEAD")`
+snippet x "fix: bug fix" b
+	fix`v:lua.git_commit_scope()`: $0
 
-snippet j "test" b
-  `toupper(trim(system("git branch --show-current | grep -Pio 'ntwk-\\d{1,20}'")))` $0
+snippet c "chore: maintenance/tooling" b
+	chore`v:lua.git_commit_scope()`: $0
 
-snippet jc "test" b
-  `toupper(trim(system("git branch --show-current | grep -Pio 'ntwk-\\d{1,20}'")))` #comment [JL] ${0:${VISUAL}}
+snippet r "refactor: code restructuring" b
+	refactor`v:lua.git_commit_scope()`: $0
 
-snippet jt "test" b
-  `toupper(trim(system("git branch --show-current | grep -Pio 'ntwk-\\d{1,20}'")))` #${0|to-to-do,to-in-progress,to-review,to-done|}
+snippet d "docs: documentation" b
+	docs`v:lua.git_commit_scope()`: $0
 
-snippet x "fix with auto file scope" b
-	fix`GitCommitScope()`: $0
+snippet t "test: tests" b
+	test`v:lua.git_commit_scope()`: $0
 
-snippet f "feat with auto file scope" b
-	feat`GitCommitScope()`: $0
-
-snippet r "refactor with auto file scope" b
-	refactor`GitCommitScope()`: $0
-
-snippet s "style with auto file scope" b
-	style`GitCommitScope()`: $0
-
-snippet d "docs with auto file scope" b
-	docs`GitCommitScope()`: $0
-
-snippet t "test with auto file scope" b
-	test`GitCommitScope()`: $0
-
-snippet c "chore with auto file scope" b
-	chore`GitCommitScope()`: $0
+snippet s "style: formatting only" b
+	style`v:lua.git_commit_scope()`: $0
 
 snippet h "type help" b
   ${0}

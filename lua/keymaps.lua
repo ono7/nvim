@@ -287,19 +287,6 @@ vim.keymap.set("n", "<leader>te", function()
 	vim.fn.jobstart({ "alacritty", "--working-directory", dir }, { detach = true })
 end, { desc = "Open Alacritty in current directory" })
 
-vim.cmd([[
-" NOTE(jlima): Resolves the staged filename for Conventional Commit scope.
-" Returns '(filename)' if exactly 1 file is staged; returns '' if 0 or multiple
-" files are staged so multi-file commits stay clean.
-function! GitCommitScope() abort
-  let l:files = systemlist('git diff --cached --name-only')
-  if v:shell_error != 0 || len(l:files) != 1
-    return ''
-  endif
-  return '(' . fnamemodify(l:files[0], ':t') . ')'
-endfunction
-]])
-
 -- Native VimL Utility Remaps & Abbreviations
 vim.cmd([[
   " nnoremap gm :lcd %:p:h<CR>:!git add %:t && git commit -m "<C-r>=expand('%:t')<CR>: "<Left>
