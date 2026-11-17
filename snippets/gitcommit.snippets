@@ -18,8 +18,11 @@ snippet jc "test" b
 snippet jt "test" b
   `toupper(trim(system("git branch --show-current | grep -Pio 'ntwk-\\d{1,20}'")))` #${0|to-to-do,to-in-progress,to-review,to-done|}
 
+snippet x "fix with auto file scope" b
+	fix`GitCommitScope()`: $0
+
 snippet f "type" b
-  fix: $0
+  feat: $0
 
 snippet r "type" b
   refactor: $0
