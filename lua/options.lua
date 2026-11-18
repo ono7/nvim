@@ -94,7 +94,7 @@ vim.opt.showcmd = false
 vim.opt.showmode = true
 vim.opt.ruler = false -- NOTE(jlima): ruler redraws on every cursor column movement; disable when using custom statusline
 vim.opt.shortmess = "aoOstTWIFcC"
-vim.opt.guicursor = "a:block-blinkon0"
+-- vim.opt.guicursor = "a:block-blinkon0"
 vim.opt.backspace = { "indent", "eol", "start" }
 
 -- Input Timing
@@ -228,3 +228,10 @@ if vim.env.SSH_TTY or vim.env.SSH_CLIENT then
 end
 
 vim.opt.clipboard = "unnamedplus"
+
+vim.opt.guicursor = {
+	"n-v-c-sm:block-blinkon0",
+	"i-ci-ve:ver25-blinkon0",
+	"r-cr-o:hor20-blinkon0",
+	"t:block-blinkon0",
+}
