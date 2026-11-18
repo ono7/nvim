@@ -94,7 +94,6 @@ vim.opt.showcmd = false
 vim.opt.showmode = true
 vim.opt.ruler = false -- NOTE(jlima): ruler redraws on every cursor column movement; disable when using custom statusline
 vim.opt.shortmess = "aoOstTWIFcC"
--- vim.opt.guicursor = "a:block-blinkon0"
 vim.opt.backspace = { "indent", "eol", "start" }
 
 -- Input Timing
