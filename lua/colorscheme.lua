@@ -37,22 +37,22 @@ if vim.g.neovide then
 end
 
 -- NOTE(jlima): Map ANSI terminal colors to complementary palette for integrated shells.
-vim.g.terminal_color_0 = bg
+vim.g.terminal_color_0 = "#2C323D" -- Distinct dark slate (was `bg` #1D2129)
 vim.g.terminal_color_1 = red
 vim.g.terminal_color_2 = green
 vim.g.terminal_color_3 = yellow
 vim.g.terminal_color_4 = blue
 vim.g.terminal_color_5 = purple
 vim.g.terminal_color_6 = cyan
-vim.g.terminal_color_7 = fg
-vim.g.terminal_color_8 = gray
+vim.g.terminal_color_7 = fg -- Standard white (#D8DBE1)
+vim.g.terminal_color_8 = cmt -- Bright black / dim gray (#7F8996)
 vim.g.terminal_color_9 = red
 vim.g.terminal_color_10 = green
 vim.g.terminal_color_11 = yellow
 vim.g.terminal_color_12 = blue
 vim.g.terminal_color_13 = purple
 vim.g.terminal_color_14 = cyan
-vim.g.terminal_color_15 = fg
+vim.g.terminal_color_15 = "#ECEFF4" -- Pure bright white for bold/bright ANSI output
 
 -- NOTE(jlima): Apply strict monochrome mapping with explicit callouts for strings, numbers, and core keywords.
 local hl_groups = {
