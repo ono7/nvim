@@ -698,3 +698,71 @@ end, {
 	desc = "Update packages forcing overwrite",
 	nargs = 0,
 })
+
+-- Quick Single-File Git Commit (gm)
+-- NOTE(jlima): Stages current buffer file and commits asynchronously via vim.system().
+-- Queues <Home> into typeahead buffer prior to vim.fn.input() so cursor lands at col 1.
+local function quick_commit_current_file()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local file_path = vim.api.nvim_buf_get_name(bufnr)
+
+	if vim.bo[bufnr].buftype ~= "" or file_path == "" then
+		vim.notify("Cannot commit: buffer is not a file on disk.", vim.log.levels.WARN)
+		return
+	end
+
+	-- NOTE(jlima): Flush unwritten changes before staging so HEAD matches buffer state.
+	if vim.bo[bufnr].modified then
+		vim.cmd("silent write")
+	end
+
+	local root = vim.fs.root(bufnr, ".git")
+	if not root then
+		vim.notify("Not inside a git repository.", vim.log.levels.WARN)
+		return
+	end
+
+	local filename = vim.fn.fnamemodify(file_path, ":t")
+	local default_text = string.format("(%s): ", filename)
+
+	-- NOTE(jlima): Pre-load <Home> into typeahead buffer; vim.fn.input() consumes it
+	-- immediately after rendering default_text, placing cursor before '('.
+	local home_key = vim.api.nvim_replace_termcodes("<Home>", true, false, true)
+	vim.api.nvim_feedkeys(home_key, "n", false)
+
+	local ok, input = pcall(vim.fn.input, {
+		prompt = string.format("Commit [%s]: ", filename),
+		default = default_text,
+		cancelreturn = "",
+	})
+
+	if not ok or vim.trim(input) == "" then
+		return
+	end
+
+	local msg = vim.trim(input):gsub("%%", filename)
+
+	vim.system({ "git", "add", "--", file_path }, { cwd = root }, function(add_res)
+		if add_res.code ~= 0 then
+			vim.schedule(function()
+				vim.notify("git add failed: " .. (add_res.stderr or ""), vim.log.levels.ERROR)
+			end)
+			return
+		end
+
+		vim.system({ "git", "commit", "-m", msg }, { cwd = root }, function(commit_res)
+			vim.schedule(function()
+				if commit_res.code == 0 then
+					vim.notify("Committed: " .. msg, vim.log.levels.INFO)
+				else
+					vim.notify(
+						"git commit failed: " .. (commit_res.stderr or commit_res.stdout or ""),
+						vim.log.levels.ERROR
+					)
+				end
+			end)
+		end)
+	end)
+end
+
+map("n", "gm", quick_commit_current_file, { noremap = true, silent = true, desc = "Stage and commit current file" })
