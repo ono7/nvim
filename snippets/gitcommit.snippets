@@ -1,5 +1,3 @@
-extends todo
-
 priority 1000
 
 snippet f "feat: new feature" b
@@ -8,6 +6,7 @@ snippet f "feat: new feature" b
 snippet x "fix: bug fix" b
 	fix`v:lua.git_commit_scope()`: $0
 
+priority 1000
 snippet c "chore: maintenance/tooling" b
 	chore`v:lua.git_commit_scope()`: $0
 
