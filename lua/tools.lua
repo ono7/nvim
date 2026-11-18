@@ -731,7 +731,8 @@ local function quick_commit_current_file()
 	vim.api.nvim_feedkeys(home_key, "n", false)
 
 	local ok, input = pcall(vim.fn.input, {
-		prompt = string.format("Commit [%s]: ", filename),
+		-- prompt = string.format("Commit [%s]: ", filename),
+		prompt = "Commit: ",
 		default = default_text,
 		cancelreturn = "",
 	})
