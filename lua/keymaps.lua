@@ -79,6 +79,16 @@ end)
 -- TODO(jlima): ctags search, we need to revisit this again with lsp integration
 -- vim.keymap.set({ "n", "v" }, "<C-]>", "g<C-]>", nore)
 
+vim.keymap.set("n", "<leader>td", "<cmd>edit ~/todo.md<cr>", {
+	desc = "Open ~/todo.md",
+	silent = true,
+})
+
+vim.keymap.set("n", "<leader>tn", "<cmd>edit ~/notes.md<cr>", {
+	desc = "Open ~/notes.md",
+	silent = true,
+})
+
 -- shortcuts
 vim.keymap.set("n", "vw", "viw", nore)
 vim.keymap.set("n", "vp", "vip", nore)
