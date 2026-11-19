@@ -1,4 +1,5 @@
 local M = {}
+
 vim.cmd([[
 function! CopyMatches(reg)
   let hits = []
@@ -10,7 +11,8 @@ command! -register Cm call CopyMatches(<q-reg>)
 
 function! WrapSelection(left, right)
   let save_reg = @"
-  normal! `
+  " NOTE(jlima): '< jumps to the exact start line and column of the visual selection.
+  normal! `<
   call search('\S', 'c')
   let start_pos = getpos('.')
   normal! `>
