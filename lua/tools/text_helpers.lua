@@ -1,3 +1,4 @@
+local M = {}
 vim.cmd([[
 function! CopyMatches(reg)
   let hits = []
@@ -40,3 +41,5 @@ endfunction
 inoremap <silent> <C-,> <C-o>:call DuplicateAndMark()<CR>
 nnoremap <silent> <C-,> <cmd>call DuplicateAndMark()<CR>
 ]])
+
+return M

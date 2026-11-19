@@ -53,6 +53,7 @@ local configs = {
 	"tools.terminal",
 	"tools.runner",
 	"tools.finder",
+	"tools.text_helpers",
 	"tools.buffers",
 	"tools.git_tags",
 	"tools.pack_helpers",
