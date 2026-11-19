@@ -42,6 +42,14 @@ endfunction
 
 inoremap <silent> <C-,> <C-o>:call DuplicateAndMark()<CR>
 nnoremap <silent> <C-,> <cmd>call DuplicateAndMark()<CR>
+
+function! Rg(args) abort
+  let l:pattern = substitute(a:args, '|', '\\|', 'g')
+  execute "silent! grep!" l:pattern
+  copen
+  redraw!
+endfunction
+command! -nargs=+ -complete=file Rg call Rg(<q-args>)
 ]])
 
 return M
