@@ -23,7 +23,6 @@ vim.pack.add({
 	{ src = gh("stevearc/conform.nvim") },
 	{ src = gh("dcampos/nvim-snippy") },
 	{ src = gh("stevearc/quicker.nvim") },
-	{ src = gh("stevearc/dressing.nvim") },
 	{ src = gh("sindrets/diffview.nvim") },
 	{ src = gh("nvim-lua/plenary.nvim") },
 	{
