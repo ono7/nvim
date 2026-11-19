@@ -244,3 +244,19 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.formatoptions:remove({ "c", "r", "o" })
 	end,
 })
+
+-- Fix commit message editor view
+local commit_msg_group = vim.api.nvim_create_augroup("commitMessage", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+	group = commit_msg_group,
+	pattern = "COMMIT_EDITMSG",
+	callback = function()
+		vim.opt_local.spell = false
+		vim.opt_local.wrap = true
+		vim.api.nvim_win_set_cursor(0, { 1, 0 })
+		-- NOTE(jlima): Schedule entering insert mode to prevent subsequent event loops from resetting to normal mode.
+		vim.schedule(function()
+			vim.cmd("startinsert")
+		end)
+	end,
+})
