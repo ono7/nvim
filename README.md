@@ -3,7 +3,7 @@
 see other install scripts here for jq, prettier etc
 https://webinstall.dev/
 
-### Install minimal version of neovim with node/rg/fd/tree-sitter suppord
+### Install Neovim with node/rg/fd/tree-sitter support on MacOS and Linux
 
 curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/install.sh | bash
 
