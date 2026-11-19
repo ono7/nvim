@@ -20,22 +20,13 @@ vim.o.scrollback = 50000
 -- NOTE(jlima): Enforce black cursor color.
 vim.api.nvim_set_hl(0, "Cursor", { bg = "#000000", fg = "#ffffff" })
 
--- NOTE(jlima): Configure fluid cursor animation parameters.
--- vim.g.neovide_cursor_animation_length = 0.09
--- vim.g.neovide_cursor_trail_size = 0.75
--- vim.g.neovide_cursor_smooth_blink = true
--- vim.g.neovide_cursor_blink = false
--- vim.g.neovide_cursor_blink_interval = 600
--- vim.g.neovide_cursor_animate_in_insert_mode = true
--- vim.g.neovide_cursor_animate_command_line = true
--- vim.g.neovide_cursor_antialiasing = false
-
 -- NOTE(jlima): Disable trailing motion blur while retaining solid block translation.
 vim.g.neovide_cursor_trail_size = 0.0
 
 -- NOTE(jlima): Extend character-by-character travel time to produce float/glide on keypress.
 -- 0.07 to 0.09
-vim.g.neovide_cursor_short_animation_length = 0.07
+-- vim.g.neovide_cursor_short_animation_length = 0.07
+vim.g.neovide_cursor_short_animation_length = 0.06
 
 -- NOTE(jlima): Smooth macro cursor jumps across lines and words without sluggishness.
 vim.g.neovide_cursor_animation_length = 0.14
