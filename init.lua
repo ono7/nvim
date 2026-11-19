@@ -2,7 +2,7 @@
 -- TODO(jlima): neovim 0.13 release https://dotfiles.substack.com/p/whats-new-in-neovim-013?r=bkrs6&utm_campaign=post&utm_medium=web
 vim.loader.enable()
 
--- 1. Core editor state (must load before plugins/colorscheme so leader keys and options are set)
+-- core settings
 require("options")
 require("keymaps")
 require("autocmds")
