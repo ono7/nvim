@@ -7,10 +7,14 @@ https://webinstall.dev/
 
 curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/install.sh | bash
 
-### neovim install
+### Neovim alternate installs
 
 - install vim for mac and linux/debian
   curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/mac.sh | bash
+
+- this will install on debian and set neovim default for root and calling user
+  this is a better setup for servers.
+
   curl -sSL https://cdn.jsdelivr.net/gh/ono7/nvim/debian.sh | sudo bash
 
 - long urls
