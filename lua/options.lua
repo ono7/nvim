@@ -229,8 +229,8 @@ end
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.guicursor = {
-	"n-v-c-sm:block-blinkon0",
-	"i-ci-ve:ver25-blinkon0",
-	"r-cr-o:hor20-blinkon0",
-	"t:block-blinkon0",
+	"n-v-c-sm:block-blinkwait0-blinkoff0-blinkon0",
+	"i-ci-ve:ver25-blinkwait0-blinkoff0-blinkon0",
+	"r-cr-o:hor20-blinkwait0-blinkoff0-blinkon0",
+	"t:block-blinkwait0-blinkoff0-blinkon0",
 }
