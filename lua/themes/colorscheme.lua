@@ -115,6 +115,9 @@ local hl_groups = {
 
 	["@keyword"] = { fg = yellow, bold = true },
 	["@keyword.type"] = { fg = yellow, bold = true },
+	["@lsp.type.keyword.yaml.ansible"] = { fg = yellow, bold = true },
+	["@lsp.type.method.yaml.ansible"] = { fg = red },
+	["@string.yaml"] = {},
 	["@keyword.operator"] = { fg = yellow, bold = true },
 	["@keyword.modifier"] = { fg = yellow, bold = true },
 	["@keyword.function"] = { fg = yellow, bold = true },
