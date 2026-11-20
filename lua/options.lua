@@ -148,7 +148,7 @@ vim.opt.pumheight = 10
 vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
 vim.opt.ambiwidth = "single"
-vim.opt.title = false
+vim.opt.title = true
 
 -- Folding Configuration (Pure Native Manual)
 vim.opt.foldmethod = "manual"
