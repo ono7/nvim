@@ -188,11 +188,16 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		local current_file = vim.api.nvim_buf_get_name(cur_buf)
 		if current_file ~= "" and not current_file:match("^%a+://") then
 			current_dir = vim.fs.dirname(current_file)
+		elseif vim.bo[cur_buf].filetype == "oil" then
+			-- NOTE(jlima): Extract real filesystem path when invoking terminal from an oil.nvim buffer
+			current_dir = current_file:gsub("^oil://", "")
 		end
 	end
 
-	if not current_dir then
-		current_dir = state.cwd or vim.fn.getcwd()
+	-- NOTE(jlima): Always fall back to live Neovim CWD (vim.fn.getcwd()) rather than cached state.cwd
+	-- so unnamed buffers track :cd / :tcd changes instead of sticking to an initial or $HOME directory.
+	if not current_dir or current_dir == "" then
+		current_dir = vim.fn.getcwd()
 	end
 
 	if not is_alive then
