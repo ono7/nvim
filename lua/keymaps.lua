@@ -29,7 +29,7 @@ vim.keymap.set("i", "<C-l>", function()
 	return #clients > 0 and "<C-x><C-o>" or "<C-x><C-n>"
 end, { expr = true, replace_keycodes = true, desc = "Smart Completion" })
 
-vim.keymap.set("n", "<leader>q", function()
+vim.keymap.set("n", "<leader>dq", function()
 	vim.diagnostic.setqflist({ bufnr = 0 })
 end, { desc = "Buffer LSP to Quickfix" })
 
