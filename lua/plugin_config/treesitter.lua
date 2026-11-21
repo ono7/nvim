@@ -62,9 +62,9 @@ vim.api.nvim_create_user_command("TSInstallMyParsers", function()
 		vim.notify("tree-sitter CLI executable not found in PATH", vim.log.levels.ERROR)
 		return
 	end
-	vim.notify("Calling nvim-treesitter for setup...", vim.log.INFO)
+	vim.notify("Calling nvim-treesitter for setup...", vim.log.levels.INFO)
 	require("nvim-treesitter").install(wanted_parsers):wait(300000)
-	vim.notify("Done.", vim.log.INFO)
+	vim.notify("Done.", vim.log.levels.INFO)
 end, { desc = "Install wanted treesitter parsers" })
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -76,7 +76,8 @@ vim.api.nvim_create_autocmd("FileType", {
 			return
 		end
 
-		if vim.b[args.buf].large_file or vim.api.nvim_buf_line_count(args.buf) > 10000 then
+		local stat = args.file ~= "" and vim.uv.fs_stat(args.file) or nil
+		if vim.b[args.buf].large_file or (stat and stat.size > 1048576) or vim.api.nvim_buf_line_count(args.buf) > 10000 then
 			vim.bo[args.buf].syntax = ""
 			vim.bo[args.buf].indentexpr = ""
 			vim.wo.foldmethod = "manual"
