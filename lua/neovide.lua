@@ -24,12 +24,10 @@ vim.api.nvim_set_hl(0, "Cursor", { bg = "#000000", fg = "#ffffff" })
 vim.g.neovide_cursor_trail_size = 0.0
 
 -- NOTE(jlima): Extend character-by-character travel time to produce float/glide on keypress.
--- 0.07 to 0.09
--- vim.g.neovide_cursor_short_animation_length = 0.07
-vim.g.neovide_cursor_short_animation_length = 0.06
+vim.g.neovide_cursor_short_animation_length = 0.04
 
 -- NOTE(jlima): Smooth macro cursor jumps across lines and words without sluggishness.
-vim.g.neovide_cursor_animation_length = 0.14
+vim.g.neovide_cursor_animation_length = 0.08
 
 -- NOTE(jlima): Ensure cursor interpolation executes during insert mode and command line.
 vim.g.neovide_cursor_animate_in_insert_mode = true
@@ -46,7 +44,7 @@ vim.g.neovide_refresh_rate = 120
 vim.g.neovide_title_text_color = "#000000"
 
 -- NOTE(jlima): Configure fluid viewport scrolling.
-vim.g.neovide_scroll_animation_length = 0.12
+vim.g.neovide_scroll_animation_length = 0.06
 vim.g.neovide_scroll_animation_far_lines = 1
 
 -- NOTE(jlima): Disable floating window blur and shadows to maximize performance.
@@ -82,10 +80,6 @@ else
 end
 
 vim.opt.linespace = 21
-vim.g.neovide_padding_top = 0
-vim.g.neovide_padding_bottom = 0
-vim.g.neovide_padding_right = 0
-vim.g.neovide_padding_left = 0
 
 -- NOTE(jlima): Replicate Alacritty font rendering and contrast.
 -- vim.g.neovide_text_gamma = 0.8
