@@ -1,6 +1,6 @@
 local M = {}
 
-local core_group = vim.api.nvim_create_augroup("CoreSystemAutoCmds", { clear = true })
+local term_group = vim.api.nvim_create_augroup("TerminalDrawerAutoCmds", { clear = true })
 local tab_state = {}
 local term_size = 12
 
@@ -85,7 +85,7 @@ function M.hide_transients()
 end
 
 vim.api.nvim_create_autocmd("TabClosed", {
-	group = core_group,
+	group = term_group,
 	callback = function()
 		local valid_tabs = vim.api.nvim_list_tabpages()
 		local valid_set = {}
