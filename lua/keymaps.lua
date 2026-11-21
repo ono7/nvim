@@ -100,12 +100,11 @@ vim.keymap.set("n", "cp", "yap<S-}>p", nore)
 
 vim.keymap.set({ "n", "x" }, ";", ":", nore)
 vim.keymap.set("n", "Y", "y$", nore)
-vim.keymap.set("n", "j", "gj", nore)
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set("n", "&", ":&&<CR>", nore)
-vim.keymap.set("n", "k", "gk", nore)
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "<leader><leader>", "<cmd>set hlsearch!<CR>", silent)
 vim.keymap.set("n", "<leader>a", "ggVG", silent)
-vim.keymap.set("n", "<leader>n", "<cmd>e ~/notes.md<CR>", silent)
 vim.keymap.set("n", "<C-w>q", "<C-w>c", nore)
 vim.keymap.set("n", "<C-w><C-q>", "<C-w>c", nore)
 vim.keymap.set("n", "<C-w><C-d>", "<C-w>d", nore)
@@ -113,7 +112,7 @@ vim.keymap.set("n", "<C-w><C-d>", "<C-w>d", nore)
 -- Directional Search Swap
 vim.keymap.set("i", "<C-r>", "<C-o>?", silent)
 vim.keymap.set("i", "<C-s>", "<C-o>/", silent)
-vim.keymap.set("i", "<C-w>", "<C-o>:write<cr>", silent)
+vim.keymap.set("i", "<C-w>", "<Cmd>write<CR>", silent)
 vim.keymap.set("n", "<C-r>", "?", nore)
 vim.keymap.set("n", "<C-s>", "/", nore)
 
@@ -205,8 +204,14 @@ vim.keymap.set("i", "<BS>", function()
 end, { expr = true, replace_keycodes = false, noremap = true })
 
 -- Bracket Expansion with Auto-Close & Whitespace Precondition
+local cr_raw = vim.api.nvim_replace_termcodes("<CR>", true, false, true)
+local cr_expand_existing = vim.api.nvim_replace_termcodes("<CR><C-o>O", true, false, true)
+local cr_expand_close = vim.api.nvim_replace_termcodes("<Left><CR><C-o>O", true, false, true)
 local bracket_pair_map = { ["{"] = "}", ["("] = ")", ["["] = "]" }
 vim.keymap.set("i", "<CR>", function()
+	if vim.fn.pumvisible() == 1 then
+		return cr_raw
+	end
 	local col = vim.api.nvim_win_get_cursor(0)[2]
 	if col > 0 then
 		local line = vim.api.nvim_get_current_line()
@@ -219,14 +224,14 @@ vim.keymap.set("i", "<CR>", function()
 			if col == 1 or before_open == " " or before_open == "\t" then
 				local next_char = line:sub(col + 1, col + 1)
 				if next_char == close_char then
-					return "<CR><C-o>O"
+					return cr_expand_existing
 				end
-				return close_char .. "<Left><CR><C-o>O"
+				return close_char .. cr_expand_close
 			end
 		end
 	end
-	return "<CR>"
-end, { expr = true })
+	return cr_raw
+end, { expr = true, replace_keycodes = false, noremap = true })
 
 -- Emacs Insert Mode Navigation
 vim.keymap.set("i", "<C-a>", "<C-o>^", silent)
