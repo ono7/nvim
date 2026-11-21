@@ -1,4 +1,5 @@
 -- Cache to store poetry paths per project root so we don't query system repeatedly
+local venv_cache = {}
 
 local function file_exists(path)
 	return vim.uv.fs_stat(path) ~= nil
@@ -35,14 +36,19 @@ local function resolve_python_path(root_dir)
 
 	-- 4. External Poetry environment
 	if file_exists(root_dir .. "/poetry.lock") then
+		if venv_cache[root_dir] ~= nil then
+			return venv_cache[root_dir] or nil
+		end
 		local cmd = "cd " .. vim.fn.shellescape(root_dir) .. " && poetry env info --path"
 		local path = vim.fn.trim(vim.fn.system(cmd))
 		if vim.v.shell_error == 0 and path ~= "" then
 			local poetry_bin = path .. "/bin/python"
 			if file_exists(poetry_bin) then
+				venv_cache[root_dir] = poetry_bin
 				return poetry_bin
 			end
 		end
+		venv_cache[root_dir] = false
 	end
 
 	return nil

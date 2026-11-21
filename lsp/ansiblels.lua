@@ -70,41 +70,31 @@ return {
 		end
 
 		config.cmd_env.ANSIBLE_COLLECTIONS_PATH = collections_paths
-	end,
 
-	on_attach = function(client, bufnr)
-		local root_dir = client.config.root_dir
 		local python_path = get_python_path(root_dir)
-		-- disable formatting, let conform handle this, conform will honor rules
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
-
 		if python_path then
 			local bin_dir = vim.fn.fnamemodify(python_path, ":h")
-
 			local ansible_path = bin_dir .. "/ansible"
 			local ansible_lint_path = bin_dir .. "/ansible-lint"
 
-			-- 1. Set Python Interpreter
-			client.config.settings.ansible.python.interpreterPath = python_path
-
-			-- 2. Set Ansible Binary (if it exists in venv)
+			config.settings.ansible.python.interpreterPath = python_path
 			if vim.fn.executable(ansible_path) == 1 then
-				client.config.settings.ansible.ansible.path = ansible_path
+				config.settings.ansible.ansible.path = ansible_path
 			end
-
-			-- 3. Set Ansible Lint (if it exists in venv)
 			if vim.fn.executable(ansible_lint_path) == 1 then
-				client.config.settings.ansible.validation.lint.path = ansible_lint_path
+				config.settings.ansible.validation.lint.path = ansible_lint_path
 			end
 
-			client:notify("workspace/didChangeConfiguration", {
-				settings = client.config.settings,
-			})
-
-			-- vim.notify("Ansible: " .. trim_path(bin_dir))
-			vim.notify("env: ✔")
+			vim.schedule(function()
+				vim.notify("env: ✔")
+			end)
 		end
+	end,
+
+	on_attach = function(client, bufnr)
+		-- disable formatting, let conform handle this, conform will honor rules
+		client.server_capabilities.documentFormattingProvider = false
+		client.server_capabilities.documentRangeFormattingProvider = false
 	end,
 
 	settings = {
