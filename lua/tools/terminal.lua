@@ -206,11 +206,11 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		end
 
 		save_editor_pos()
-		vim.opt_local.winbar = nil
 		vim.cmd("botright split")
 		vim.wo.winfixheight = true
 		vim.cmd("resize " .. state.height)
 		vim.cmd("enew")
+		vim.opt_local.winbar = nil
 
 		state.buf = vim.api.nvim_get_current_buf()
 		state.win = vim.api.nvim_get_current_win()
@@ -241,11 +241,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		return
 	end
 
-	-- NOTE(jlima): Sync directory only when switching from an actual editor buffer in a different directory
-	if not is_term_buf and state.cwd ~= current_dir then
-		state.cwd = current_dir
-		vim.fn.chansend(state.job, "\x15cd " .. vim.fn.shellescape(current_dir) .. "\n")
-	end
+	local needs_cd = not is_term_buf and state.cwd ~= current_dir
 
 	local visible_win = nil
 	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
@@ -268,7 +264,12 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 			return
 		end
 
-		send_terminal_cmd(state.job, cmd)
+		local payload = cmd
+		if needs_cd then
+			state.cwd = current_dir
+			payload = "cd " .. vim.fn.shellescape(current_dir) .. " && " .. cmd
+		end
+		send_terminal_cmd(state.job, payload)
 		if focus_insert then
 			focus_terminal()
 		end
@@ -284,13 +285,22 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	vim.wo.statusline = "%#Normal# "
 
 	if cmd ~= "" then
-		send_terminal_cmd(state.job, cmd)
+		local payload = cmd
+		if needs_cd then
+			state.cwd = current_dir
+			payload = "cd " .. vim.fn.shellescape(current_dir) .. " && " .. cmd
+		end
+		send_terminal_cmd(state.job, payload)
 		if focus_insert then
 			focus_terminal()
 		else
 			restore_editor_pos()
 		end
 	else
+		if needs_cd then
+			state.cwd = current_dir
+			vim.fn.chansend(state.job, "\x15cd " .. vim.fn.shellescape(current_dir) .. "\n")
+		end
 		vim.cmd("startinsert")
 	end
 end, { nargs = "*", bang = true })
