@@ -54,7 +54,7 @@ local function pick_zoxide()
 
 	local dirs = {}
 	for line in result.stdout:gmatch("[^\r\n]+") do
-		if line ~= "" and vim.uv.fs_stat(line) ~= nil then
+		if line ~= "" then
 			table.insert(dirs, line)
 		end
 	end
@@ -71,6 +71,11 @@ local function pick_zoxide()
 			show = show_truncate_left,
 			choose = function(item)
 				if not item or item == "" then
+					return
+				end
+
+				if vim.uv.fs_stat(item) == nil then
+					vim.notify("Directory does not exist: " .. item, vim.log.levels.WARN)
 					return
 				end
 
