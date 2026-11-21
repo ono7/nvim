@@ -159,8 +159,9 @@ vim.keymap.set("n", "<leader>w", safe_write, silent)
 vim.keymap.set("n", "<M-w>", safe_write, silent)
 
 -- Visual Editing & Clipboard
-vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", silent)
-vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", silent)
+--- this conflicts with line join, i dont use this much
+-- vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", silent)
+-- vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", silent)
 vim.keymap.set("x", ">", ">gv", silent)
 vim.keymap.set("x", "<", "<gv", silent)
 vim.keymap.set("x", "p", "P", silent)
