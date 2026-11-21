@@ -60,6 +60,7 @@ require("lsp")
 local tools = {
 	"tools.terminal",
 	"tools.runner",
+	"tools.finder",
 	"tools.text_helpers",
 	"tools.buffers",
 	"tools.git_tags",
