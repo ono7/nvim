@@ -93,8 +93,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		local ok = pcall(vim.treesitter.start, args.buf, lang)
 		if ok then
 			vim.bo[args.buf].syntax = ""
-			-- NOTE(jlima): Delegate indentation to treesitter only upon verified parser attachment
-			vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end,
 })
