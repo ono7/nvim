@@ -15,14 +15,13 @@ conform.setup({
 		go = { "goimports", "goimports-reviser" },
 		python = function(bufnr)
 			if conform.get_formatter_info("ruff_format", bufnr).available then
-				return { "isort", "ruff_fix", "ruff_format" }
+				return { "ruff_organize_imports", "ruff_fix", "ruff_format" }
 			else
 				return { "isort", "ruff_fix", "black" }
 			end
 		end,
 	},
-	format_on_save = {
-		timeout_ms = 800,
-		lsp_fallback = false,
+	format_after_save = {
+		lsp_format = "never",
 	},
 })
