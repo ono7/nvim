@@ -3,8 +3,6 @@ local opts = { buffer = true, silent = true, desc = "Save and close git commit m
 vim.keymap.set("n", "<C-x>", "<Cmd>x<CR>", opts)
 vim.keymap.set("i", "<C-x>", "<Esc><Cmd>x<CR>", opts)
 
-vim.opt_local.spell = true
-
 -- NOTE(jlima): Evaluated lazily at snippet expansion time via v:lua.git_commit_scope()
 -- to avoid race conditions where `filetype=gitcommit` fires before the buffer path
 -- `%` is finalized.

@@ -119,7 +119,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 	group = core_group,
 	callback = function(args)
 		local size = vim.fn.getfsize(args.file)
-		if size > 10000000 then
+		if size > 1048576 then
 			vim.b[args.buf].large_file = true
 			vim.opt_local.undofile = false
 			vim.opt_local.foldenable = false
@@ -187,8 +187,8 @@ vim.api.nvim_create_autocmd("OptionSet", {
 			vim.opt_local.number = true
 			vim.opt_local.wrap = false
 
-			vim.keymap.set("n", "]", "]c", { buffer = true, desc = "Next diff hunk" })
-			vim.keymap.set("n", "[", "[c", { buffer = true, desc = "Prev diff hunk" })
+			vim.keymap.set("n", "]", "]c", { buffer = true, nowait = true, desc = "Next diff hunk" })
+			vim.keymap.set("n", "[", "[c", { buffer = true, nowait = true, desc = "Prev diff hunk" })
 			vim.keymap.set("n", "dp", "<cmd>diffput<CR>", { buffer = true, desc = "Diff Put" })
 			vim.keymap.set("n", "dg", "<cmd>diffget<CR>", { buffer = true, desc = "Diff Get" })
 		else
@@ -232,16 +232,6 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 			vim.cmd("cclose")
 			print("Build complete...")
 		end
-	end,
-})
-
-local format_group = vim.api.nvim_create_augroup("DisableAutoComment", { clear = true })
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = format_group,
-	pattern = "*",
-	callback = function()
-		vim.opt_local.formatoptions:remove({ "c", "r", "o" })
 	end,
 })
 

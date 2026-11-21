@@ -1,2 +1,2 @@
 vim.cmd.compiler("ansible")
-vim.opt.formatoptions = "qlj"
+vim.opt_local.formatoptions = "qlj"
