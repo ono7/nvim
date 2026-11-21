@@ -43,7 +43,6 @@ local plugin_configs = {
 	"plugin_config.oil",
 	"plugin_config.mini_pick",
 	"plugin_config.diffview",
-	"plugin_config.dressing",
 	"plugin_config.fugitive",
 }
 
@@ -61,7 +60,6 @@ require("lsp")
 local tools = {
 	"tools.terminal",
 	"tools.runner",
-	"tools.finder",
 	"tools.text_helpers",
 	"tools.buffers",
 	"tools.git_tags",

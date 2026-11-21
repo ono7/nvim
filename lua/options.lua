@@ -34,7 +34,6 @@ vim.opt.tagcase = "smart"
 vim.opt.completeopt = { "menuone", "noinsert", "popup", "fuzzy" }
 -- vim.o.completeopt = { "menu", "preselect", "popup", "fuzzy" }
 vim.opt.complete = ".,w,t"
-vim.o.statusline = "%{''}"
 
 -- State, Buffer I/O & Core Options
 vim.opt.wrap = false
@@ -84,7 +83,6 @@ vim.opt.autoread = true
 vim.opt.more = true
 
 -- Interface Baseline
-vim.opt.background = "light"
 vim.opt.termguicolors = true
 vim.opt.helplang = "en"
 vim.opt.encoding = "utf-8"
@@ -127,8 +125,6 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.inccommand = "nosplit"
-vim.g.matchparen_timeout = 2
-vim.g.matchparen_insert_timeout = 2
 
 -- Splits & Jump Navigation
 vim.opt.splitright = true
