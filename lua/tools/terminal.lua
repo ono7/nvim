@@ -13,6 +13,7 @@ end
 local function get_tab_state(tab)
 	tab = tab or vim.api.nvim_get_current_tabpage()
 	if not tab_state[tab] then
+		-- NOTE(jlima): Only record initial spawn cwd; once the shell is running, the PTY process owns its cwd.
 		tab_state[tab] = {
 			buf = nil,
 			win = nil,
@@ -20,7 +21,7 @@ local function get_tab_state(tab)
 			last_win = nil,
 			last_cursor = nil,
 			height = term_size,
-			cwd = nil,
+			initial_cwd = nil,
 		}
 	end
 	return tab_state[tab]
@@ -110,7 +111,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	local focus_insert = opts_args.bang
 
 	-- NOTE(jlima): If invoked from a maximized terminal tab with no command payload, collapse the zoom tab
-	-- AND hide the drawer in the parent tab so <M-t> acts as a true toggle.
+	-- AND hide the drawer in the parent tab so the toggle keymap acts as a true toggle.
 	if vim.t.maximized_win and vim.bo.buftype == "terminal" and #vim.api.nvim_list_tabpages() > 1 then
 		local parent_tab = vim.t.parent_tab
 		vim.cmd("tabclose")
@@ -136,7 +137,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	local function save_editor_pos()
 		local cur_win = vim.api.nvim_get_current_win()
 		local cur_buf = vim.api.nvim_win_get_buf(cur_win)
-		-- NOTE(jlima): Never record terminal window itself as last editor pos
+		-- NOTE(jlima): Never record the terminal window itself as the last editor position.
 		if vim.bo[cur_buf].buftype ~= "terminal" then
 			state.last_win = cur_win
 			state.last_cursor = vim.api.nvim_win_get_cursor(0)
@@ -164,7 +165,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 			return
 		end
 		local delay = delay_ms or 50
-		-- NOTE(jlima): Ctrl-C kills active foreground jobs, Ctrl-U purges buffered readline input
+		-- NOTE(jlima): Ctrl-C interrupts active foreground jobs; Ctrl-U clears unsubmitted line-editing input.
 		vim.fn.chansend(job, "\x03\x15")
 		vim.defer_fn(function()
 			if pcall(vim.fn.jobwait, { job }, 0) and vim.fn.jobwait({ job }, 0)[1] == -1 then
@@ -179,28 +180,26 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		and pcall(vim.fn.jobwait, { state.job }, 0)
 		and vim.fn.jobwait({ state.job }, 0)[1] == -1
 
-	-- NOTE(jlima): Resolve file directory strictly from standard file buffers to avoid term:// URI pollution
-	local cur_buf = vim.api.nvim_get_current_buf()
-	local is_term_buf = vim.bo[cur_buf].buftype == "terminal"
-	local current_dir = nil
-
-	if not is_term_buf then
-		local current_file = vim.api.nvim_buf_get_name(cur_buf)
-		if current_file ~= "" and not current_file:match("^%a+://") then
-			current_dir = vim.fs.dirname(current_file)
-		elseif vim.bo[cur_buf].filetype == "oil" then
-			-- NOTE(jlima): Extract real filesystem path when invoking terminal from an oil.nvim buffer
-			current_dir = current_file:gsub("^oil://", "")
-		end
-	end
-
-	-- NOTE(jlima): Always fall back to live Neovim CWD (vim.fn.getcwd()) rather than cached state.cwd
-	-- so unnamed buffers track :cd / :tcd changes instead of sticking to an initial or $HOME directory.
-	if not current_dir or current_dir == "" then
-		current_dir = vim.fn.getcwd()
-	end
-
 	if not is_alive then
+		-- NOTE(jlima): Resolve initial directory only on fresh shell spawn so reopening or switching
+		-- files never forces a cd inside an existing terminal session.
+		local cur_buf = vim.api.nvim_get_current_buf()
+		local is_term_buf = vim.bo[cur_buf].buftype == "terminal"
+		local current_dir = nil
+
+		if not is_term_buf then
+			local current_file = vim.api.nvim_buf_get_name(cur_buf)
+			if current_file ~= "" and not current_file:match("^%a+://") then
+				current_dir = vim.fs.dirname(current_file)
+			elseif vim.bo[cur_buf].filetype == "oil" then
+				current_dir = current_file:gsub("^oil://", "")
+			end
+		end
+
+		if not current_dir or current_dir == "" then
+			current_dir = vim.fn.getcwd()
+		end
+
 		if state.buf and vim.api.nvim_buf_is_valid(state.buf) then
 			pcall(vim.api.nvim_buf_delete, state.buf, { force = true })
 		end
@@ -214,7 +213,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 
 		state.buf = vim.api.nvim_get_current_buf()
 		state.win = vim.api.nvim_get_current_win()
-		state.cwd = current_dir
+		state.initial_cwd = current_dir
 		vim.wo.statusline = "%#Normal# "
 
 		state.job = vim.fn.jobstart(vim.o.shell, {
@@ -223,7 +222,7 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		})
 
 		if cmd ~= "" then
-			-- NOTE(jlima): Allow shell startup and direnv initialization to finish before submitting payload
+			-- NOTE(jlima): Allow shell startup and direnv initialization to settle before sending payload.
 			vim.defer_fn(function()
 				if pcall(vim.fn.jobwait, { state.job }, 0) and vim.fn.jobwait({ state.job }, 0)[1] == -1 then
 					vim.fn.chansend(state.job, cmd .. "\n")
@@ -240,8 +239,6 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 		end
 		return
 	end
-
-	local needs_cd = not is_term_buf and state.cwd ~= current_dir
 
 	local visible_win = nil
 	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
@@ -264,12 +261,8 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 			return
 		end
 
-		local payload = cmd
-		if needs_cd then
-			state.cwd = current_dir
-			payload = "cd " .. vim.fn.shellescape(current_dir) .. " && " .. cmd
-		end
-		send_terminal_cmd(state.job, payload)
+		-- NOTE(jlima): Run commands in the terminal's current working directory without injecting cd.
+		send_terminal_cmd(state.job, cmd)
 		if focus_insert then
 			focus_terminal()
 		end
@@ -285,22 +278,14 @@ vim.api.nvim_create_user_command("T", function(opts_args)
 	vim.wo.statusline = "%#Normal# "
 
 	if cmd ~= "" then
-		local payload = cmd
-		if needs_cd then
-			state.cwd = current_dir
-			payload = "cd " .. vim.fn.shellescape(current_dir) .. " && " .. cmd
-		end
-		send_terminal_cmd(state.job, payload)
+		-- NOTE(jlima): Preserve whatever directory the existing shell session is currently in.
+		send_terminal_cmd(state.job, cmd)
 		if focus_insert then
 			focus_terminal()
 		else
 			restore_editor_pos()
 		end
 	else
-		if needs_cd then
-			state.cwd = current_dir
-			vim.fn.chansend(state.job, "\x15cd " .. vim.fn.shellescape(current_dir) .. "\n")
-		end
 		vim.cmd("startinsert")
 	end
 end, { nargs = "*", bang = true })
