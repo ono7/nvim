@@ -24,6 +24,7 @@ local cyan = "#78D9EC"
 local cmt = "#7F8996"
 local bg_light = "#363840"
 local bg_visual = "#42444D"
+-- guifg=#1d2129 guibg=#dca561
 local gray = "#A7A9B2"
 -- local gray_dim = "#515A7B"
 local red = "#F28B82"
@@ -59,7 +60,7 @@ local hl_groups = {
 	Normal = { fg = fg, bg = bg },
 	NormalFloat = { fg = fg, bg = "none" },
 	FloatBorder = { fg = bg_light, bg = "none" },
-	Visual = { bg = bg_visual },
+	Visual = { bg = orange, fg = bg },
 	CursorLine = { bg = bg_light },
 	LineNr = { fg = gray, bg = bg },
 	CursorLineNr = { fg = yellow, bg = bg_light, bold = true },
